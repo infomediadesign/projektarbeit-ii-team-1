@@ -1,5 +1,5 @@
 # CMake Workflow
-# Source: https://github.com/raysan5/raylib/blob/master/.github/workflows/cmake.yml
+# Based on: https://github.com/raysan5/raylib/blob/master/.github/workflows/cmake.yml
 
 name: CMakeBuilds
 
