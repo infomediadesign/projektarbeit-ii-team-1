@@ -5,7 +5,6 @@
 #include "config.h"
 
 int main() {
-    // Hallo MAx
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
     InitWindow(Game::ScreenWidth, Game::ScreenHeight, Game::PROJECT_NAME);
