@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(${PROJECT_NAME} main.cpp Scenes.cpp Scenes.h MenuScenes.cpp MenuScenes.h LevelScene.cpp LevelScene.h PauseScene.cpp PauseScene.h InventoryScene.cpp InventoryScene.h SkillTreeScene.cpp SkillTreeScene.h MainMenuScene.cpp MainMenuScene.h BattleScene.cpp BattleScene.h GameOverScene.cpp GameOverScene.h)
+add_executable(${PROJECT_NAME} main.cpp Scenes/Scenes.cpp Scenes/Scenes.h Scenes/MenuScenes.cpp Scenes/MenuScenes.h Scenes/LevelScene.cpp Scenes/LevelScene.h Scenes/PauseScene.cpp Scenes/PauseScene.h Scenes/InventoryScene.cpp Scenes/InventoryScene.h Scenes/SkillTreeScene.cpp Scenes/SkillTreeScene.h Scenes/MainMenuScene.cpp Scenes/MainMenuScene.h Scenes/BattleScene.cpp Scenes/BattleScene.h Scenes/GameOverScene.cpp Scenes/GameOverScene.h)
 
 # Add config.h.in file
 configure_file(config.h.in config.h)
