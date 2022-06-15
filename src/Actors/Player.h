@@ -1,5 +1,5 @@
 //
-// Created by Maximilian Röck on 05.06.2022.
+// Created by Maximilian Rï¿½ck on 05.06.2022.
 //
 
 #pragma once
@@ -23,7 +23,11 @@ public:
 	// Methods
 public:
 
+    Player(int posX, int posY, Texture2D texture);
+
+    void Update();
+
 	void move();
 
-	// interact(); // Unsure how to solve this
+	void interact(std::vector<Actor> actors_);
 };

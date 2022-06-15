@@ -8,6 +8,8 @@
 #include "Actors/Prop.h"
 #include "Actors/Enemy.h"
 #include "Actors/Player.h"
+#include <iostream>
+#include <memory>
 
 int main() {
     // Raylib initialization
@@ -27,14 +29,18 @@ int main() {
     // ...
     Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
 
+    // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
+    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, myTexture);
 
-    // ALL OF THIS IS FOR TEST PURPOSES (implementing player)
+    Actor testActor;
+    testActor.setName("Manuel Neuer (Test NPC)");
+    testActor.position.x = GetScreenWidth() / 3;
+    testActor.position.y = GetScreenHeight() / 3;
+    testActor.activeTexture = LoadTexture("assets/graphics/testBouncer.png");
 
-    Player player;
-    player.posX = GetScreenWidth() / 2;
-    player.posY = GetScreenHeight() / 2;
-    player.activeTexture = myTexture;
+    std::vector<Actor> actors;
+    actors.push_back(testActor);
 
     // END OF TEST
 
@@ -46,22 +52,36 @@ int main() {
         // ...
         // ...
 
-        // This is a test (implementing player)
-        player.move();
+        // This is a test
 
-
+            player.Update();
+        //std::cout << "[DEBUG] Called Update" << std::endl;
+            player.interact(actors); //This garbage can be solved when we implemented a level-class
 
         BeginDrawing();
             // You can draw on the screen between BeginDrawing() and EndDrawing()
             // ...
             // ...
             ClearBackground(WHITE);
-            DrawText("Try using WASD or the arrow keys!", 10, 10, 30, LIGHTGRAY);
-            DrawTexture(myTexture, 10, 100, WHITE);
+            DrawText("Try using WASD or the arrow keys!\nPress E to interact", 10, 10, 30, LIGHTGRAY);
+
 
             // This is a test (Implementing player)
-            DrawTexture(player.activeTexture, player.posX, player.posY, WHITE);
 
+            /* Doesn't work for some reason...
+            for(int i = 0; i < actors.size(); i++)
+            {
+                DrawTexture(actors[i].activeTexture, actors[i].position.x, actors[i].position.y, WHITE);
+            }
+            */
+            DrawTexture(player.activeTexture, player.position.x, player.position.y, WHITE);
+            DrawRectangleLines(player.collisionBox.x, player.collisionBox.y, player.collisionBox.width, player.collisionBox.height,
+                               GREEN);
+
+        DrawCircleLines(testActor.position.x + (testActor.activeTexture.width / 2),
+                       testActor.position.y + (testActor.activeTexture.width / 2),
+                        testActor.interactionRadius, RED);
+            DrawTexture(testActor.activeTexture, testActor.position.x, testActor.position.y, WHITE);
 
         EndDrawing();
     } // Main game loop end

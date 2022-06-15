@@ -1,5 +1,5 @@
 //
-// Created by Maximilian Röck on 05.06.2022.
+// Created by Maximilian Rï¿½ck on 05.06.2022.
 //
 
 #include "Actor.h"
@@ -7,7 +7,7 @@
 
 void Actor::move()
 {
-	std::cout << "[DEBUG] Called actor move()" << std::endl;
+	std::cout << "[DEBUG] Called actor.move()" << std::endl;
 }
 
 void Actor::turn(direction turningDirection)
