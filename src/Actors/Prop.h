@@ -16,8 +16,6 @@ public:
 
     Texture2D activeTexture;
 
-    int interactionRadius = 100;
-
     //For test purposes
     std::string dialogue;
 

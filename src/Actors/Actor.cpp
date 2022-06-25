@@ -5,6 +5,25 @@
 #include "Actor.h"
 #include <iostream>
 
+Actor::Actor()
+{
+	std::cout << "[DEBUG] This function should not be called (Actor-Standardconstructor)" << std::endl;
+}
+
+
+Actor::Actor(int posX, int posY, Texture2D texture)
+{
+	this->position.x = posX;
+	this->position.y = posY;
+
+	this->activeTexture = texture;
+
+	this->collisionBox.x = posX;
+	this->collisionBox.y = posY;
+	this->collisionBox.height = activeTexture.height;
+	this->collisionBox.width = activeTexture.width;
+}
+
 void Actor::move()
 {
 	std::cout << "[DEBUG] Called actor.move()" << std::endl;

@@ -33,11 +33,10 @@ int main() {
 
     Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, myTexture);
 
-    Actor testActor;
+    Texture2D bouncerTest = LoadTexture("assets/graphics/testBouncer.png");
+
+    Actor testActor(GetScreenWidth() / 3, GetScreenHeight() / 3, bouncerTest);
     testActor.setName("Manuel Neuer (Test NPC)");
-    testActor.position.x = GetScreenWidth() / 3;
-    testActor.position.y = GetScreenHeight() / 3;
-    testActor.activeTexture = LoadTexture("assets/graphics/testBouncer.png");
 
     std::vector<Actor> actors;
     actors.push_back(testActor);
@@ -55,7 +54,7 @@ int main() {
         // This is a test
 
             player.Update();
-        //std::cout << "[DEBUG] Called Update" << std::endl;
+  
             player.interact(actors); //This garbage can be solved when we implemented a level-class
 
         BeginDrawing();
@@ -74,14 +73,19 @@ int main() {
                 DrawTexture(actors[i].activeTexture, actors[i].position.x, actors[i].position.y, WHITE);
             }
             */
+
+
             DrawTexture(player.activeTexture, player.position.x, player.position.y, WHITE);
+            //Draw player hitbox
             DrawRectangleLines(player.collisionBox.x, player.collisionBox.y, player.collisionBox.width, player.collisionBox.height,
                                GREEN);
+            DrawRectangleLines(player.interactionBox.x, player.interactionBox.y, player.interactionBox.width, player.interactionBox.height,
+                               BLUE);
 
-        DrawCircleLines(testActor.position.x + (testActor.activeTexture.width / 2),
-                       testActor.position.y + (testActor.activeTexture.width / 2),
-                        testActor.interactionRadius, RED);
-            DrawTexture(testActor.activeTexture, testActor.position.x, testActor.position.y, WHITE);
+        //Draw actor hitbox
+        DrawRectangleLines(testActor.collisionBox.x, testActor.collisionBox.y, testActor.collisionBox.width, testActor.collisionBox.height,
+                           RED);
+        DrawTexture(testActor.activeTexture, testActor.position.x, testActor.position.y, WHITE);
 
         EndDrawing();
     } // Main game loop end

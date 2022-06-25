@@ -14,14 +14,16 @@ public:
 
 	// Character attributes. Better implemented using vectors?
 	int strength;
-	int constitution;
-	int intelligence;
 	int defense;
 
 	bool interacting = false; // Do we need this? Maybe for locking controls
 
+	Rectangle interactionBox;
+
+
 	// Methods
 public:
+	Player();
 
     Player(int posX, int posY, Texture2D texture);
 
@@ -31,3 +33,4 @@ public:
 
 	void interact(std::vector<Actor> actors_);
 };
+
