@@ -11,22 +11,39 @@ Actor::Actor()
 }
 
 
-Actor::Actor(int posX, int posY, Texture2D texture)
+Actor::Actor(int posX, int posY, Texture2D spritesheet_)
 {
 	this->position.x = posX;
 	this->position.y = posY;
 
-	this->activeTexture = texture;
+	this->spritesheet = spritesheet_;
+	this->frameRec.width = this->spritesheet.width / 4;
+	this->frameRec.height = this->spritesheet.height / 4;
 
 	this->collisionBox.x = posX;
 	this->collisionBox.y = posY;
-	this->collisionBox.height = activeTexture.height;
-	this->collisionBox.width = activeTexture.width;
+	this->collisionBox.height = frameRec.height;
+	this->collisionBox.width = frameRec.width;
 }
 
 void Actor::move()
 {
 	std::cout << "[DEBUG] Called actor.move()" << std::endl;
+}
+
+void Actor::animate()
+{
+	// Reminder: framesCounter++ belongs in the Update()-Method of the classes
+	// (Prevents animation from speeding up when multiple move-keys are pressed)
+	if (this->framesCounter >= (60 / this->frameSpeed))
+	{
+		this->framesCounter = 0;
+		this->currentFrame++;
+
+		if (this->currentFrame > 3) this->currentFrame = 0;
+
+		this->frameRec.x = (float)this->currentFrame * (float)this->spritesheet.width / 4;
+	}
 }
 
 void Actor::turn(direction turningDirection)
@@ -35,19 +52,23 @@ void Actor::turn(direction turningDirection)
 	{
 	case up:
 		this->facing = up;
-		// Change active texture
+		// Change height of spritesheet-frame
+		this->frameRec.y = spritesheet.height / 4;
 		break;
 	case down:
 		this->facing = down;
-		// Change active texture
+		// Change height of spritesheet-frame
+		this->frameRec.y = 0;
 		break;
 	case left:
 		this->facing = left;
-		// Change active texture
+		// Change height of spritesheet-frame
+		this->frameRec.y = spritesheet.height - spritesheet.height / 4;
 		break;
 	case right:
 		this->facing = right;
-		// Change active texture
+		// Change height of spritesheet-frame
+		this->frameRec.y = spritesheet.height / 2;
 		break;
 	default: 
 		std::cout << "[DEBUG] Error while turning actor" << std::endl;

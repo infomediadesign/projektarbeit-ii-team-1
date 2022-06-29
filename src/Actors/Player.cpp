@@ -12,23 +12,24 @@ Player::Player()
     std::cout << "[DEBUG] This function should not be called (Player-Standardconstructor)" << std::endl;
 }
 
-Player::Player(int posX, int posY, Texture2D texture)
+Player::Player(int posX, int posY, Texture2D spritesheet_)
 {
     this->position.x = posX;
     this->position.y = posY;
-
-    this->activeTexture = texture;
+    
+    this->spritesheet = spritesheet_;
+    this->frameRec.width = this->spritesheet.width / 4;
+    this->frameRec.height = this->spritesheet.height / 4;
 
     this->collisionBox.x = posX;
     this->collisionBox.y = posY;
-    this->collisionBox.height = activeTexture.height;
-    this->collisionBox.width = activeTexture.width;
-
-
+    this->collisionBox.height = frameRec.height;
+    this->collisionBox.width = frameRec.width;
 }
 
 
 void Player::Update() {
+    this->framesCounter++;
     this->move();
 
 
@@ -47,10 +48,12 @@ void Player::move()
 		this->position.y = position.y - this->speed;
 
         //Adjusting interaction box
-        this->interactionBox.width = this->activeTexture.width;
-        this->interactionBox.height = this->activeTexture.height;
+        this->interactionBox.width = this->frameRec.width;
+        this->interactionBox.height = this->frameRec.height;
         this->interactionBox.x = this->position.x;
-        this->interactionBox.y = this->position.y - this->activeTexture.height;
+        this->interactionBox.y = this->position.y - this->frameRec.height;
+
+        this->animate();
 	}
 	if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
 	{
@@ -59,10 +62,12 @@ void Player::move()
 		this->position.y = position.y + this->speed;
 
         //Adjusting interaction box
-        this->interactionBox.width = this->activeTexture.width;
-        this->interactionBox.height = this->activeTexture.height;
+        this->interactionBox.width = this->frameRec.width;
+        this->interactionBox.height = this->frameRec.height;
         this->interactionBox.x = this->position.x;
-        this->interactionBox.y = this->position.y + this->activeTexture.height;
+        this->interactionBox.y = this->position.y + this->frameRec.height;
+
+        this->animate();
 	}
 	if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
 	{
@@ -71,10 +76,12 @@ void Player::move()
 		this->position.x = position.x - this->speed;
 
         //Adjusting interaction box
-        this->interactionBox.width = this->activeTexture.width;
-        this->interactionBox.height = this->activeTexture.height;
-        this->interactionBox.x = this->position.x - activeTexture.width;
+        this->interactionBox.width = this->frameRec.width;
+        this->interactionBox.height = this->frameRec.height;
+        this->interactionBox.x = this->position.x - frameRec.width;
         this->interactionBox.y = this->position.y;
+
+        this->animate();
 	}
 	if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
 	{
@@ -83,14 +90,21 @@ void Player::move()
 		this->position.x = position.x + this->speed;
 
         //Adjusting interaction box
-        this->interactionBox.width = this->activeTexture.width;
-        this->interactionBox.height = this->activeTexture.height;
-        this->interactionBox.x = this->position.x + activeTexture.width;
+        this->interactionBox.width = this->frameRec.width;
+        this->interactionBox.height = this->frameRec.height;
+        this->interactionBox.x = this->position.x + frameRec.width;
         this->interactionBox.y = this->position.y;
+
+        this->animate();
 	}
 	this->collisionBox.x = this->position.x;
     this->collisionBox.y = this->position.y;
 
+    if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_D) &&
+        !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN) && !IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
+    {
+        this->currentFrame = 0;
+    }
 }
 
 void Player::interact(std::vector<Actor> actors_) {

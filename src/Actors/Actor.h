@@ -19,18 +19,27 @@ public: // Attributes
 	int money;
 	int speed = 5; //Do we need this?
 
-private:
-	Texture2D textures; // All textures, formatted in a spritesheet
+	// Everything regarding textures
+
+	Texture2D spritesheet; // All textures, formatted in a spritesheet
 	//std::vector<Texture2D> textures; // Another possible way to implement this
+
+	Rectangle frameRec = { 0.0f, 0.0f, (float)spritesheet.width / 4, (float)spritesheet.height / 4};;
+	int framesCounter = 0;
+	int frameSpeed = 6;
+	int currentFrame = 0;
+
 
 	// Methods
 public:
 
 	Actor();
 
-	Actor(int posX, int posY, Texture2D texture);
+	Actor(int posX, int posY, Texture2D spritesheet_);
 	
 	void move();
+
+	void animate();
 
 	// onInteraction();
 

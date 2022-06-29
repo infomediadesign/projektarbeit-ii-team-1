@@ -25,7 +25,7 @@ public:
 public:
 	Player();
 
-    Player(int posX, int posY, Texture2D texture);
+    Player(int posX, int posY, Texture2D spritesheet_);
 
     void Update();
 

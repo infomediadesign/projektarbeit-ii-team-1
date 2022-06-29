@@ -28,10 +28,11 @@ int main() {
     // ...
     // ...
     Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
+    Texture2D spritesheetTest = LoadTexture("assets/graphics/testSpritesheet.png");
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
-    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, myTexture);
+    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, spritesheetTest);
 
     Texture2D bouncerTest = LoadTexture("assets/graphics/testBouncer.png");
 
@@ -75,7 +76,9 @@ int main() {
             */
 
 
-            DrawTexture(player.activeTexture, player.position.x, player.position.y, WHITE);
+            //DrawTexture(player.activeTexture, player.position.x, player.position.y, WHITE);
+
+            DrawTextureRec(player.spritesheet, player.frameRec, player.position, WHITE);
             //Draw player hitbox
             DrawRectangleLines(player.collisionBox.x, player.collisionBox.y, player.collisionBox.width, player.collisionBox.height,
                                GREEN);
