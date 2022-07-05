@@ -36,11 +36,17 @@ int main() {
 
     Texture2D bouncerTest = LoadTexture("assets/graphics/testBouncer.png");
 
-    Actor testActor(GetScreenWidth() / 3, GetScreenHeight() / 3, bouncerTest);
-    testActor.setName("Manuel Neuer (Test NPC)");
+    //Actor testActor(GetScreenWidth() / 3, GetScreenHeight() / 3, bouncerTest);
+    //testActor.setName("Manuel Neuer (Test NPC)");
 
-    std::vector<Actor> actors;
-    actors.push_back(testActor);
+    std::vector<std::shared_ptr<Prop>> actors;
+    std::shared_ptr<Prop> pActor;
+
+    pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, bouncerTest);
+    pActor->setName("Manuel Neuer (Test NPC)");
+
+ 
+    actors.push_back(pActor);
 
     // END OF TEST
 
@@ -54,41 +60,43 @@ int main() {
 
         // This is a test
 
-            player.Update();
-  
-            player.interact(actors); //This garbage can be solved when we implemented a level-class
+        player.Update();
+
+        player.checkActorCollision(actors);
+
+        player.interact(actors); //This garbage can be solved when we implemented a level-class
 
         BeginDrawing();
-            // You can draw on the screen between BeginDrawing() and EndDrawing()
-            // ...
-            // ...
-            ClearBackground(WHITE);
-            DrawText("Try using WASD or the arrow keys!\nPress E to interact", 10, 10, 30, LIGHTGRAY);
+        // You can draw on the screen between BeginDrawing() and EndDrawing()
+        // ...
+        // ...
+        ClearBackground(WHITE);
+        DrawText("Try using WASD or the arrow keys!\nPress E to interact", 10, 10, 30, LIGHTGRAY);
 
 
-            // This is a test (Implementing player)
+        // This is a test (Implementing player)
 
-            /* Doesn't work for some reason...
-            for(int i = 0; i < actors.size(); i++)
-            {
-                DrawTexture(actors[i].activeTexture, actors[i].position.x, actors[i].position.y, WHITE);
-            }
-            */
+        /* Doesn't work for some reason...
+        for(int i = 0; i < actors.size(); i++)
+        {
+            DrawTexture(actors[i].activeTexture, actors[i].position.x, actors[i].position.y, WHITE);
+        }
+        */
 
 
-            //DrawTexture(player.activeTexture, player.position.x, player.position.y, WHITE);
+        //DrawTexture(player.activeTexture, player.position.x, player.position.y, WHITE);
 
-            DrawTextureRec(player.spritesheet, player.frameRec, player.position, WHITE);
-            //Draw player hitbox
-            DrawRectangleLines(player.collisionBox.x, player.collisionBox.y, player.collisionBox.width, player.collisionBox.height,
-                               GREEN);
-            DrawRectangleLines(player.interactionBox.x, player.interactionBox.y, player.interactionBox.width, player.interactionBox.height,
-                               BLUE);
+        DrawTextureRec(player.spritesheet, player.frameRec, player.position, WHITE);
+        //Draw player hitbox
+        DrawRectangleLines(player.collisionBox.x, player.collisionBox.y, player.collisionBox.width, player.collisionBox.height,
+            GREEN);
+        DrawRectangleLines(player.interactionBox.x, player.interactionBox.y, player.interactionBox.width, player.interactionBox.height,
+            BLUE);
 
         //Draw actor hitbox
-        DrawRectangleLines(testActor.collisionBox.x, testActor.collisionBox.y, testActor.collisionBox.width, testActor.collisionBox.height,
-                           RED);
-        DrawTexture(testActor.activeTexture, testActor.position.x, testActor.position.y, WHITE);
+        DrawRectangleLines(pActor->collisionBox.x, pActor->collisionBox.y, pActor->collisionBox.width, pActor->collisionBox.height,
+            RED);
+        DrawTexture(pActor->activeTexture, pActor->position.x, pActor->position.y, WHITE);
 
         EndDrawing();
     } // Main game loop end

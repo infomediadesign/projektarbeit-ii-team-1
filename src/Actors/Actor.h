@@ -29,7 +29,6 @@ public: // Attributes
 	int frameSpeed = 6;
 	int currentFrame = 0;
 
-
 	// Methods
 public:
 
