@@ -13,7 +13,7 @@ class Actor : public Prop {
 
 public: // Attributes
 
-	direction facing = down;
+	Direction facing = down;
 
 	int hp;
 	int money;
@@ -42,6 +42,6 @@ public:
 
 	// onInteraction();
 
-	void turn(direction turningDirection);
+	void turn(Direction turningDirection);
 
 };

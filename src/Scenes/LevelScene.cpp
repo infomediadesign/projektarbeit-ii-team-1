@@ -1,5 +1,21 @@
 #include "LevelScene.h"
 
+void LevelScene()
+{
+
+}
+
+void update()
+{
+// Player Kolliosn hier überprüfen und dann "CheckActorCollision()" aufrufen
+// Alle "Update()" aller Objekte in dem Level hier aufrufen
+}
+
+void Draw()
+{
+// Alle "Draw()" Mthoden aller Objekte in dem Level aufrufen
+}
+
 // JSON tilemap description
 //std::ifstream tilesetDescriptionFile("assets/maps/TilesetDescriptionFile.json");
 //nlohmann::json tilesetDescription = nlohmann::json::parse(tilesetDescriptionFile);

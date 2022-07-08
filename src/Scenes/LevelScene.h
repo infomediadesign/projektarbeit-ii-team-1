@@ -11,8 +11,13 @@ class LevelScene : Scenes {
     private:
     ;
     public:
+
+
+    void LevelScene();
+
     void DrawMap();
-    ;
+    void Update();
+    void Draw();
     protected:
     ;
 
