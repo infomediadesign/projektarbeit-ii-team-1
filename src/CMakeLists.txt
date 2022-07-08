@@ -2,6 +2,9 @@
 
 include(../cmake/raylib.cmake)
 
+# nlohmann
+include(../cmake/nlohmann_json.cmake)
+
 project(game VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -17,7 +20,8 @@ target_include_directories(${PROJECT_NAME} PUBLIC
         )
 
 #  Link to Raylib
-target_link_libraries(${PROJECT_NAME} raylib)
+#target_link_libraries(${PROJECT_NAME} raylib)
+target_link_libraries(${PROJECT_NAME} raylib nlohmann_json::nlohmann_json)
 
 # Copy assets to assets path
 add_custom_target(copy_assets
