@@ -1,15 +1,16 @@
 //
-// Created by Maximilian R�ck on 05.06.2022.
+// Created by Maximilian Röck on 05.06.2022.
 //
 
 #pragma once
 
 #include "raylib.h"
 #include <string>
+#include <vector>
 
 class Prop {
 
-	// Attributes
+    // Attributes
 public:
 
     Vector2 position;
@@ -17,7 +18,7 @@ public:
     Texture2D activeTexture;
 
     //For test purposes
-    std::string dialogue;
+    std::vector<std::string> dialogue;
 
     Rectangle collisionBox;
 
@@ -25,11 +26,11 @@ private:
 
     std::string name;
 
-	bool isActive = true;
+    bool isActive = true;
 
-	// dialogue?
+    // dialogue?
 
-	// Methods
+    // Methods
 public:
 
     void Update();
@@ -38,6 +39,6 @@ public:
 
     void setName(std::string name_); //For test purposes only
 
-	// onInteraction()?
+    // onInteraction()?
 
 };
