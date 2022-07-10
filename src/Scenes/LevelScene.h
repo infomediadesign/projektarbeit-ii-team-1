@@ -2,18 +2,21 @@
 #define RAYLIBSTARTER_LEVELSCENE_H
 
 #include "Scenes.h"
+#include "../Actors/Enemy.h"
+
 
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include "vector"
 
 
 class LevelScene : Scenes {
     private:
     ;
     public:
+    std::vector<Enemy> listOfNPCs();
 
-
-    void LevelScene();
+    LevelScene();
 
     void DrawMap();
     void Update();
