@@ -46,7 +46,7 @@ void Actor::animate()
 	}
 }
 
-void Actor::turn(direction turningDirection)
+void Actor::turn(Direction turningDirection)
 {
 	switch (turningDirection)
 	{
