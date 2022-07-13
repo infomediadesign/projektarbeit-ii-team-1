@@ -33,7 +33,11 @@ public:
 
 	Actor();
 
-	Actor(int posX, int posY, Texture2D spritesheet_);
+	Actor(int posX, int posY, Texture2D spritesheet_, std::vector<std::string> dialogue_);
+
+    void Update();
+
+    void Draw();
 
 	void move();
 

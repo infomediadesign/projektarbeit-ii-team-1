@@ -18,13 +18,14 @@ public:
     Texture2D activeTexture;
 
     //For test purposes
-    std::vector<std::string> dialogue;
 
     Rectangle collisionBox;
 
-private:
+protected:
 
     std::string name;
+
+    std::vector<std::string> dialogue;
 
     bool isActive = true;
 
@@ -35,9 +36,13 @@ public:
 
     void Update();
 
+    void Draw();
+
     std::string getName();
 
     void setName(std::string name_); //For test purposes only
+
+    std::vector<std::string> getDialogue() {return this->dialogue;};
 
     // onInteraction()?
 

@@ -11,7 +11,7 @@ Actor::Actor()
 }
 
 
-Actor::Actor(int posX, int posY, Texture2D spritesheet_)
+Actor::Actor(int posX, int posY, Texture2D spritesheet_, std::vector<std::string> dialogue_)
 {
 	this->position.x = posX;
 	this->position.y = posY;
@@ -24,6 +24,25 @@ Actor::Actor(int posX, int posY, Texture2D spritesheet_)
 	this->collisionBox.y = posY;
 	this->collisionBox.height = frameRec.height;
 	this->collisionBox.width = frameRec.width;
+
+    this->dialogue = dialogue_;
+}
+
+void Actor::Update()
+{
+    std::cout << "[DEBUG] Updating actor" << std::endl;
+    this->framesCounter++;
+    animate();
+}
+
+void Actor::Draw()
+{
+    std::cout << "[DEBUG] Drawing actor" << std::endl;
+    DrawTextureRec(this->spritesheet, this->frameRec, this->position, WHITE);
+
+    // Debug boxes
+    DrawRectangleLines(this->collisionBox.x, this->collisionBox.y, this->collisionBox.width, this->collisionBox.height,
+                       RED);
 }
 
 void Actor::move()

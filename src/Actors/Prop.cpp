@@ -4,7 +4,16 @@
 
 #include "Prop.h"
 
-void Prop::Update() {
+#include <iostream>
+
+
+void Prop::Update()
+{
+    std::cout << "[DEBUG] Updating prop" << std::endl;
+}
+
+void Prop::Draw()
+{
 
 }
 

@@ -6,6 +6,7 @@
 
 #include "Prop.h"
 #include "Actor.h"
+#include "../Systems/DialogueManager.h"
 #include <vector>
 #include <memory>
 
@@ -26,8 +27,6 @@ public:
 	int strength;
 	int defense;
 
-	bool interacting = false; // Do we need this? Maybe for locking controls
-
 	bool moveLockAbsolute = false;
 
 	bool moveLockUp = false;
@@ -36,7 +35,9 @@ public:
 	bool moveLockRight = false;
 
 	Rectangle interactionBox;
+    bool interactionDisabled = false;
 
+    DialogueManager dialogueManager;
 
 	// Methods
 public:
@@ -46,11 +47,15 @@ public:
 
 	void Update();
 
+    void Draw();
+
 	void move();
 
 	void interact(std::vector<std::shared_ptr<Prop>> actors_);
+    void interact(std::vector<std::shared_ptr<Actor>> actors_);
 
 	void checkActorCollision(std::vector<std::shared_ptr<Prop>> actors);
+    void checkActorCollision(std::vector<std::shared_ptr<Actor>> actors);
 
 	//void animateWalk();
 };
