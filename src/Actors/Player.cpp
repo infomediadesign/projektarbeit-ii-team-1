@@ -19,11 +19,15 @@ Player::Player(int posX, int posY, Texture2D spritesheet_)
     this->position.y = posY;
 
     this->prevPosition = this->position;
-    
+
     this->spritesheet = spritesheet_;
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
-
+    /*
+    this->spritesheetWalk = spritesheetWalk;
+    this->frameRec.width = this->spritesheetWalk.width / 4;
+    this->frameRec.height = this->spritesheetWalk.height / 4;
+    */
     this->collisionBox.x = posX;
     this->collisionBox.y = posY;
     this->collisionBox.height = frameRec.height;
@@ -44,82 +48,85 @@ void Player::Update() {
 
 void Player::move()
 {
-    if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
+    if (this->moveLockAbsolute == false)
     {
-        if (this->facing != up)
-            this->turn(up);
-        if (this->moveLockUp == false)
+        if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
         {
-            this->prevPosition = this->position;
-            this->position.y = position.y - this->speed;
+            if (this->facing != up)
+                this->turn(up);
+            if (this->moveLockUp == false)
+            {
+                this->prevPosition = this->position;
+                this->position.y = position.y - this->speed;
+            }
+            //Adjusting interaction box
+            this->interactionBox.width = this->frameRec.width;
+            this->interactionBox.height = this->frameRec.height;
+            this->interactionBox.x = this->position.x;
+            this->interactionBox.y = this->position.y - this->frameRec.height;
+
+            this->animate();
         }
-        //Adjusting interaction box
-        this->interactionBox.width = this->frameRec.width;
-        this->interactionBox.height = this->frameRec.height;
-        this->interactionBox.x = this->position.x;
-        this->interactionBox.y = this->position.y - this->frameRec.height;
-
-        this->animate();
-    }
-    if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
-    {
-        if (this->facing != down)
-            this->turn(down);
-
-        if (this->moveLockDown == false)
+        if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
         {
-            this->prevPosition = this->position;
-            this->position.y = position.y + this->speed;
-        }
-        //Adjusting interaction box
-        this->interactionBox.width = this->frameRec.width;
-        this->interactionBox.height = this->frameRec.height;
-        this->interactionBox.x = this->position.x;
-        this->interactionBox.y = this->position.y + this->frameRec.height;
+            if (this->facing != down)
+                this->turn(down);
 
-        this->animate();
-    }
-    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
-    {
-        if (this->facing != left)
-            this->turn(left);
-        if (this->moveLockLeft == false)
+            if (this->moveLockDown == false)
+            {
+                this->prevPosition = this->position;
+                this->position.y = position.y + this->speed;
+            }
+            //Adjusting interaction box
+            this->interactionBox.width = this->frameRec.width;
+            this->interactionBox.height = this->frameRec.height;
+            this->interactionBox.x = this->position.x;
+            this->interactionBox.y = this->position.y + this->frameRec.height;
+
+            this->animate();
+        }
+        if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
         {
-            this->prevPosition = this->position;
-            this->position.x = position.x - this->speed;
-        }
-        //Adjusting interaction box
-        this->interactionBox.width = this->frameRec.width;
-        this->interactionBox.height = this->frameRec.height;
-        this->interactionBox.x = this->position.x - frameRec.width;
-        this->interactionBox.y = this->position.y;
+            if (this->facing != left)
+                this->turn(left);
+            if (this->moveLockLeft == false)
+            {
+                this->prevPosition = this->position;
+                this->position.x = position.x - this->speed;
+            }
+            //Adjusting interaction box
+            this->interactionBox.width = this->frameRec.width;
+            this->interactionBox.height = this->frameRec.height;
+            this->interactionBox.x = this->position.x - frameRec.width;
+            this->interactionBox.y = this->position.y;
 
-        this->animate();
-    }
-    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
-    {
-        if (this->facing != right)
-            this->turn(right);
-        if (this->moveLockRight == false)
+            this->animate();
+        }
+        if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
         {
-            this->prevPosition = this->position;
-            this->position.x = position.x + this->speed;
+            if (this->facing != right)
+                this->turn(right);
+            if (this->moveLockRight == false)
+            {
+                this->prevPosition = this->position;
+                this->position.x = position.x + this->speed;
+            }
+            //Adjusting interaction box    
+            this->interactionBox.width = this->frameRec.width;
+            this->interactionBox.height = this->frameRec.height;
+            this->interactionBox.x = this->position.x + frameRec.width;
+            this->interactionBox.y = this->position.y;
+
+            this->animate();
         }
-        //Adjusting interaction box    
-        this->interactionBox.width = this->frameRec.width;
-        this->interactionBox.height = this->frameRec.height;
-        this->interactionBox.x = this->position.x + frameRec.width;
-        this->interactionBox.y = this->position.y;
+        this->collisionBox.x = this->position.x;
+        this->collisionBox.y = this->position.y;
 
-        this->animate();
-    }
-    this->collisionBox.x = this->position.x;
-    this->collisionBox.y = this->position.y;
-
-    if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_D) &&
-        !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN) && !IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
-    {
-        this->currentFrame = 0;
+        if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_D) &&
+            !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN) && !IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
+        {
+            this->currentFrame = 0;
+        }
     }
 }
 
@@ -170,7 +177,7 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
             bottomEdge.width = actor->collisionBox.width - 2;
             bottomEdge.y = actor->collisionBox.y + actor->collisionBox.height - 1;
             bottomEdge.height = 1;
-            
+
             this->position = this->prevPosition;
 
             // Left edge collision
@@ -198,7 +205,7 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
                 this->moveLockUp = true;
             }
         }
-        else 
+        else
         {
             this->moveLockDown = false;
             this->moveLockUp = false;
@@ -207,3 +214,19 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
         }
     }
 }
+/*
+void Player::animateWalk()
+{
+    // Reminder: framesCounter++ belongs in the Update()-Method of the classes
+    // (Prevents animation from speeding up when multiple move-keys are pressed)
+    if (this->framesCounter >= (60 / this->frameSpeed))
+    {
+        this->framesCounter = 0;
+        this->currentFrame++;
+
+        if (this->currentFrame > 3) this->currentFrame = 0;
+
+        this->frameRecWalk.x = (float)this->currentFrame * (float)this->spritesheetWalk.width / 4;
+    }
+}
+*/

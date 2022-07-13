@@ -8,6 +8,7 @@
 #include "Actors/Prop.h"
 #include "Actors/Enemy.h"
 #include "Actors/Player.h"
+#include "Systems/DialogueManager.h";
 #include <iostream>
 #include <memory>
 
@@ -45,8 +46,25 @@ int main() {
     pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, bouncerTest);
     pActor->setName("Manuel Neuer (Test NPC)");
 
- 
+
     actors.push_back(pActor);
+
+    // Testing dialogue manager
+
+    DialogueManager testDiaManager;
+    std::vector<std::string> testDialogue =
+    {
+        "This is a test line!",
+        "Test lines are great for testing the dialogue system!",
+        "I sure hope it works...",
+        "...",
+        "Still scrolling, huh?",
+        "Well that's okay.",
+        "It's not like the game will crash or anything...",
+        "... I hope."
+    };
+    testDiaManager.startDialogue(testDialogue);
+
 
     // END OF TEST
 
@@ -66,23 +84,25 @@ int main() {
 
         player.interact(actors); //This garbage can be solved when we implemented a level-class
 
+        // Test for the dialogue system
+        testDiaManager.playDialogue();
+
         BeginDrawing();
         // You can draw on the screen between BeginDrawing() and EndDrawing()
         // ...
         // ...
         ClearBackground(WHITE);
-        DrawText("Try using WASD or the arrow keys!\nPress E to interact", 10, 10, 30, LIGHTGRAY);
+        DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
+            10, 10, 30, LIGHTGRAY);
+
+        // Testing the dialogue manager
+
+
+        //DrawText(testDialogue[0].c_str(), GetScreenWidth() / 2, GetScreenHeight() / 2, 30, LIGHTGRAY);
+        testDiaManager.drawDialogue();
 
 
         // This is a test (Implementing player)
-
-        /* Doesn't work for some reason...
-        for(int i = 0; i < actors.size(); i++)
-        {
-            DrawTexture(actors[i].activeTexture, actors[i].position.x, actors[i].position.y, WHITE);
-        }
-        */
-
 
         //DrawTexture(player.activeTexture, player.position.x, player.position.y, WHITE);
 

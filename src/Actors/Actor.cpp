@@ -70,7 +70,7 @@ void Actor::turn(direction turningDirection)
 		// Change height of spritesheet-frame
 		this->frameRec.y = spritesheet.height / 2;
 		break;
-	default: 
+	default:
 		std::cout << "[DEBUG] Error while turning actor" << std::endl;
 	}
 

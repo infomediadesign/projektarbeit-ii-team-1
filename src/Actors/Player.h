@@ -14,6 +14,12 @@ class Player : public Actor {
 	// Attributes
 public:
 
+	// Walk animation textures
+	//Texture2D spritesheetWalk;
+
+	//Rectangle frameRecWalk = { 0.0f, 0.0f, (float)spritesheetWalk.width / 4, (float)spritesheetWalk.height / 4 };
+
+
 	Vector2 prevPosition;
 
 	// Character attributes. Better implemented using vectors?
@@ -21,6 +27,8 @@ public:
 	int defense;
 
 	bool interacting = false; // Do we need this? Maybe for locking controls
+
+	bool moveLockAbsolute = false;
 
 	bool moveLockUp = false;
 	bool moveLockDown = false;
@@ -34,9 +42,9 @@ public:
 public:
 	Player();
 
-    Player(int posX, int posY, Texture2D spritesheet_);
+	Player(int posX, int posY, Texture2D spritesheet_);
 
-    void Update();
+	void Update();
 
 	void move();
 
@@ -44,5 +52,6 @@ public:
 
 	void checkActorCollision(std::vector<std::shared_ptr<Prop>> actors);
 
+	//void animateWalk();
 };
 

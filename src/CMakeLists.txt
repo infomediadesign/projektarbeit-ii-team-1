@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(${PROJECT_NAME} main.cpp Scenes/Scenes.cpp Scenes/Scenes.h Scenes/MenuScenes.cpp Scenes/MenuScenes.h Scenes/LevelScene.cpp Scenes/LevelScene.h Scenes/PauseScene.cpp Scenes/PauseScene.h Scenes/InventoryScene.cpp Scenes/InventoryScene.h Scenes/SkillTreeScene.cpp Scenes/SkillTreeScene.h Scenes/MainMenuScene.cpp Scenes/MainMenuScene.h Scenes/BattleScene.cpp Scenes/BattleScene.h Scenes/GameOverScene.cpp Scenes/GameOverScene.h "Actors/Prop.cpp" "Actors/Actor.h" "Actors/Actor.cpp" "Actors/Player.h" "Actors/Player.cpp" "Actors/Enemy.h" "Actors/Enemy.cpp" "Actors/enums.h")
+add_executable(${PROJECT_NAME} main.cpp Scenes/Scenes.cpp Scenes/Scenes.h Scenes/MenuScenes.cpp Scenes/MenuScenes.h Scenes/LevelScene.cpp Scenes/LevelScene.h Scenes/PauseScene.cpp Scenes/PauseScene.h Scenes/InventoryScene.cpp Scenes/InventoryScene.h Scenes/SkillTreeScene.cpp Scenes/SkillTreeScene.h Scenes/MainMenuScene.cpp Scenes/MainMenuScene.h Scenes/BattleScene.cpp Scenes/BattleScene.h Scenes/GameOverScene.cpp Scenes/GameOverScene.h "Actors/Prop.cpp" "Actors/Actor.h" "Actors/Actor.cpp" "Actors/Player.h" "Actors/Player.cpp" "Actors/Enemy.h" "Actors/Enemy.cpp" "Actors/enums.h" "Systems/DialogueManager.h" "Systems/DialogueManager.cpp")
 
 # Add config.h.in file
 configure_file(config.h.in config.h)

@@ -22,9 +22,8 @@ public: // Attributes
 	// Everything regarding textures
 
 	Texture2D spritesheet; // All textures, formatted in a spritesheet
-	//std::vector<Texture2D> textures; // Another possible way to implement this
 
-	Rectangle frameRec = { 0.0f, 0.0f, (float)spritesheet.width / 4, (float)spritesheet.height / 4};;
+	Rectangle frameRec = { 0.0f, 0.0f, (float)spritesheet.width / 4, (float)spritesheet.height / 4 };;
 	int framesCounter = 0;
 	int frameSpeed = 6;
 	int currentFrame = 0;
@@ -35,7 +34,7 @@ public:
 	Actor();
 
 	Actor(int posX, int posY, Texture2D spritesheet_);
-	
+
 	void move();
 
 	void animate();
