@@ -15,8 +15,9 @@ class Player : public Actor {
 	// Attributes
 public:
 
-	// Walk animation textures
-	//Texture2D spritesheetWalk;
+	// Regarding idle animation
+	Texture2D spritesheetIdle;
+    bool playIdle;
 
 	//Rectangle frameRecWalk = { 0.0f, 0.0f, (float)spritesheetWalk.width / 4, (float)spritesheetWalk.height / 4 };
 
@@ -43,7 +44,7 @@ public:
 public:
 	Player();
 
-	Player(int posX, int posY, Texture2D spritesheet_);
+	Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheetIdle_);
 
 	void Update();
 
@@ -56,7 +57,5 @@ public:
 
 	void checkActorCollision(std::vector<std::shared_ptr<Prop>> actors);
     void checkActorCollision(std::vector<std::shared_ptr<Actor>> actors);
-
-	//void animateWalk();
 };
 

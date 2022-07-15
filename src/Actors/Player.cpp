@@ -13,13 +13,14 @@ Player::Player()
     std::cout << "[DEBUG] This function should not be called (Player-Standardconstructor)" << std::endl;
 }
 
-Player::Player(int posX, int posY, Texture2D spritesheet_)
+Player::Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheetIdle_)
 {
     this->position.x = posX;
     this->position.y = posY;
 
     this->prevPosition = this->position;
 
+    this->spritesheetIdle = spritesheetIdle_;
     this->spritesheet = spritesheet_;
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
@@ -51,8 +52,12 @@ void Player::Update() {
 
 void Player::Draw()
 {
-    DrawTextureRec(this->spritesheet, this->frameRec, this->position, WHITE);
-
+    if (this->playIdle == false)
+    {
+        DrawTextureRec(this->spritesheet, this->frameRec, this->position, WHITE);
+    }
+    else
+        DrawTextureRec(this->spritesheetIdle, this->frameRec, this->position, WHITE);
     // Debug-Boxes
     DrawRectangleLines(this->collisionBox.x, this->collisionBox.y, this->collisionBox.width, this->collisionBox.height,
                        GREEN);
@@ -64,10 +69,12 @@ void Player::Draw()
 
 void Player::move()
 {
+    this->playIdle = true;
     if (this->moveLockAbsolute == false)
     {
         if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
         {
+            this->playIdle = false;
             if (this->facing != up)
                 this->turn(up);
             if (this->moveLockUp == false)
@@ -80,11 +87,10 @@ void Player::move()
             this->interactionBox.height = this->frameRec.height;
             this->interactionBox.x = this->position.x;
             this->interactionBox.y = this->position.y - this->frameRec.height;
-
-            this->animate();
         }
         if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
         {
+            this->playIdle = false;
             if (this->facing != down)
                 this->turn(down);
 
@@ -98,11 +104,10 @@ void Player::move()
             this->interactionBox.height = this->frameRec.height;
             this->interactionBox.x = this->position.x;
             this->interactionBox.y = this->position.y + this->frameRec.height;
-
-            this->animate();
         }
         if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
         {
+            this->playIdle = false;
             if (this->facing != left)
                 this->turn(left);
             if (this->moveLockLeft == false)
@@ -115,11 +120,10 @@ void Player::move()
             this->interactionBox.height = this->frameRec.height;
             this->interactionBox.x = this->position.x - frameRec.width;
             this->interactionBox.y = this->position.y;
-
-            this->animate();
         }
         if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
         {
+            this->playIdle = false;
             if (this->facing != right)
                 this->turn(right);
             if (this->moveLockRight == false)
@@ -132,18 +136,11 @@ void Player::move()
             this->interactionBox.height = this->frameRec.height;
             this->interactionBox.x = this->position.x + frameRec.width;
             this->interactionBox.y = this->position.y;
-
-            this->animate();
         }
         this->collisionBox.x = this->position.x;
         this->collisionBox.y = this->position.y;
-
-        if (!IsKeyDown(KEY_W) && !IsKeyDown(KEY_S) && !IsKeyDown(KEY_A) && !IsKeyDown(KEY_D) &&
-            !IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN) && !IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
-        {
-            this->currentFrame = 0;
-        }
     }
+    this->animate();
 }
 // Interaction for props
 void Player::interact(std::vector<std::shared_ptr<Prop>> actors_) {
@@ -176,6 +173,19 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
             {
                 std::cout << "[DEBUG] Interaction successful!" << std::endl;
                 std::cout << "[DEBUG] Starting dialogue with " << actors_[i]->getName() << std::endl;
+                switch (this->facing)
+                {
+                    case down: actors_[i]->turn(up);
+                    break;
+                    case up: actors_[i]->turn(down);
+                    break;
+                    case left: actors_[i]->turn(right);
+                    break;
+                    case right: actors_[i]->turn(left);
+                    std::cout << "[DEBUG] Error while checking player facing during interaction" << std::endl;
+                }
+
+
                 this->moveLockAbsolute = true;
                 this->interactionDisabled = true;
                 this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(), actors_[i]->spritesheet);
@@ -319,19 +329,4 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
         }
     }
 }
-/*
-void Player::animateWalk()
-{
-    // Reminder: framesCounter++ belongs in the Update()-Method of the classes
-    // (Prevents animation from speeding up when multiple move-keys are pressed)
-    if (this->framesCounter >= (60 / this->frameSpeed))
-    {
-        this->framesCounter = 0;
-        this->currentFrame++;
 
-        if (this->currentFrame > 3) this->currentFrame = 0;
-
-        this->frameRecWalk.x = (float)this->currentFrame * (float)this->spritesheetWalk.width / 4;
-    }
-}
-*/

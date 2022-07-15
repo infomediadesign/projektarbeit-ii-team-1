@@ -30,12 +30,13 @@ int main() {
     // ...
     Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
     Texture2D spritesheetTest = LoadTexture("assets/graphics/testSpritesheet.png");
+    Texture2D playerIdle = LoadTexture("assets/graphics/character/dudeInOrange/idle/withoutAugmentation.png");
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
-    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, spritesheetTest);
+    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, spritesheetTest, playerIdle);
 
-    Texture2D bouncerTest = LoadTexture("assets/graphics/npcSpritesheet.png");
+    Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
 
     std::vector<std::shared_ptr<Actor>> actors;
     std::shared_ptr<Actor> pActor;
@@ -51,7 +52,7 @@ int main() {
                     "It's not like the game will crash or anything...",
                     "... I hope."
             };
-    pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, bouncerTest, testDialogue);
+    pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
     pActor->setName("Test NPC");
 
 

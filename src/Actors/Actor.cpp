@@ -30,14 +30,12 @@ Actor::Actor(int posX, int posY, Texture2D spritesheet_, std::vector<std::string
 
 void Actor::Update()
 {
-    std::cout << "[DEBUG] Updating actor" << std::endl;
     this->framesCounter++;
     animate();
 }
 
 void Actor::Draw()
 {
-    std::cout << "[DEBUG] Drawing actor" << std::endl;
     DrawTextureRec(this->spritesheet, this->frameRec, this->position, WHITE);
 
     // Debug boxes
