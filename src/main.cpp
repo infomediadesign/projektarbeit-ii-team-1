@@ -4,6 +4,14 @@
 
 #include "config.h"
 
+//This is a test (implementing player)
+#include "Actors/Prop.h"
+#include "Actors/Enemy.h"
+#include "Actors/Player.h"
+#include "Systems/DialogueManager.h"
+#include <iostream>
+#include <memory>
+
 int main() {
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
@@ -21,6 +29,38 @@ int main() {
     // ...
     // ...
     Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
+    Texture2D spritesheetTest = LoadTexture("assets/graphics/testSpritesheet.png");
+    Texture2D playerIdle = LoadTexture("assets/graphics/character/dudeInOrange/idle/withoutAugmentation.png");
+
+    // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
+
+    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, spritesheetTest, playerIdle);
+
+    Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
+
+    std::vector<std::shared_ptr<Actor>> actors;
+    std::shared_ptr<Actor> pActor;
+
+    std::vector<std::string> testDialogue =
+            {
+                    "This is a test line!",
+                    "Test lines are great for testing the \ndialogue system!",
+                    "I sure hope it works...",
+                    "...",
+                    "Still scrolling, huh?",
+                    "Well that's okay.",
+                    "It's not like the game will crash or anything...",
+                    "... I hope."
+            };
+    pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
+    pActor->setName("Test NPC");
+
+
+    actors.push_back(pActor);
+
+
+    // END OF TEST
+
 
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -29,13 +69,38 @@ int main() {
         // ...
         // ...
 
+        // This is a test
+
+        player.Update();
+
+        player.checkActorCollision(actors);
+
+        player.interact(actors); //This garbage can be solved when we implemented a level-class
+
+        for (int i = 0; i < actors.size(); i++)
+        {
+            actors[i]->Update();
+        }
+
+
+        // ========== DRAW ==========
+
         BeginDrawing();
-            // You can draw on the screen between BeginDrawing() and EndDrawing()
-            // ...
-            // ...
-            ClearBackground(WHITE);
-            DrawText("Hello, world!", 10, 10, 30, LIGHTGRAY);
-            DrawTexture(myTexture, 10, 100, WHITE);
+
+        ClearBackground(WHITE);
+        DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
+            10, 10, 30, LIGHTGRAY);
+
+
+        for (int i = 0; i < actors.size(); i++)
+        {
+            actors[i]->Draw();
+        }
+
+
+        // This is a test (Implementing player)
+
+        player.Draw();
 
         EndDrawing();
     } // Main game loop end

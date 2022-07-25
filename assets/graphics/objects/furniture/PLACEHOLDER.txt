@@ -1,0 +1,2 @@
+This is a placeholder that enables this directory to be committed and pushed on GitHub.
+You can safely remove this file when there's at least one other file in the directory.
