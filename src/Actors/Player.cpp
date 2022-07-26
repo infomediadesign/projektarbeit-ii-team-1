@@ -7,6 +7,7 @@
 #include <raylib.h>
 #include <vector>
 
+#define HITBOX_OFFSET 0.4
 
 Player::Player()
 {
@@ -24,15 +25,11 @@ Player::Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheet
     this->spritesheet = spritesheet_;
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
-    /*
-    this->spritesheetWalk = spritesheetWalk;
-    this->frameRec.width = this->spritesheetWalk.width / 4;
-    this->frameRec.height = this->spritesheetWalk.height / 4;
-    */
-    this->collisionBox.x = posX;
+
+    this->collisionBox.x = posX + frameRec.width * (HITBOX_OFFSET / 2);
     this->collisionBox.y = posY;
     this->collisionBox.height = frameRec.height;
-    this->collisionBox.width = frameRec.width;
+    this->collisionBox.width = frameRec.width - frameRec.width * HITBOX_OFFSET;
 }
 
 
@@ -83,10 +80,10 @@ void Player::move()
                 this->position.y = position.y - this->speed;
             }
             //Adjusting interaction box
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x;
-            this->interactionBox.y = this->position.y - this->frameRec.height;
+            this->interactionBox.width = this->frameRec.width / 4;
+            this->interactionBox.height = this->frameRec.height / 2;
+            this->interactionBox.x = (this->position.x + this->frameRec.width / 2) - this->interactionBox.width / 2;
+            this->interactionBox.y = this->position.y - this->frameRec.height / 2;
         }
         if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
         {
@@ -100,9 +97,9 @@ void Player::move()
                 this->position.y = position.y + this->speed;
             }
             //Adjusting interaction box
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x;
+            this->interactionBox.width = this->frameRec.width / 4;
+            this->interactionBox.height = this->frameRec.height / 2;
+            this->interactionBox.x = (this->position.x + this->frameRec.width / 2) - this->interactionBox.width / 2;
             this->interactionBox.y = this->position.y + this->frameRec.height;
         }
         if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
@@ -116,10 +113,10 @@ void Player::move()
                 this->position.x = position.x - this->speed;
             }
             //Adjusting interaction box
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x - frameRec.width;
-            this->interactionBox.y = this->position.y;
+            this->interactionBox.width = this->frameRec.width / 2;
+            this->interactionBox.height = this->frameRec.height / 4;
+            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (HITBOX_OFFSET / 2));
+            this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
         {
@@ -132,12 +129,12 @@ void Player::move()
                 this->position.x = position.x + this->speed;
             }
             //Adjusting interaction box    
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x + frameRec.width;
-            this->interactionBox.y = this->position.y;
+            this->interactionBox.width = this->frameRec.width / 2;
+            this->interactionBox.height = this->frameRec.height / 4;
+            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (HITBOX_OFFSET / 2));
+            this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
-        this->collisionBox.x = this->position.x;
+        this->collisionBox.x = this->position.x + this->frameRec.width * 0.2;
         this->collisionBox.y = this->position.y;
     }
     this->animate();
