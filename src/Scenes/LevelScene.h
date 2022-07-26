@@ -2,7 +2,7 @@
 #define RAYLIBSTARTER_LEVELSCENE_H
 
 #include "Scenes.h"
-#include "../Actors/Enemy.h"
+#include "../Actors/Enemies/Enemy.h"
 
 
 #include <nlohmann/json.hpp>

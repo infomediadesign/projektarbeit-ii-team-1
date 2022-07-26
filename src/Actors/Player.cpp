@@ -14,15 +14,41 @@ Player::Player()
     std::cout << "[DEBUG] This function should not be called (Player-Standardconstructor)" << std::endl;
 }
 
-Player::Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheetIdle_)
+Player::Player(int posX, int posY, bool genderMale)
 {
     this->position.x = posX;
     this->position.y = posY;
 
     this->prevPosition = this->position;
 
-    this->spritesheetIdle = spritesheetIdle_;
-    this->spritesheet = spritesheet_;
+    this->genderMale = genderMale;
+    if (this->genderMale == true)
+    {
+        this->spritesheetIdle = LoadTexture("assets/graphics/character/dudeInOrange/idle/withoutAugmentation.png");
+        this->spritesheet = LoadTexture("assets/graphics/character/dudeInOrange/walkcycle/withoutAugmentation.png");
+        this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punch.png");
+        this->spritesheetAttackPunchGun = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punchGun.png");
+        this->spritesheetAttackBottlecap = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bottlecap.png");
+        this->spritesheetAttackLaser = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/laser.png");
+        this->spritesheetAttackBomb = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bomb.png");
+        this->spritesheetAttackFrisbee = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/frisbee.png");
+        this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/punch.png");
+        this->spritesheetReactTazer = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/tazer.png");
+    }
+    else
+    {
+        this->spritesheetIdle = LoadTexture("assets/graphics/character/ladyInYellow/idle/withoutAugmentation.png");
+        this->spritesheet = LoadTexture("assets/graphics/character/ladyInYellow/walkcycle/withoutAugmentation.png");
+        this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punch.png");
+        this->spritesheetAttackPunchGun = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punchGun.png");
+        this->spritesheetAttackBottlecap = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bottlecap.png");
+        this->spritesheetAttackLaser = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/laser.png");
+        this->spritesheetAttackBomb = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bomb.png");
+        this->spritesheetAttackFrisbee = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/frisbee.png");
+        this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/punch.png");
+        this->spritesheetReactTazer = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/tazer.png");
+    }
+
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
 
