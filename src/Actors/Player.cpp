@@ -7,7 +7,7 @@
 #include <raylib.h>
 #include <vector>
 
-#define HITBOX_OFFSET 0.4
+#define COLLISION_OFFSET 0.4
 
 Player::Player()
 {
@@ -26,10 +26,10 @@ Player::Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheet
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
 
-    this->collisionBox.x = posX + frameRec.width * (HITBOX_OFFSET / 2);
+    this->collisionBox.x = posX + frameRec.width * (COLLISION_OFFSET / 2);
     this->collisionBox.y = posY;
     this->collisionBox.height = frameRec.height;
-    this->collisionBox.width = frameRec.width - frameRec.width * HITBOX_OFFSET;
+    this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
 }
 
 
@@ -115,7 +115,7 @@ void Player::move()
             //Adjusting interaction box
             this->interactionBox.width = this->frameRec.width / 2;
             this->interactionBox.height = this->frameRec.height / 4;
-            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (HITBOX_OFFSET / 2));
+            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (COLLISION_OFFSET / 2));
             this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
@@ -131,7 +131,7 @@ void Player::move()
             //Adjusting interaction box    
             this->interactionBox.width = this->frameRec.width / 2;
             this->interactionBox.height = this->frameRec.height / 4;
-            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (HITBOX_OFFSET / 2));
+            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (COLLISION_OFFSET / 2));
             this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         this->collisionBox.x = this->position.x + this->frameRec.width * 0.2;

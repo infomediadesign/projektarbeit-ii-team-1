@@ -5,6 +5,8 @@
 #include "Actor.h"
 #include <iostream>
 
+#define COLLISION_OFFSET 0.4
+
 Actor::Actor()
 {
 	std::cout << "[DEBUG] This function should not be called (Actor-Standardconstructor)" << std::endl;
@@ -20,10 +22,10 @@ Actor::Actor(int posX, int posY, Texture2D spritesheet_, std::vector<std::string
 	this->frameRec.width = this->spritesheet.width / 4;
 	this->frameRec.height = this->spritesheet.height / 4;
 
-	this->collisionBox.x = posX;
+	this->collisionBox.x = posX + frameRec.width * (COLLISION_OFFSET / 2);
 	this->collisionBox.y = posY;
 	this->collisionBox.height = frameRec.height;
-	this->collisionBox.width = frameRec.width;
+	this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
 
     this->dialogue = dialogue_;
 }
