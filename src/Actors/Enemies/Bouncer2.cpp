@@ -18,7 +18,7 @@ Bouncer2::Bouncer2(int posX, int posY, Level enemyLevel, std::vector<std::string
 
     // Load textures
 
-    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png"); // Placeholder
+    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/bouncer2/bouncer2.png");
 
     this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/bouncer2/punch.png");
     this->spritesheetAttackNecklace = LoadTexture("assets/graphics/combatAnimations/attack/bouncer2/necklace.png");

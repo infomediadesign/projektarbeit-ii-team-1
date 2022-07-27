@@ -17,16 +17,16 @@ Bouncer1::Bouncer1(int posX, int posY, Level enemyLevel, std::vector<std::string
 
     // Load textures
 
-    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png"); // Placeholder
+    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/bouncer1/bouncer1.png");
 
-    this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/bouncer2/punch.png"); // Placeholder (Bouncer2)
-    this->spritesheetAttackNecklace = LoadTexture("assets/graphics/combatAnimations/attack/bouncer2/necklace.png"); // Placeholder (Bouncer2)
-    this->spritesheetAttackTazer = LoadTexture("assets/graphics/combatAnimations/attack/bouncer2/tazer.png"); // Placeholder (Bouncer2)
-    this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/punch.png"); // Placeholder
-    this->spritesheetReactBottlecap = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bottlecap.png"); // Placeholder
-    this->spritesheetReactLaser = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/laser.png"); // Placeholder
-    this->spritesheetReactBomb = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bomb.png"); // Placeholder
-    this->spritesheetReactFrisbee = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/frisbee.png"); // Placeholder
+    this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/punch.png");
+    this->spritesheetAttackNecklace = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/necklace.png");
+    this->spritesheetAttackTazer = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/tazer.png");
+    this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/punch.png");
+    this->spritesheetReactBottlecap = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bottlecap.png");
+    this->spritesheetReactLaser = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/laser.png");
+    this->spritesheetReactBomb = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bomb.png");
+    this->spritesheetReactFrisbee = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/frisbee.png");
 
 
     this->frameRec.width = this->spritesheet.width / 4;

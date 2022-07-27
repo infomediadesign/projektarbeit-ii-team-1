@@ -17,16 +17,16 @@ GangsterMale::GangsterMale(int posX, int posY, Level enemyLevel, std::vector<std
 
     // Load textures
 
-    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/gangsterFemale/gangsterFemale.png");
+    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/gangsterMale/gangsterMale.png");
 
-    this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/punch.png");
-    this->spritesheetAttackNecklace = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/necklace.png");
-    this->spritesheetAttackTazer = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/tazer.png");
-    this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/punch.png");
-    this->spritesheetReactBottlecap = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bottlecap.png");
-    this->spritesheetReactLaser = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/laser.png");
-    this->spritesheetReactBomb = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bomb.png");
-    this->spritesheetReactFrisbee = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/frisbee.png");
+    this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/gangsterMale/punch.png");
+    this->spritesheetAttackNecklace = LoadTexture("assets/graphics/combatAnimations/attack/gangsterMale/necklace.png");
+    this->spritesheetAttackTazer = LoadTexture("assets/graphics/combatAnimations/attack/gangsterMale/tazer.png");
+    this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterMale/punch.png");
+    this->spritesheetReactBottlecap = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterMale/bottlecap.png");
+    this->spritesheetReactLaser = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterMale/laser.png");
+    this->spritesheetReactBomb = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterMale/bomb.png");
+    this->spritesheetReactFrisbee = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterMale/frisbee.png");
 
 
     this->frameRec.width = this->spritesheet.width / 4;
