@@ -4,8 +4,7 @@
 
 #include "raylib.h"
 
-#ifndef RAYLIBSTARTER_BUTTON_H
-#define RAYLIBSTARTER_BUTTON_H
+#pragma once
 
 namespace game {
 
@@ -27,5 +26,3 @@ namespace game {
     };
 
 } // game
-
-#endif //RAYLIBSTARTER_BUTTON_H
