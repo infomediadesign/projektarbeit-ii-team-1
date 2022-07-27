@@ -22,6 +22,9 @@ public:
 
     Camera2D camera;
 
+    //Animation-related
+    int framesCounter;
+
     // Methods
 public:
 BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy);
@@ -30,5 +33,7 @@ void Update();
 void Draw();
 
 void initializeBattle();
+
+void animateIdle();
 
 };

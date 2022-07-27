@@ -75,6 +75,8 @@ int main() {
 
         // This is a test
 
+        testBattle.Update();
+
         player.Update();
 
         player.checkActorCollision(actors);

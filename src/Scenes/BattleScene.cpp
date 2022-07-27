@@ -28,10 +28,12 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->player->currentFrame = 0;
     this->enemy->currentFrame = 0;
 
+    this->framesCounter = 0;
 }
 
 void BattleScene::Update()
 {
+animateIdle();
 
 }
 
@@ -52,4 +54,24 @@ void BattleScene::Draw()
 void BattleScene::initializeBattle()
 {
 
+}
+
+void BattleScene::animateIdle() {
+    this->framesCounter++;
+
+    this->player->playIdle = true;
+
+    if (this->framesCounter >= (60 / this->player->frameSpeed)) {
+        this->framesCounter = 0;
+        this->player->currentFrame++;
+        this->enemy->currentFrame++;
+
+        if (player->currentFrame > 3) {
+            this->player->currentFrame = 0;
+            this->enemy->currentFrame = 0;
+        }
+
+        this->player->frameRec.x = (float) this->player->currentFrame * (float) this->player->spritesheet.width / 4;
+        this->enemy->frameRec.x = (float) this->enemy->currentFrame * (float) this->enemy->spritesheet.width / 4;
+    }
 }
