@@ -1,0 +1,384 @@
+{ "columns":0,
+ "grid":
+    {
+     "height":1,
+     "orientation":"orthogonal",
+     "width":1
+    },
+ "margin":0,
+ "name":"Wardrobe",
+ "spacing":0,
+ "tilecount":61,
+ "tiledversion":"1.8.5",
+ "tileheight":512,
+ "tiles":[
+        {
+         "id":29,
+         "image":"Art\/Pixel Bilder\/Tiles\/B\u00f6den\/normaler Boden Disco 1.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":28,
+         "image":"Art\/Pixel Bilder\/Tiles\/B\u00f6den\/normaler Boden Disco 2.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":27,
+         "image":"Art\/Pixel Bilder\/Tiles\/B\u00f6den\/normaler Boden Disco 3.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":32,
+         "image":"Art\/Pixel Bilder\/Tiles\/Hauptraum\/Bar Tresen Ecke transparent.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":15,
+         "image":"Art\/Pixel Bilder\/Tiles\/B\u00f6den\/Storage Room Tile.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":142,
+         "image":"Art\/Pixel Bilder\/Tiles\/B\u00f6den\/VIP Boden.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":127,
+         "image":"Art\/Pixel Bilder\/Tiles\/T\u00fcr\/Glast\u00fcr mit Neon.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":139,
+         "image":"Art\/Pixel Bilder\/Tiles\/T\u00fcr\/T\u00fcr mit Neonlinien.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":33,
+         "image":"Art\/Pixel Bilder\/Tiles\/Hauptraum\/Getr\u00e4nke Wand transparent.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":129,
+         "image":"Art\/Pixel Bilder\/Tiles\/Disco W\u00e4nde\/Wardrobe Schild 1.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":128,
+         "image":"Art\/Pixel Bilder\/Tiles\/Disco W\u00e4nde\/Wardrobe Schild 2.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":136,
+         "image":"Art\/Pixel Bilder\/Tiles\/Disco W\u00e4nde\/wand mit neonstreifen 3.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":135,
+         "image":"Art\/Pixel Bilder\/Tiles\/Disco W\u00e4nde\/wand mit neonstreifen 2.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":133,
+         "image":"Art\/Pixel Bilder\/Tiles\/Disco W\u00e4nde\/schwarze Wand mit Neonmuster-export.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":22,
+         "image":"Art\/Pixel Bilder\/Tiles\/W\u00e4nde\/Wardrobe.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":134,
+         "image":"Art\/Pixel Bilder\/Tiles\/W\u00e4nde\/Toilette Tile.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":17,
+         "image":"Art\/Pixel Bilder\/Tiles\/Hauptraum\/Rand links.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":18,
+         "image":"Art\/Pixel Bilder\/Tiles\/Hauptraum\/Rand rechts.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":19,
+         "image":"Art\/Pixel Bilder\/Tiles\/Hauptraum\/Rand unten.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":3,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder mit Kleidung 2.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":4,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder mit Kleidung Seite.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":5,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder mit Kleidung \u00dcbergang leer 1.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":2,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder mit Kleidung 1.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":6,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder mit Kleidung \u00dcbergang leer 2.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":0,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder Fu\u00df unten 2-export.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":1,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder Fu\u00df unten-export.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":7,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder mit leeren B\u00fcgeln Ende oben.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":8,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder mit leeren B\u00fcgeln.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":9,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder leer seitlich Ende.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":21,
+         "image":"Art\/Pixel Bilder\/Tiles\/Wardrobe\/Kleiderst\u00e4nder leer seitlich Ende 2.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":23,
+         "image":"Art\/Pixel Bilder\/Objekte\/M\u00f6bel\/runder Tisch transparent.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":24,
+         "image":"Art\/Pixel Bilder\/Objekte\/M\u00f6bel\/Bar Hocker Rot transparentt.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":25,
+         "image":"Art\/Pixel Bilder\/Objekte\/M\u00f6bel\/kleiner hocker rot transparent.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":82,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Couchtisch02.png",
+         "imageheight":256,
+         "imagewidth":256
+        }, 
+        {
+         "id":26,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Couchtisch 500%.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":47,
+         "image":"Art\/Pixel Bilder\/Objekte\/Drinks\/Longdrink 2.png",
+         "imageheight":64,
+         "imagewidth":64
+        }, 
+        {
+         "id":48,
+         "image":"Art\/Pixel Bilder\/Objekte\/Drinks\/Longdrink 3.png",
+         "imageheight":64,
+         "imagewidth":64
+        }, 
+        {
+         "id":49,
+         "image":"Art\/Pixel Bilder\/Objekte\/Drinks\/Longdrink.png",
+         "imageheight":64,
+         "imagewidth":64
+        }, 
+        {
+         "id":50,
+         "image":"Art\/Pixel Bilder\/Objekte\/Drinks\/Martini Top Down gef\u00fcllt mit olive.png",
+         "imageheight":64,
+         "imagewidth":64
+        }, 
+        {
+         "id":51,
+         "image":"Art\/Pixel Bilder\/Objekte\/Drinks\/Martini Top Down gef\u00fcllt.png",
+         "imageheight":64,
+         "imagewidth":64
+        }, 
+        {
+         "id":63,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Sektflasche 200%.png",
+         "imageheight":64,
+         "imagewidth":64
+        }, 
+        {
+         "id":45,
+         "image":"Art\/Pixel Bilder\/Objekte\/Drinks\/Longdrink 1.png",
+         "imageheight":64,
+         "imagewidth":64
+        }, 
+        {
+         "id":36,
+         "image":"Art\/Pixel Bilder\/Tiles\/Hauptraum\/Bar Tresen transparent.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":39,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Bar Tresen Zwischenst\u00fcck.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":40,
+         "image":"Art\/Pixel Bilder\/Tiles\/Hauptraum\/Bar Tresen Ecke.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":81,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Bar Tresen Kurve.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":66,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Bar Tresen Rand unten.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":41,
+         "image":"Art\/Pixel Bilder\/Objekte\/M\u00f6bel\/DJ Tisch.png",
+         "imageheight":320,
+         "imagewidth":320
+        }, 
+        {
+         "id":42,
+         "image":"Art\/Pixel Bilder\/Objekte\/M\u00f6bel\/Box klein Top Down.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":43,
+         "image":"Art\/Pixel Bilder\/Objekte\/M\u00f6bel\/Mischpult DJ.png",
+         "imageheight":320,
+         "imagewidth":320
+        }, 
+        {
+         "id":44,
+         "image":"Art\/Pixel Bilder\/Objekte\/M\u00f6bel\/Box Gro\u00df frontal.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":52,
+         "image":"Art\/Pixel Bilder\/Tiles\/Toilette\/Toilette.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":53,
+         "image":"Art\/Pixel Bilder\/Tiles\/Toilette\/Waschbecken.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":61,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Wand Kronleuchter 500%.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":62,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/VIP Schild 500%.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":80,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Couch.png",
+         "imageheight":512,
+         "imagewidth":512
+        }, 
+        {
+         "id":64,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/Pole Dance Stange 500%.png",
+         "imageheight":320,
+         "imagewidth":160
+        }, 
+        {
+         "id":154,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/VIP Schild.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":155,
+         "image":"Art\/Pixel Bilder\/Tiles\/VIP Room\/WC Schild.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":156,
+         "image":"Art\/Pixel Bilder\/UI\/HUD neu.png",
+         "imageheight":160,
+         "imagewidth":320
+        }, 
+        {
+         "id":157,
+         "image":"Art\/Pixel Bilder\/UI\/Sprechblase.png",
+         "imageheight":192,
+         "imagewidth":384
+        }],
+ "tilewidth":512,
+ "type":"tileset",
+ "version":"1.8"
+}
