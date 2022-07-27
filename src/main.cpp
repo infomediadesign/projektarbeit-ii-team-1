@@ -4,12 +4,15 @@
 
 #include "config.h"
 
-//This is a test (implementing player)
+//This is a test
+#include "Actors/enums.h"
 #include "Actors/Prop.h"
 #include "Actors/Enemies/Enemy.h"
+#include "Actors/Enemies/GangsterFemale.h"
 #include "Actors/enums.h"
 #include "Actors/Player.h"
 #include "Systems/DialogueManager.h"
+#include "Scenes/BattleScene.h"
 #include <iostream>
 #include <memory>
 
@@ -54,9 +57,11 @@ int main() {
     pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
     pActor->setName("Test NPC");
 
-
     actors.push_back(pActor);
 
+    std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
+    std::shared_ptr<Enemy> testEnemy = std::make_shared<GangsterFemale>(1, 1, Level01, testDialogue);
+    BattleScene testBattle(testPlayer, testEnemy);
 
     // END OF TEST
 
@@ -85,8 +90,10 @@ int main() {
         // ========== DRAW ==========
 
         BeginDrawing();
-
         ClearBackground(WHITE);
+
+        testBattle.Draw();
+
         DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
             10, 10, 30, LIGHTGRAY);
 

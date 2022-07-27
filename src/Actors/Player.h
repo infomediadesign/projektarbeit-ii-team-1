@@ -34,6 +34,8 @@ public:
 	Vector2 prevPosition;
 
 	// Character attributes. Better implemented using vectors?
+    float maxHP;
+    float currentHP;
 	int strength;
 	int defense;
 
