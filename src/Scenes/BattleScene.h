@@ -18,6 +18,8 @@ public:
     std::shared_ptr<Player> player;
     std::shared_ptr<Enemy> enemy;
 
+    bool controlsLocked;
+
     Texture2D background;
 
     Camera2D camera;

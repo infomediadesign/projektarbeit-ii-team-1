@@ -6,6 +6,8 @@
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
+    this->controlsLocked = false;
+
     this->player = player;
     this->enemy = enemy;
 
