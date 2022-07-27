@@ -7,32 +7,55 @@
 #include <raylib.h>
 #include <vector>
 
+#define COLLISION_OFFSET 0.4
 
 Player::Player()
 {
     std::cout << "[DEBUG] This function should not be called (Player-Standardconstructor)" << std::endl;
 }
 
-Player::Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheetIdle_)
+Player::Player(int posX, int posY, bool genderMale)
 {
     this->position.x = posX;
     this->position.y = posY;
 
     this->prevPosition = this->position;
 
-    this->spritesheetIdle = spritesheetIdle_;
-    this->spritesheet = spritesheet_;
+    this->genderMale = genderMale;
+    if (this->genderMale == true)
+    {
+        this->spritesheetIdle = LoadTexture("assets/graphics/character/dudeInOrange/idle/withoutAugmentation.png");
+        this->spritesheet = LoadTexture("assets/graphics/character/dudeInOrange/walkcycle/withoutAugmentation.png");
+        this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punch.png");
+        this->spritesheetAttackPunchGun = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punchGun.png");
+        this->spritesheetAttackBottlecap = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bottlecap.png");
+        this->spritesheetAttackLaser = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/laser.png");
+        this->spritesheetAttackBomb = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bomb.png");
+        this->spritesheetAttackFrisbee = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/frisbee.png");
+        this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/punch.png");
+        this->spritesheetReactTazer = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/tazer.png");
+    }
+    else
+    {
+        this->spritesheetIdle = LoadTexture("assets/graphics/character/ladyInYellow/idle/withoutAugmentation.png");
+        this->spritesheet = LoadTexture("assets/graphics/character/ladyInYellow/walkcycle/withoutAugmentation.png");
+        this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punch.png");
+        this->spritesheetAttackPunchGun = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punchGun.png");
+        this->spritesheetAttackBottlecap = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bottlecap.png");
+        this->spritesheetAttackLaser = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/laser.png");
+        this->spritesheetAttackBomb = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bomb.png");
+        this->spritesheetAttackFrisbee = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/frisbee.png");
+        this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/punch.png");
+        this->spritesheetReactTazer = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/tazer.png");
+    }
+
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
-    /*
-    this->spritesheetWalk = spritesheetWalk;
-    this->frameRec.width = this->spritesheetWalk.width / 4;
-    this->frameRec.height = this->spritesheetWalk.height / 4;
-    */
-    this->collisionBox.x = posX;
+
+    this->collisionBox.x = posX + frameRec.width * (COLLISION_OFFSET / 2);
     this->collisionBox.y = posY;
     this->collisionBox.height = frameRec.height;
-    this->collisionBox.width = frameRec.width;
+    this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
 }
 
 
@@ -83,10 +106,10 @@ void Player::move()
                 this->position.y = position.y - this->speed;
             }
             //Adjusting interaction box
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x;
-            this->interactionBox.y = this->position.y - this->frameRec.height;
+            this->interactionBox.width = this->frameRec.width / 4;
+            this->interactionBox.height = this->frameRec.height / 2;
+            this->interactionBox.x = (this->position.x + this->frameRec.width / 2) - this->interactionBox.width / 2;
+            this->interactionBox.y = this->position.y - this->frameRec.height / 2;
         }
         if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
         {
@@ -100,9 +123,9 @@ void Player::move()
                 this->position.y = position.y + this->speed;
             }
             //Adjusting interaction box
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x;
+            this->interactionBox.width = this->frameRec.width / 4;
+            this->interactionBox.height = this->frameRec.height / 2;
+            this->interactionBox.x = (this->position.x + this->frameRec.width / 2) - this->interactionBox.width / 2;
             this->interactionBox.y = this->position.y + this->frameRec.height;
         }
         if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
@@ -116,10 +139,10 @@ void Player::move()
                 this->position.x = position.x - this->speed;
             }
             //Adjusting interaction box
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x - frameRec.width;
-            this->interactionBox.y = this->position.y;
+            this->interactionBox.width = this->frameRec.width / 2;
+            this->interactionBox.height = this->frameRec.height / 4;
+            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (COLLISION_OFFSET / 2));
+            this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
         {
@@ -132,12 +155,12 @@ void Player::move()
                 this->position.x = position.x + this->speed;
             }
             //Adjusting interaction box    
-            this->interactionBox.width = this->frameRec.width;
-            this->interactionBox.height = this->frameRec.height;
-            this->interactionBox.x = this->position.x + frameRec.width;
-            this->interactionBox.y = this->position.y;
+            this->interactionBox.width = this->frameRec.width / 2;
+            this->interactionBox.height = this->frameRec.height / 4;
+            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (COLLISION_OFFSET / 2));
+            this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
-        this->collisionBox.x = this->position.x;
+        this->collisionBox.x = this->position.x + this->frameRec.width * 0.2;
         this->collisionBox.y = this->position.y;
     }
     this->animate();

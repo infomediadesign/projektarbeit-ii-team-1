@@ -7,7 +7,8 @@
 //This is a test (implementing player)
 // Another test...
 #include "Actors/Prop.h"
-#include "Actors/Enemy.h"
+#include "Actors/Enemies/Enemy.h"
+#include "Actors/enums.h"
 #include "Actors/Player.h"
 #include "Systems/DialogueManager.h"
 #include <iostream>
@@ -30,12 +31,10 @@ int main() {
     // ...
     // ...
     Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
-    Texture2D spritesheetTest = LoadTexture("assets/graphics/testSpritesheet.png");
-    Texture2D playerIdle = LoadTexture("assets/graphics/character/dudeInOrange/idle/withoutAugmentation.png");
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
-    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, spritesheetTest, playerIdle);
+    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
 
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
 

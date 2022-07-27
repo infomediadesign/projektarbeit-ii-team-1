@@ -15,12 +15,21 @@ class Player : public Actor {
 	// Attributes
 public:
 
+    bool genderMale;
+
 	// Regarding idle animation
 	Texture2D spritesheetIdle;
     bool playIdle;
 
-	//Rectangle frameRecWalk = { 0.0f, 0.0f, (float)spritesheetWalk.width / 4, (float)spritesheetWalk.height / 4 };
-
+    // Combat animations
+    Texture2D spritesheetAttackPunch;
+    Texture2D spritesheetAttackPunchGun;
+    Texture2D spritesheetAttackBottlecap;
+    Texture2D spritesheetAttackLaser;
+    Texture2D spritesheetAttackBomb;
+    Texture2D spritesheetAttackFrisbee;
+    Texture2D spritesheetReactPunch;
+    Texture2D spritesheetReactTazer;
 
 	Vector2 prevPosition;
 
@@ -44,7 +53,7 @@ public:
 public:
 	Player();
 
-	Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheetIdle_);
+	Player(int posX, int posY, bool genderMale);
 
 	void Update();
 
