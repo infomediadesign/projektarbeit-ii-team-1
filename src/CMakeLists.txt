@@ -6,7 +6,7 @@ include(../cmake/raylib.cmake)
 include(../cmake/nlohmann_json.cmake)
 
 project(game VERSION 0.1 LANGUAGES CXX)
-
+<
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
