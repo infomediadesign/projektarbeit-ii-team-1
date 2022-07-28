@@ -108,8 +108,10 @@ int main() {
         {
             case TITLESCREEN:
             {
-                IsKeyPressed(KEY_ENTER);
-                currentScreen = MAINMENU;
+                if(IsKeyPressed(KEY_ENTER))
+                {
+                    currentScreen = MAINMENU;
+                }
                 break;
             }
 
@@ -139,7 +141,7 @@ int main() {
                 if (IsKeyPressed(KEY_ENTER))
                 {
                     currentScreen = GAME;
-                    std::cout << "Button Nr. " << active_button << " gedrückt..." << std::endl;
+                    std::cout << "Button Nr. " << active_button << " pushed..." << std::endl;
                 }
                 break;
             }
@@ -171,8 +173,6 @@ int main() {
         {
             case TITLESCREEN:
             {
-                //Why is this code segment unreachable??
-
                 DrawText("This is a Titlescreen.\nPress Enter to continue",
                          10, 10, 30, LIGHTGRAY);
                 break;
@@ -182,7 +182,7 @@ int main() {
             {
                 for (auto& button : buttons)
                 {
-                    DrawText("This is the Main Menu.\nPlease use the arrow keys to select your desired option:",
+                    DrawText("This is the Main Menu.\nPlease use the arrow keys to select your desired option:\nThen press Enter to continue.",
                              10, 10, 30, LIGHTGRAY);
 
                     DrawTexture(button->getTexture(), button->pos_x, button->pos_y, WHITE);
@@ -203,6 +203,8 @@ int main() {
                 // This is a test (Implementing player)
 
                 player.Draw();
+
+                break;
             }
         }
 
@@ -210,8 +212,6 @@ int main() {
     } // Main game loop end
 
     // De-initialization here
-    // ...
-    // ...
 
     delete button1;
     delete button2;

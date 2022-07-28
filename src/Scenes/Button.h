@@ -25,4 +25,4 @@ namespace game {
         Texture2D getTexture();
     };
 
-} // game
+}

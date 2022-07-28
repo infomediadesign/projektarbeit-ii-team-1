@@ -22,5 +22,3 @@ game::Button::~Button()
     UnloadTexture(this->texture_active);
     UnloadTexture(this->texture_inactive);
 }
-
-// game
