@@ -37,7 +37,6 @@ int main() {
 
     // Your own initialization code here
     // ...
-    // ...
 
     //Implementing menu
     std::vector<game::Button*> buttons;
