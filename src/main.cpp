@@ -103,6 +103,7 @@ int main() {
     {
         // Updates that are made by frame are coded here
 
+        //still need to implement screens in their respective scene folders...
         switch (currentScreen)
         {
             case TITLESCREEN:
