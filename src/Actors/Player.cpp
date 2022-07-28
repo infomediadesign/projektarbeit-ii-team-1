@@ -29,16 +29,22 @@ Player::Player(int posX, int posY, bool genderMale)
 
         this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punch.png");
         this->spritesheetAttackPunch.spriteCount = 7;
+        this->spritesheetAttackPunch.delay = 2;
         this->spritesheetAttackPunchGun.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punchGun.png");
         this->spritesheetAttackPunchGun.spriteCount = 8;
+        this->spritesheetAttackPunchGun.delay = 2;
         this->spritesheetAttackBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bottlecap.png");
         this->spritesheetAttackBottlecap.spriteCount = 9;
+        this->spritesheetAttackBottlecap.delay = 5;
         this->spritesheetAttackLaser.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/laser.png");
         this->spritesheetAttackLaser.spriteCount = 9;
+        this->spritesheetAttackLaser.delay = 4;
         this->spritesheetAttackBomb.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bomb.png");
         this->spritesheetAttackBomb.spriteCount = 8;
+        this->spritesheetAttackBomb.delay = 5;
         this->spritesheetAttackFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/frisbee.png");
         this->spritesheetAttackFrisbee.spriteCount = 6;
+        this->spritesheetAttackFrisbee.delay = 3;
         this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/punch.png");
         this->spritesheetReactPunch.spriteCount = 4;
         this->spritesheetReactTazer.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/tazer.png");
@@ -77,7 +83,8 @@ Player::Player(int posX, int posY, bool genderMale)
 }
 
 
-void Player::Update() {
+void Player::Update()
+{
     this->framesCounter++;
     this->move();
 

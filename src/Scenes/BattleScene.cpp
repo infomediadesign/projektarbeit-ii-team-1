@@ -3,6 +3,7 @@
 //
 
 #include "BattleScene.h"
+#include <iostream>
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
@@ -17,6 +18,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->player->turn(up);
     this->enemy->turn(down);
+    this->player->moveLockAbsolute = true;
 
     this->background = LoadTexture("assets/graphics/ui/combat/background.png");
 
@@ -36,7 +38,9 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->enemy->currentFrame = 0;
 
     this->framesCounter = 0;
-    this->frameSpeed = 10;
+    this->frameSpeed = 2;
+
+    this->timerFramesWaited = 0;
 
     this->frameRecPlayer.x = 0;
     this->frameRecPlayer.y = 0;
@@ -85,7 +89,7 @@ void BattleScene::Draw()
         DrawTextureRec(this->enemyAnimation.sheet, this->frameRecEnemy, enemyPosition, WHITE);
     }
 
-    
+
     EndMode2D();
 }
 
@@ -101,9 +105,11 @@ void BattleScene::animateIdle() {
     {
         this->player->playIdle = true;
 
-        if (this->framesCounter >= (60 / this->player->frameSpeed))
+        this->player->framesCounter++;
+
+        if (this->player->framesCounter >= (60 / this->player->frameSpeed))
         {
-            this->framesCounter = 0;
+            this->player->framesCounter = 0;
             this->player->currentFrame++;
 
             if (this->player->currentFrame > 3)
@@ -116,17 +122,18 @@ void BattleScene::animateIdle() {
 
         if (this->playEnemyIdle == true)
         {
-            if (this->framesCounter >= (60 / this->enemy->frameSpeed))
+            if (this->enemy->framesCounter >= (60 / this->enemy->frameSpeed))
             {
-                this->framesCounter = 0;
+                this->enemy->framesCounter = 0;
                 this->enemy->currentFrame++;
 
-                if (this->player->currentFrame > 3)
+                if (this->enemy->currentFrame > 3)
                 {
                     this->enemy->currentFrame = 0;
                 }
 
                 this->enemy->frameRec.x = (float) this->enemy->currentFrame * (float) this->enemy->spritesheet.width / 4;
+                this->enemy->framesCounter++;
             }
         }
 
@@ -135,21 +142,22 @@ void BattleScene::animateIdle() {
 
 void BattleScene::playAnimation()
 {
-    if (animationPlaying == false && IsKeyPressed(KEY_E))
+    // Starts a player attack (enemy idle is not yet disabled)
+    if (this->animationPlaying == false && IsKeyPressed(KEY_E))
     {
         this->animationPlaying = true;
         this->playPlayerIdle = false;
-        this->playEnemyIdle = false;
         this->framesCounter = 0;
         this->currentFrameEnemy = 0;
         this->currentFramePlayer = 0;
     }
+    // Plays animation
     else if (animationPlaying == true)
     {
         // This part decides which animation is going to play (it is hardcoded to animate a punch for test purposes)
 
-        this->playerAnimation = this->player->spritesheetAttackBottlecap;
-        this->enemyAnimation = this->enemy->spritesheetReactBottlecap;
+        this->playerAnimation = this->player->spritesheetAttackFrisbee;
+        this->enemyAnimation = this->enemy->spritesheetReactFrisbee;
 
         this->frameRecPlayer.width = this->playerAnimation.sheet.width / this->playerAnimation.spriteCount;
         this->frameRecPlayer.height = this->playerAnimation.sheet.height;
@@ -158,19 +166,29 @@ void BattleScene::playAnimation()
         this->frameRecEnemy.width = this->enemyAnimation.sheet.width / this->enemyAnimation.spriteCount;
         this->frameRecEnemy.height = this->enemyAnimation.sheet.height;
 
-        //this->framesCounter++;
-
         if (this->framesCounter >= (60 / this->frameSpeed))
         {
             this->framesCounter = 0;
             this->currentFramePlayer++;
-            this->currentFrameEnemy++;
 
-            if (this->currentFramePlayer > this->playerAnimation.spriteCount)
+            // Plays animation only when delay matches the frames waited
+            if (this->timerFramesWaited > this->playerAnimation.delay)
+            {
+                this->playEnemyIdle = false;
+                this->currentFrameEnemy++;
+            }
+            else
+            {
+                this->playEnemyIdle = true;
+                this->timerFramesWaited++;
+                this->currentFrameEnemy = -1;
+            }
+
+            if (this->currentFramePlayer >= this->playerAnimation.spriteCount)
             {
                 this->playPlayerIdle = true;
             }
-            if (this->currentFrameEnemy > this->enemyAnimation.spriteCount)
+            if (this->currentFrameEnemy >= this->enemyAnimation.spriteCount)
             {
                 this->playEnemyIdle = true;
             }
@@ -181,6 +199,7 @@ void BattleScene::playAnimation()
                 this->enemy->currentFrame = 0;
                 this->currentFrameEnemy = 0;
                 this->animationPlaying = false;
+                this->timerFramesWaited = 0;
             }
 
             this->frameRecPlayer.x = (float) this->currentFramePlayer * (float) this->playerAnimation.sheet.width / this->playerAnimation.spriteCount;

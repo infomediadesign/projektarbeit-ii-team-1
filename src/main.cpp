@@ -86,8 +86,10 @@ int main() {
                     "It's not like the game will crash or anything...",
                     "... I hope."
             };
-    pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
+    pActor = std::make_shared<Actor>(GetScreenWidth() / 4, GetScreenHeight() / 3, actorTest, testDialogue);
     pActor->setName("Test NPC");
+    actors.push_back(pActor);
+    pActor = std::make_shared<GangsterFemale>(1, 1, Level01, testDialogue);
 
     actors.push_back(pActor);
 

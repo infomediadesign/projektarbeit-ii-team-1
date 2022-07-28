@@ -28,13 +28,16 @@ public:
 
     Camera2D camera;
 
-    //Animation-related
+    // Animation-related
     int framesCounter;
     int frameSpeed;
     int currentFramePlayer;
     int currentFrameEnemy;
     Rectangle frameRecPlayer;
     Rectangle frameRecEnemy;
+
+    // Timer
+    int timerFramesWaited;
 
     CombatSheet playerAnimation;
     CombatSheet enemyAnimation;
