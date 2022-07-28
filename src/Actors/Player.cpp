@@ -26,27 +26,45 @@ Player::Player(int posX, int posY, bool genderMale)
     {
         this->spritesheetIdle = LoadTexture("assets/graphics/character/dudeInOrange/idle/withoutAugmentation.png");
         this->spritesheet = LoadTexture("assets/graphics/character/dudeInOrange/walkcycle/withoutAugmentation.png");
-        this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punch.png");
-        this->spritesheetAttackPunchGun = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punchGun.png");
-        this->spritesheetAttackBottlecap = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bottlecap.png");
-        this->spritesheetAttackLaser = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/laser.png");
-        this->spritesheetAttackBomb = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bomb.png");
-        this->spritesheetAttackFrisbee = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/frisbee.png");
-        this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/punch.png");
-        this->spritesheetReactTazer = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/tazer.png");
+
+        this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punch.png");
+        this->spritesheetAttackPunch.spriteCount = 7;
+        this->spritesheetAttackPunchGun.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punchGun.png");
+        this->spritesheetAttackPunchGun.spriteCount = 8;
+        this->spritesheetAttackBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bottlecap.png");
+        this->spritesheetAttackBottlecap.spriteCount = 9;
+        this->spritesheetAttackLaser.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/laser.png");
+        this->spritesheetAttackLaser.spriteCount = 9;
+        this->spritesheetAttackBomb.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bomb.png");
+        this->spritesheetAttackBomb.spriteCount = 8;
+        this->spritesheetAttackFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/frisbee.png");
+        this->spritesheetAttackFrisbee.spriteCount = 6;
+        this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/punch.png");
+        this->spritesheetReactPunch.spriteCount = 4;
+        this->spritesheetReactTazer.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/tazer.png");
+        this->spritesheetReactTazer.spriteCount = 2;
     }
     else
     {
         this->spritesheetIdle = LoadTexture("assets/graphics/character/ladyInYellow/idle/withoutAugmentation.png");
         this->spritesheet = LoadTexture("assets/graphics/character/ladyInYellow/walkcycle/withoutAugmentation.png");
-        this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punch.png");
-        this->spritesheetAttackPunchGun = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punchGun.png");
-        this->spritesheetAttackBottlecap = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bottlecap.png");
-        this->spritesheetAttackLaser = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/laser.png");
-        this->spritesheetAttackBomb = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bomb.png");
-        this->spritesheetAttackFrisbee = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/frisbee.png");
-        this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/punch.png");
-        this->spritesheetReactTazer = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/tazer.png");
+
+        this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punch.png");
+        this->spritesheetAttackPunch.spriteCount = 7; // Placeholder!!
+        this->spritesheetAttackPunchGun.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punchGun.png");
+        this->spritesheetAttackPunchGun.spriteCount = 8;
+        this->spritesheetAttackBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bottlecap.png");
+        this->spritesheetAttackBottlecap.spriteCount = 9;
+        this->spritesheetAttackLaser.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/laser.png");
+        this->spritesheetAttackLaser.spriteCount = 9;
+        this->spritesheetAttackBomb.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bomb.png");
+        this->spritesheetAttackBomb.spriteCount = 8;
+        this->spritesheetAttackFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/frisbee.png");
+        this->spritesheetAttackFrisbee.spriteCount = 6;
+        this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/punch.png");
+        this->spritesheetReactPunch.spriteCount = 4;
+        this->spritesheetReactTazer.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/tazer.png");
+        this->spritesheetReactTazer.spriteCount = 2;
     }
 
     this->frameRec.width = this->spritesheet.width / 4;

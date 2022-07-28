@@ -7,6 +7,7 @@
 #include "Prop.h"
 #include "Actor.h"
 #include "../Systems/DialogueManager.h"
+#include "Enemies/CombatStructs.h"
 #include <vector>
 #include <memory>
 
@@ -22,14 +23,14 @@ public:
     bool playIdle;
 
     // Combat animations
-    Texture2D spritesheetAttackPunch;
-    Texture2D spritesheetAttackPunchGun;
-    Texture2D spritesheetAttackBottlecap;
-    Texture2D spritesheetAttackLaser;
-    Texture2D spritesheetAttackBomb;
-    Texture2D spritesheetAttackFrisbee;
-    Texture2D spritesheetReactPunch;
-    Texture2D spritesheetReactTazer;
+    CombatSheet spritesheetAttackPunch;
+    CombatSheet spritesheetAttackPunchGun;
+    CombatSheet spritesheetAttackBottlecap;
+    CombatSheet spritesheetAttackLaser;
+    CombatSheet spritesheetAttackBomb;
+    CombatSheet spritesheetAttackFrisbee;
+    CombatSheet spritesheetReactPunch;
+    CombatSheet spritesheetReactTazer;
 
 	Vector2 prevPosition;
 

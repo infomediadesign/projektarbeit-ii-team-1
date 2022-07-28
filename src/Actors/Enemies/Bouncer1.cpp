@@ -19,14 +19,22 @@ Bouncer1::Bouncer1(int posX, int posY, Level enemyLevel, std::vector<std::string
 
     this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/bouncer1/bouncer1.png");
 
-    this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/punch.png");
-    this->spritesheetAttackNecklace = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/necklace.png");
-    this->spritesheetAttackTazer = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/tazer.png");
-    this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/punch.png");
-    this->spritesheetReactBottlecap = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bottlecap.png");
-    this->spritesheetReactLaser = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/laser.png");
-    this->spritesheetReactBomb = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bomb.png");
-    this->spritesheetReactFrisbee = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/frisbee.png");
+    this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/punch.png");
+    this->spritesheetAttackPunch.spriteCount = 7;
+    this->spritesheetAttackNecklace.sheet = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/necklace.png");
+    this->spritesheetAttackNecklace.spriteCount = 7;
+    this->spritesheetAttackTazer.sheet = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/tazer.png");
+    this->spritesheetAttackTazer.spriteCount = 7;
+    this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/punch.png");
+    this->spritesheetReactPunch.spriteCount = 6;
+    this->spritesheetReactBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bottlecap.png");
+    this->spritesheetReactBottlecap.spriteCount = 11;
+    this->spritesheetReactLaser.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/laser.png");
+    this->spritesheetReactLaser.spriteCount = 6;
+    this->spritesheetReactBomb.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bomb.png");
+    this->spritesheetReactBomb.spriteCount = 10;
+    this->spritesheetReactFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/frisbee.png");
+    this->spritesheetReactFrisbee.spriteCount = 5;
 
 
     this->frameRec.width = this->spritesheet.width / 4;

@@ -19,14 +19,22 @@ GangsterFemale::GangsterFemale(int posX, int posY, Level enemyLevel, std::vector
 
     this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/gangsterFemale/gangsterFemale.png");
 
-    this->spritesheetAttackPunch = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/punch.png");
-    this->spritesheetAttackNecklace = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/necklace.png");
-    this->spritesheetAttackTazer = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/tazer.png");
-    this->spritesheetReactPunch = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/punch.png");
-    this->spritesheetReactBottlecap = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bottlecap.png");
-    this->spritesheetReactLaser = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/laser.png");
-    this->spritesheetReactBomb = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bomb.png");
-    this->spritesheetReactFrisbee = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/frisbee.png");
+    this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/punch.png");
+    this->spritesheetAttackPunch.spriteCount = 4;
+    this->spritesheetAttackNecklace.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/necklace.png");
+    this->spritesheetAttackNecklace.spriteCount = 7;
+    this->spritesheetAttackTazer.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/tazer.png");
+    this->spritesheetAttackTazer.spriteCount = 6;
+    this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/punch.png");
+    this->spritesheetReactPunch.spriteCount = 5;
+    this->spritesheetReactBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bottlecap.png");
+    this->spritesheetReactBottlecap.spriteCount = 7;
+    this->spritesheetReactLaser.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/laser.png");
+    this->spritesheetReactLaser.spriteCount = 4;
+    this->spritesheetReactBomb.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bomb.png");
+    this->spritesheetReactBomb.spriteCount = 9;
+    this->spritesheetReactFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/frisbee.png");
+    this->spritesheetReactFrisbee.spriteCount = 5;
 
 
     this->frameRec.width = this->spritesheet.width / 4;

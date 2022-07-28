@@ -160,6 +160,9 @@ int main() {
                 {
                     actors[i]->Update();
                 }
+
+                testBattle.Update();
+
                 break;
             }
         }
@@ -192,6 +195,7 @@ int main() {
 
             case GAME:
             {
+                testBattle.Draw();
                 DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
                          10, 10, 30, LIGHTGRAY);
 

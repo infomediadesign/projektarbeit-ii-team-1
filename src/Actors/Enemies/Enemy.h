@@ -6,6 +6,8 @@
 
 #include "../Actor.h"
 #include "../enums.h"
+#include "CombatStructs.h"
+
 
 class Enemy : public Actor {
 
@@ -24,15 +26,15 @@ public:
 
     Texture2D spritesheetIdle;
 
-    Texture2D spritesheetAttackPunch;
-    Texture2D spritesheetAttackNecklace;
-    Texture2D spritesheetAttackTazer;
+    CombatSheet spritesheetAttackPunch;
+    CombatSheet spritesheetAttackNecklace;
+    CombatSheet spritesheetAttackTazer;
 
-    Texture2D spritesheetReactPunch;
-    Texture2D spritesheetReactBottlecap;
-    Texture2D spritesheetReactLaser;
-    Texture2D spritesheetReactFrisbee;
-    Texture2D spritesheetReactBomb;
+    CombatSheet spritesheetReactPunch;
+    CombatSheet spritesheetReactBottlecap;
+    CombatSheet spritesheetReactLaser;
+    CombatSheet spritesheetReactFrisbee;
+    CombatSheet spritesheetReactBomb;
 
 
 	//Methods

@@ -19,6 +19,10 @@ public:
     std::shared_ptr<Enemy> enemy;
 
     bool controlsLocked;
+    bool animationPlaying;
+
+    bool playPlayerIdle;
+    bool playEnemyIdle;
 
     Texture2D background;
 
@@ -26,6 +30,14 @@ public:
 
     //Animation-related
     int framesCounter;
+    int frameSpeed;
+    int currentFramePlayer;
+    int currentFrameEnemy;
+    Rectangle frameRecPlayer;
+    Rectangle frameRecEnemy;
+
+    CombatSheet playerAnimation;
+    CombatSheet enemyAnimation;
 
     // Methods
 public:
@@ -37,5 +49,6 @@ void Draw();
 void initializeBattle();
 
 void animateIdle();
+void playAnimation();
 
 };
