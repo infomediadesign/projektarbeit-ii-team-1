@@ -13,6 +13,7 @@
 #include "Actors/Player.h"
 #include "Systems/DialogueManager.h"
 #include "Scenes/BattleScene.h"
+#include "Scenes/MainMenuScene.h"
 #include <iostream>
 #include <memory>
 
@@ -39,30 +40,7 @@ int main() {
     // ...
 
     //Implementing menu
-    std::vector<game::Button*> buttons;
-    int active_button = 0;
-
-    auto* button1 = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     100,
-                                     100,
-                                     true);
-
-    auto* button2 = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     100,
-                                     200,
-                                     false);
-
-    auto* button3 = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     100,
-                                     300,
-                                     false);
-
-    buttons.push_back(button1);
-    buttons.push_back(button2);
-    buttons.push_back(button3);
+    MainMenuScene testMain;
 
     Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
 
@@ -104,6 +82,8 @@ int main() {
         // Updates that are made by frame are coded here
 
         //still need to implement screens in their respective scene folders...
+
+
         switch (currentScreen)
         {
             case TITLESCREEN:
@@ -118,31 +98,9 @@ int main() {
             case MAINMENU:
             {
                 //Menu with buttons
-                if (IsKeyPressed(KEY_DOWN))
-                {
-                    buttons[active_button]->active = false;
-                    if (active_button < buttons.size() - 1)
-                        active_button++;
-                    else active_button = 0;
-
-                    buttons[active_button]->active = true;
-                }
-
-                if (IsKeyPressed(KEY_UP))
-                {
-                    buttons[active_button]->active = false;
-                    if (active_button == 0)
-                        active_button = (int)buttons.size() - 1;
-                    else active_button--;
-
-                    buttons[active_button]->active = true;
-                }
-
-                if (IsKeyPressed(KEY_ENTER))
-                {
+                testMain.Update();
+                if(testMain.switchScene == true)
                     currentScreen = GAME;
-                    std::cout << "Button Nr. " << active_button << " pushed..." << std::endl;
-                }
                 break;
             }
 
@@ -172,6 +130,8 @@ int main() {
         BeginDrawing();
         ClearBackground(WHITE);
 
+
+
         switch (currentScreen)
         {
             case TITLESCREEN:
@@ -183,13 +143,7 @@ int main() {
 
             case MAINMENU:
             {
-                for (auto& button : buttons)
-                {
-                    DrawText("This is the Main Menu.\nPlease use the arrow keys to select your desired option:\nThen press Enter to continue.",
-                             10, 10, 30, LIGHTGRAY);
-
-                    DrawTexture(button->getTexture(), button->pos_x, button->pos_y, WHITE);
-                }
+                testMain.Draw();
                 break;
             }
 
@@ -217,9 +171,7 @@ int main() {
 
     // De-initialization here
 
-    delete button1;
-    delete button2;
-    delete button3;
+
 
     UnloadTexture(myTexture);
 
