@@ -10,6 +10,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->controlsLocked = false;
     this->animationPlaying = false;
     this->attackSource = sourcePlayer;
+    this->attackType = punchPlayer;
 
     this->playPlayerIdle = true;
     this->playEnemyIdle = true;
@@ -39,7 +40,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->enemy->currentFrame = 0;
 
     this->framesCounter = 0;
-    this->frameSpeed = 2;
+    this->frameSpeed = 8;
 
     this->timerFramesWaited = 0;
 
@@ -86,17 +87,27 @@ void BattleScene::Draw()
     {
         // Draw player animation
         Vector2 playerPosition;
+
         playerPosition.x = GetScreenWidth() * 0.0833;
         playerPosition.y = GetScreenHeight() * 0.0768;
+
         DrawTextureRec(this->playerAnimation.sheet, this->frameRecPlayer, playerPosition, WHITE);
     }
     if (this->playEnemyIdle == false)
     {
         // Draw enemy animation
         Vector2 enemyPosition;
-        enemyPosition.x = GetScreenWidth() * 0.2917;
-        enemyPosition.y = GetScreenHeight() * 0.072;
-        DrawTextureRec(this->enemyAnimation.sheet, this->frameRecEnemy, enemyPosition, WHITE);
+        if (this->attackType == bomb || this->attackType == laser)
+        {
+            enemyPosition.x = GetScreenWidth() * 0.25;
+            enemyPosition.y = GetScreenHeight() - GetScreenHeight() * 1.076;
+        }
+        else
+        {
+            enemyPosition.x = GetScreenWidth() * 0.2917;
+            enemyPosition.y = GetScreenHeight() * 0.072;
+        }
+            DrawTextureRec(this->enemyAnimation.sheet, this->frameRecEnemy, enemyPosition, WHITE);
     }
 
 
@@ -178,6 +189,7 @@ void BattleScene::playAnimation() {
 
         // When the enemy is attacking
         if (this->attackSource == sourceEnemy) {
+            this->playEnemyIdle = false;
             if (this->framesCounter >= (60 / this->frameSpeed)) {
                 this->framesCounter = 0;
                 this->currentFrameEnemy++;
@@ -195,7 +207,13 @@ void BattleScene::playAnimation() {
                 }
             }
         }
-        if (this->currentFramePlayer >= this->playerAnimation.spriteCount) {
+        // Makes up for the fact that frisbee sheets have a sprite worth of empty space
+        int spriteCountAdjusted = this->playerAnimation.spriteCount;
+        if (this->attackType == frisbee)
+        {
+            spriteCountAdjusted--;
+        }
+        if (this->currentFramePlayer >= spriteCountAdjusted) {
             this->playPlayerIdle = true;
         }
         if (this->currentFrameEnemy >= this->enemyAnimation.spriteCount) {

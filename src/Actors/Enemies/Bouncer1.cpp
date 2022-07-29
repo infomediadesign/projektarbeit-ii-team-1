@@ -30,7 +30,7 @@ Bouncer1::Bouncer1(int posX, int posY, Level enemyLevel, std::vector<std::string
     this->spritesheetReactBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bottlecap.png");
     this->spritesheetReactBottlecap.spriteCount = 11;
     this->spritesheetReactLaser.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/laser.png");
-    this->spritesheetReactLaser.spriteCount = 6;
+    this->spritesheetReactLaser.spriteCount = 4;
     this->spritesheetReactBomb.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bomb.png");
     this->spritesheetReactBomb.spriteCount = 10;
     this->spritesheetReactFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/frisbee.png");

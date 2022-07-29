@@ -8,7 +8,12 @@
 #include "Actors/enums.h"
 #include "Actors/Prop.h"
 #include "Actors/Enemies/Enemy.h"
+
 #include "Actors/Enemies/GangsterFemale.h"
+#include "Actors/Enemies/Bouncer2.h"
+#include "Actors/Enemies/GangsterMale.h"
+#include "Actors/Enemies/Bouncer1.h"
+
 #include "Actors/enums.h"
 #include "Actors/Player.h"
 #include "Systems/DialogueManager.h"
@@ -72,7 +77,7 @@ int main() {
     actors.push_back(pActor);
 
     std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
-    std::shared_ptr<Enemy> testEnemy = std::make_shared<GangsterFemale>(1, 1, Level01, testDialogue);
+    std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
     BattleScene testBattle(testPlayer, testEnemy);
 
     // END OF TEST

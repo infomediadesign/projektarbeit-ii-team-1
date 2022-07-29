@@ -21,10 +21,13 @@ GangsterFemale::GangsterFemale(int posX, int posY, Level enemyLevel, std::vector
 
     this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/punch.png");
     this->spritesheetAttackPunch.spriteCount = 4;
+    this->spritesheetAttackPunch.delay = 0;
     this->spritesheetAttackNecklace.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/necklace.png");
+    this->spritesheetAttackNecklace.delay = 0;
     this->spritesheetAttackNecklace.spriteCount = 7;
     this->spritesheetAttackTazer.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterFemale/tazer.png");
     this->spritesheetAttackTazer.spriteCount = 6;
+    this->spritesheetAttackTazer.delay = 1;
     this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/punch.png");
     this->spritesheetReactPunch.spriteCount = 5;
     this->spritesheetReactBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterFemale/bottlecap.png");

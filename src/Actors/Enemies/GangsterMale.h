@@ -7,7 +7,7 @@
 #include "Enemy.h"
 
 class GangsterMale : public Enemy {
-
+public:
     GangsterMale(int posX, int posY, Level enemyLevel, std::vector<std::string> dialogue);
 
 };
