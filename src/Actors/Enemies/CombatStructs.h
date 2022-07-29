@@ -8,6 +8,7 @@
 
 struct CombatSheet
 {
-    Texture2D sheet;
-    int spriteCount;
+    Texture2D sheet; // The actual spritesheet
+    int spriteCount; // Indicates how may sprites are on a spritesheet
+    int delay;       // For attack-animations: Indicates how long the game will wait after starting an attack animation to play the reaction animation
 };
