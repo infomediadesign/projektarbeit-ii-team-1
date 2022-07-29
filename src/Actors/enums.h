@@ -17,3 +17,26 @@ enum Direction
 
 enum GameState{Started, Paused, Stopped};
 enum Level{Tutorial, Level01, Rooftop, VIP};
+
+
+// Enums for the battle-scene
+enum AttackSource
+{
+    sourcePlayer,
+    sourceEnemy
+};
+enum AttackType
+{
+    // Player attack types
+    punchPlayer,
+    punchGun,
+    bottlecap,
+    laser,
+    bomb,
+    frisbee,
+
+    // Enemy attack types
+    punchEnemy,
+    necklace,
+    tazer
+};

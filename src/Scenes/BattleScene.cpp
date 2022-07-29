@@ -9,6 +9,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 {
     this->controlsLocked = false;
     this->animationPlaying = false;
+    this->attackSource = sourcePlayer;
 
     this->playPlayerIdle = true;
     this->playEnemyIdle = true;
@@ -48,12 +49,21 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->frameRecEnemy.y = 0;
 }
 
-void BattleScene::Update()
-{
+void BattleScene::Update() {
     this->framesCounter++;
-    playAnimation();
-    animateIdle();
 
+    // Starts a player attack (enemy idle is not yet disabled)
+    if (this->animationPlaying == false && IsKeyPressed(KEY_E))
+    {
+        this->startAnimation();
+    }
+
+    if (animationPlaying == true)
+    {
+        this->playAnimation();
+    }
+    animateIdle();
+    std::cout << this->playEnemyIdle << std::endl;
 }
 
 void BattleScene::Draw()
@@ -93,11 +103,6 @@ void BattleScene::Draw()
     EndMode2D();
 }
 
-void BattleScene::initializeBattle()
-{
-
-}
-
 void BattleScene::animateIdle() {
 
 
@@ -122,6 +127,7 @@ void BattleScene::animateIdle() {
 
         if (this->playEnemyIdle == true)
         {
+            this->enemy->framesCounter++;
             if (this->enemy->framesCounter >= (60 / this->enemy->frameSpeed))
             {
                 this->enemy->framesCounter = 0;
@@ -140,70 +146,145 @@ void BattleScene::animateIdle() {
     }
 }
 
-void BattleScene::playAnimation()
+void BattleScene::playAnimation() {
+    // Plays animation
+    if (animationPlaying == true) {
+
+        this->frameRecPlayer.width = this->playerAnimation.sheet.width / this->playerAnimation.spriteCount;
+        this->frameRecPlayer.height = this->playerAnimation.sheet.height;
+
+        this->frameRecEnemy.width = this->enemyAnimation.sheet.width / this->enemyAnimation.spriteCount;
+        this->frameRecEnemy.height = this->enemyAnimation.sheet.height;
+
+        // When the player is attacking
+        if (this->attackSource == sourcePlayer) {
+            if (this->framesCounter >= (60 / this->frameSpeed)) {
+                this->framesCounter = 0;
+                this->currentFramePlayer++;
+
+                // Plays animation only when delay matches the frames waited
+                if (this->timerFramesWaited > this->playerAnimation.delay) {
+                    std::cout << "[DEBUG] End idle and start animation (enemy)" << std::endl;
+                    this->playEnemyIdle = false;
+                    this->currentFrameEnemy++;
+                } else {
+                    std::cout << "[DEBUG] Wait for animation and idle (enemy)" << std::endl;
+                    this->playEnemyIdle = true;
+                    this->timerFramesWaited++;
+                    this->currentFrameEnemy = -1;
+                }
+            }
+        }
+
+        // When the enemy is attacking
+        if (this->attackSource == sourceEnemy) {
+            if (this->framesCounter >= (60 / this->frameSpeed)) {
+                this->framesCounter = 0;
+                this->currentFrameEnemy++;
+
+                // Plays animation only when delay matches the frames waited
+                if (this->timerFramesWaited > this->enemyAnimation.delay) {
+                    std::cout << "[DEBUG] End idle and start animation (player)" << std::endl;
+                    this->playPlayerIdle = false;
+                    this->currentFramePlayer++;
+                } else {
+                    std::cout << "[DEBUG] Wait for animation and idle (player)" << std::endl;
+                    this->playPlayerIdle = true;
+                    this->timerFramesWaited++;
+                    this->currentFramePlayer = -1;
+                }
+            }
+        }
+        if (this->currentFramePlayer >= this->playerAnimation.spriteCount) {
+            this->playPlayerIdle = true;
+        }
+        if (this->currentFrameEnemy >= this->enemyAnimation.spriteCount) {
+            this->playEnemyIdle = true;
+        }
+        // Reset everything after animation has finished playing
+        if (this->currentFramePlayer > this->playerAnimation.spriteCount &&
+            this->currentFrameEnemy > this->enemyAnimation.spriteCount) {
+            this->player->currentFrame = 0;
+            this->currentFramePlayer = 0;
+            this->enemy->currentFrame = 0;
+            this->currentFrameEnemy = 0;
+            this->animationPlaying = false;
+            this->timerFramesWaited = 0;
+        }
+        // Advance frameRecs
+        this->frameRecPlayer.x = (float) this->currentFramePlayer * (float) this->playerAnimation.sheet.width /
+                                 this->playerAnimation.spriteCount;
+        this->frameRecEnemy.x = (float) this->currentFrameEnemy * (float) this->enemyAnimation.sheet.width /
+                                this->enemyAnimation.spriteCount;
+    }
+}
+
+
+
+
+void BattleScene::startAnimation()
 {
-    // Starts a player attack (enemy idle is not yet disabled)
-    if (this->animationPlaying == false && IsKeyPressed(KEY_E))
+    // Has to determine attack source (hardcoded for now)
+    this->attackSource = sourcePlayer;
+    this->attackType = laser;
+
+    // This part decides which animation is going to play based on the attackType-attribute
+    switch (this->attackType)
     {
+        case punchPlayer:
+            this->playerAnimation = this->player->spritesheetAttackPunch;
+            this->enemyAnimation = this->enemy->spritesheetReactPunch;
+            break;
+        case punchGun:
+            this->playerAnimation = this->player->spritesheetAttackPunchGun;
+            this->enemyAnimation = this->enemy->spritesheetReactPunch;
+            break;
+        case bottlecap:
+            this->playerAnimation = this->player->spritesheetAttackBottlecap;
+            this->enemyAnimation = this->enemy->spritesheetReactBottlecap;
+            break;
+        case laser:
+            this->playerAnimation = this->player->spritesheetAttackLaser;
+            this->enemyAnimation = this->enemy->spritesheetReactLaser;
+            break;
+        case bomb:
+            this->playerAnimation = this->player->spritesheetAttackBomb;
+            this->enemyAnimation = this->enemy->spritesheetReactBomb;
+            break;
+        case frisbee:
+            this->playerAnimation = this->player->spritesheetAttackFrisbee;
+            this->enemyAnimation = this->enemy->spritesheetReactFrisbee;
+            break;
+        case punchEnemy:
+            this->playerAnimation = this->player->spritesheetReactPunch;
+            this->enemyAnimation = this->enemy->spritesheetAttackPunch;
+            break;
+        case necklace:
+            this->playerAnimation = this->player->spritesheetReactPunch;
+            this->enemyAnimation = this->enemy->spritesheetAttackNecklace;
+            break;
+        case tazer:
+            this->playerAnimation = this->player->spritesheetReactTazer;
+            this->enemyAnimation = this->enemy->spritesheetAttackTazer;
+            break;
+        default:
+            std::cout << "[DEBUG] Error while selecting combat animations. Punch animations are being selected" << std::endl;
+            this->playerAnimation = this->player->spritesheetAttackPunch;
+            this->enemyAnimation = this->enemy->spritesheetReactPunch;
+    }
+
+    if (this->attackSource == sourcePlayer) {
         this->animationPlaying = true;
         this->playPlayerIdle = false;
         this->framesCounter = 0;
         this->currentFrameEnemy = 0;
         this->currentFramePlayer = 0;
     }
-    // Plays animation
-    else if (animationPlaying == true)
-    {
-        // This part decides which animation is going to play (it is hardcoded to animate a punch for test purposes)
-
-        this->playerAnimation = this->player->spritesheetAttackFrisbee;
-        this->enemyAnimation = this->enemy->spritesheetReactFrisbee;
-
-        this->frameRecPlayer.width = this->playerAnimation.sheet.width / this->playerAnimation.spriteCount;
-        this->frameRecPlayer.height = this->playerAnimation.sheet.height;
-
-
-        this->frameRecEnemy.width = this->enemyAnimation.sheet.width / this->enemyAnimation.spriteCount;
-        this->frameRecEnemy.height = this->enemyAnimation.sheet.height;
-
-        if (this->framesCounter >= (60 / this->frameSpeed))
-        {
-            this->framesCounter = 0;
-            this->currentFramePlayer++;
-
-            // Plays animation only when delay matches the frames waited
-            if (this->timerFramesWaited > this->playerAnimation.delay)
-            {
-                this->playEnemyIdle = false;
-                this->currentFrameEnemy++;
-            }
-            else
-            {
-                this->playEnemyIdle = true;
-                this->timerFramesWaited++;
-                this->currentFrameEnemy = -1;
-            }
-
-            if (this->currentFramePlayer >= this->playerAnimation.spriteCount)
-            {
-                this->playPlayerIdle = true;
-            }
-            if (this->currentFrameEnemy >= this->enemyAnimation.spriteCount)
-            {
-                this->playEnemyIdle = true;
-            }
-            if (this->currentFramePlayer > this->playerAnimation.spriteCount && this->currentFrameEnemy > this->enemyAnimation.spriteCount)
-            {
-                this->player->currentFrame = 0;
-                this->currentFramePlayer = 0;
-                this->enemy->currentFrame = 0;
-                this->currentFrameEnemy = 0;
-                this->animationPlaying = false;
-                this->timerFramesWaited = 0;
-            }
-
-            this->frameRecPlayer.x = (float) this->currentFramePlayer * (float) this->playerAnimation.sheet.width / this->playerAnimation.spriteCount;
-            this->frameRecEnemy.x = (float) this->currentFrameEnemy * (float) this->enemyAnimation.sheet.width / this->enemyAnimation.spriteCount;
-        }
+    if (this->attackSource == sourceEnemy) {
+        this->animationPlaying = true;
+        this->playPlayerIdle = false;
+        this->framesCounter = 0;
+        this->currentFrameEnemy = 0;
+        this->currentFramePlayer = 0;
     }
 }

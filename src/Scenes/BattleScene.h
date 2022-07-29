@@ -7,6 +7,8 @@
 #include "MenuScenes.h"
 #include "../Actors/Player.h"
 #include "../Actors/Enemies/Enemy.h"
+#include "../Actors/enums.h"
+
 
 #include <memory>
 
@@ -23,6 +25,9 @@ public:
 
     bool playPlayerIdle;
     bool playEnemyIdle;
+
+    AttackSource attackSource;
+    AttackType attackType;
 
     Texture2D background;
 
@@ -49,9 +54,8 @@ BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy);
 void Update();
 void Draw();
 
-void initializeBattle();
-
 void animateIdle();
 void playAnimation();
+void startAnimation();
 
 };
