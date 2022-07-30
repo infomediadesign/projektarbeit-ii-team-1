@@ -19,6 +19,7 @@ public:
     Level enemyLevel;
 
     float aggroRadius;
+    bool detectedPlayer = false;
 
     float damagePunch;
     float damageNecklace;
@@ -41,7 +42,5 @@ public:
 public:
     void Update();
     void Draw();
-
-	//onInteraction();
 
 };

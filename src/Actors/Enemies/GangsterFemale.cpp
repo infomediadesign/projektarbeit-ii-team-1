@@ -14,6 +14,7 @@ GangsterFemale::GangsterFemale(int posX, int posY, Level enemyLevel, std::vector
     this->position.x = posX;
     this->position.y = posY;
 
+    this->aggroRadius = 30;
 
     // Load textures
 

@@ -37,7 +37,6 @@ public:
 	// Character attributes. Better implemented using vectors?
     float maxHP;
     float currentHP;
-	int strength;
 	int defense;
 
 	bool moveLockAbsolute = false;

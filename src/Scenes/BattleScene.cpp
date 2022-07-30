@@ -109,8 +109,6 @@ void BattleScene::Draw()
         }
             DrawTextureRec(this->enemyAnimation.sheet, this->frameRecEnemy, enemyPosition, WHITE);
     }
-
-
     EndMode2D();
 }
 
