@@ -47,6 +47,13 @@ public:
     CombatSheet playerAnimation;
     CombatSheet enemyAnimation;
 
+    // Core-System related
+    AttackType enemyNextAttack;
+    bool playerTurn;
+    bool attackSelected;
+    bool enemyStunned;
+
+
     // Methods
 public:
 BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy);
@@ -57,5 +64,7 @@ void Draw();
 void animateIdle();
 void playAnimation();
 void startAnimation();
+
+void playerAttack();
 
 };

@@ -48,12 +48,28 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->frameRecPlayer.y = 0;
     this->frameRecEnemy.x = 0;
     this->frameRecEnemy.y = 0;
+
+    this->playerTurn = true;
+    this->attackSelected = false;
+    this->enemyNextAttack = punchEnemy;
 }
 
 void BattleScene::Update() {
     this->framesCounter++;
 
-    // Starts a player attack (enemy idle is not yet disabled)
+    if (this->playerTurn == true && this->animationPlaying == false)
+    {
+        // Here goes a method for selecting attacks
+
+        // Here goes a method for executing a selected attack
+        if (this->attackSelected == true)
+        {
+            this->playerAttack();
+        }
+    }
+
+
+    // Initialises attack (but still needs playAnimation() afterwards!!)
     if (this->animationPlaying == false && IsKeyPressed(KEY_E))
     {
         this->startAnimation();
@@ -303,4 +319,27 @@ void BattleScene::startAnimation()
         this->currentFrameEnemy = 0;
         this->currentFramePlayer = 0;
     }
+}
+
+void BattleScene::playerAttack()
+{
+    // First: Items (Using items doesn't end the turn)
+    this->attackSource = sourcePlayer;
+
+    switch (this->attackType)
+    {
+        case punchPlayer:
+            this->enemy->currentHP = this->enemy->currentHP - 6;
+            this->playerTurn = false;
+            this->startAnimation();
+        case punchGun:
+            // If there are uses left:
+            //if ()
+            // Has to account for upgraded damage
+            //this->enemy->currentHP = this->enemy->currentHP - 6;
+            this->playerTurn = false;
+            this->startAnimation();
+    }
+
+
 }
