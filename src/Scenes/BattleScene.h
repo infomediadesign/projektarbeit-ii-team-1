@@ -66,5 +66,6 @@ void playAnimation();
 void startAnimation();
 
 void playerAttack();
+void enemyAttack();
 
 };

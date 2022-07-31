@@ -49,7 +49,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->frameRecEnemy.x = 0;
     this->frameRecEnemy.y = 0;
 
-    this->playerTurn = true;
+    this->playerTurn = false;
     this->attackSelected = false;
     this->enemyNextAttack = punchEnemy;
 }
@@ -67,20 +67,23 @@ void BattleScene::Update() {
             this->playerAttack();
         }
     }
+    if (this->playerTurn == false && this->animationPlaying == false)
+    {
+        this->enemyAttack();
+    }
 
-
+/*
     // Initialises attack (but still needs playAnimation() afterwards!!)
     if (this->animationPlaying == false && IsKeyPressed(KEY_E))
     {
         this->startAnimation();
     }
-
+*/
     if (animationPlaying == true)
     {
         this->playAnimation();
     }
     animateIdle();
-    std::cout << this->playEnemyIdle << std::endl;
 }
 
 void BattleScene::Draw()
@@ -256,10 +259,6 @@ void BattleScene::playAnimation() {
 
 void BattleScene::startAnimation()
 {
-    // Has to determine attack source (hardcoded for now)
-    this->attackSource = sourcePlayer;
-    this->attackType = laser;
-
     // This part decides which animation is going to play based on the attackType-attribute
     switch (this->attackType)
     {
@@ -342,4 +341,28 @@ void BattleScene::playerAttack()
     }
 
 
+}
+
+void BattleScene::enemyAttack()
+{
+    this->attackSource = sourceEnemy;
+    this->attackType = this->enemyNextAttack;
+
+    switch (this->enemyNextAttack)
+    {
+        case punchEnemy:
+            this->player->currentHP = this->player->currentHP - this->enemy->damagePunch;
+            this->enemyNextAttack = necklace;
+            break;
+        case necklace:
+            this->player->currentHP = this->player->currentHP - this->enemy->damageNecklace;
+            this->enemyNextAttack = tazer;
+            break;
+        case tazer:
+            this->player->currentHP = this->player->currentHP - this->enemy->damageTazer;
+            this->enemyNextAttack = punchEnemy;
+            break;
+    }
+    this->startAnimation();
+    this->playerTurn = true;
 }
