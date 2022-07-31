@@ -21,10 +21,13 @@ Bouncer1::Bouncer1(int posX, int posY, Level enemyLevel, std::vector<std::string
 
     this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/punch.png");
     this->spritesheetAttackPunch.spriteCount = 7;
+    this->spritesheetAttackPunch.delay = 0;
     this->spritesheetAttackNecklace.sheet = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/necklace.png");
     this->spritesheetAttackNecklace.spriteCount = 7;
+    this->spritesheetAttackNecklace.delay = 0;
     this->spritesheetAttackTazer.sheet = LoadTexture("assets/graphics/combatAnimations/attack/bouncer1/tazer.png");
     this->spritesheetAttackTazer.spriteCount = 7;
+    this->spritesheetAttackTazer.delay = 2;
     this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/punch.png");
     this->spritesheetReactPunch.spriteCount = 6;
     this->spritesheetReactBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/bouncer1/bottlecap.png");

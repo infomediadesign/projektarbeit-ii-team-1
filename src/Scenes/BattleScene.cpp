@@ -49,7 +49,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->frameRecEnemy.x = 0;
     this->frameRecEnemy.y = 0;
 
-    this->playerTurn = false;
+    this->playerTurn = true;
     this->attackSelected = false;
     this->enemyNextAttack = punchEnemy;
 }
@@ -59,7 +59,13 @@ void BattleScene::Update() {
 
     if (this->playerTurn == true && this->animationPlaying == false)
     {
-        // Here goes a method for selecting attacks
+        // Here goes a method for selecting attacks (Hardcoded for now)
+
+        if (IsKeyPressed(KEY_E))
+        {
+            this->attackType = punchPlayer;
+            this->attackSelected = true;
+        }
 
         // Here goes a method for executing a selected attack
         if (this->attackSelected == true)
@@ -72,13 +78,7 @@ void BattleScene::Update() {
         this->enemyAttack();
     }
 
-/*
-    // Initialises attack (but still needs playAnimation() afterwards!!)
-    if (this->animationPlaying == false && IsKeyPressed(KEY_E))
-    {
-        this->startAnimation();
-    }
-*/
+
     if (animationPlaying == true)
     {
         this->playAnimation();
@@ -340,6 +340,7 @@ void BattleScene::playerAttack()
             this->startAnimation();
     }
 
+    this->attackSelected = false;
 
 }
 
