@@ -134,7 +134,10 @@ void BattleScene::Draw()
     // Draw HP bars
 
     // Player HP
-    DrawTexture(this->playerHpBar, 5, 5, WHITE);
+    DrawTexture(this->playerHpBar, GetScreenWidth() * 0.03, GetScreenHeight() * 0.2, WHITE);
+
+    // Enemy HP
+    DrawTexture(this->enemyHpBar, GetScreenWidth() * 0.07, GetScreenHeight() * 0.05, WHITE);
 
     EndMode2D();
 }
@@ -403,7 +406,7 @@ void BattleScene::updateHpBars() {
 
         this->playerHpBar = LoadTexture(directoryString.c_str());
     }
-    
+
     // Enemy HP bar
 
     float enemyPercentage = this->enemy->currentHP / this->enemy->maxHP;
@@ -416,7 +419,7 @@ void BattleScene::updateHpBars() {
     else
     {
         std::string directoryString = "assets/graphics/ui/combat/hp";
-        std::string workingString = std::to_string((int) playerPercentage);
+        std::string workingString = std::to_string((int) enemyPercentage);
 
         for (int i = 0; i < workingString.size(); i++) {
             directoryString.push_back(workingString[i]);

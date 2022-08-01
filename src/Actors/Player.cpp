@@ -21,6 +21,8 @@ Player::Player(int posX, int posY, bool genderMale)
 
     this->prevPosition = this->position;
 
+    this->name = "Dt. Carver";
+
     this->genderMale = genderMale;
     if (this->genderMale == true)
     {
