@@ -134,10 +134,18 @@ void BattleScene::Draw()
     // Draw HP bars
 
     // Player HP
-    DrawTexture(this->playerHpBar, GetScreenWidth() * 0.03, GetScreenHeight() * 0.2, WHITE);
+    Vector2 playerHpPos;
+    playerHpPos.x = GetScreenWidth() * 0.03;
+    playerHpPos.y = GetScreenHeight() * 0.2;
+    DrawTexture(this->playerHpBar, playerHpPos.x, playerHpPos.y, WHITE);
+    DrawText(this->player->getName().c_str(), playerHpPos.x + GetScreenWidth() * 0.022, playerHpPos.y + GetScreenHeight() * 0.077, 20, BLACK);
 
     // Enemy HP
-    DrawTexture(this->enemyHpBar, GetScreenWidth() * 0.07, GetScreenHeight() * 0.05, WHITE);
+    Vector2 enemyHpPos;
+    enemyHpPos.x = GetScreenWidth() * 0.38;
+    enemyHpPos.y = GetScreenHeight() - GetScreenHeight() * 1.043;
+    DrawTexture(this->enemyHpBar, enemyHpPos.x, enemyHpPos.y, WHITE);
+    DrawText(this->enemy->getName().c_str(), enemyHpPos.x + GetScreenWidth() * 0.022, enemyHpPos.y + GetScreenHeight() * 0.077, 20, BLACK);
 
     EndMode2D();
 }

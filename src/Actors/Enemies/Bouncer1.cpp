@@ -48,6 +48,7 @@ Bouncer1::Bouncer1(int posX, int posY, Level enemyLevel, std::vector<std::string
     this->collisionBox.height = frameRec.height;
     this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
 
+    this->name = "Bouncer";
     this->dialogue = dialogue;
 
     this->aggroRadius = 30;
