@@ -52,6 +52,8 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->playerTurn = true;
     this->attackSelected = false;
     this->enemyNextAttack = punchEnemy;
+
+    this->updateHpBars();
 }
 
 void BattleScene::Update() {
@@ -128,6 +130,12 @@ void BattleScene::Draw()
         }
             DrawTextureRec(this->enemyAnimation.sheet, this->frameRecEnemy, enemyPosition, WHITE);
     }
+
+    // Draw HP bars
+
+    // Player HP
+    DrawTexture(this->playerHpBar, 5, 5, WHITE);
+
     EndMode2D();
 }
 
@@ -342,6 +350,7 @@ void BattleScene::playerAttack()
 
     this->attackSelected = false;
 
+    this->updateHpBars();
 }
 
 void BattleScene::enemyAttack()
@@ -366,4 +375,57 @@ void BattleScene::enemyAttack()
     }
     this->startAnimation();
     this->playerTurn = true;
+    this->updateHpBars();
+}
+
+void BattleScene::updateHpBars() {
+    // Player HP bar
+
+    float playerPercentage = this->player->currentHP / this->player->maxHP;
+    // Adjusts percentage: We have 50 different HP bar textures, so the percentage can't exceed 50
+    playerPercentage = playerPercentage * 50;
+
+    if (this->player->currentHP <= 0) {
+        this->playerHpBar = LoadTexture("assets/graphics/ui/combat/hp0.png");
+    }
+    else
+    {
+        std::string directoryString = "assets/graphics/ui/combat/hp";
+        std::string workingString = std::to_string((int) playerPercentage);
+
+        for (int i = 0; i < workingString.size(); i++) {
+            directoryString.push_back(workingString[i]);
+        }
+        directoryString.push_back('.');
+        directoryString.push_back('p');
+        directoryString.push_back('n');
+        directoryString.push_back('g');
+
+        this->playerHpBar = LoadTexture(directoryString.c_str());
+    }
+    
+    // Enemy HP bar
+
+    float enemyPercentage = this->enemy->currentHP / this->enemy->maxHP;
+    // Adjusts percentage: We have 50 different HP bar textures, so the percentage can't exceed 50
+    enemyPercentage = enemyPercentage * 50;
+
+    if (this->enemy->currentHP <= 0) {
+        this->enemyHpBar = LoadTexture("assets/graphics/ui/combat/hp0.png");
+    }
+    else
+    {
+        std::string directoryString = "assets/graphics/ui/combat/hp";
+        std::string workingString = std::to_string((int) playerPercentage);
+
+        for (int i = 0; i < workingString.size(); i++) {
+            directoryString.push_back(workingString[i]);
+        }
+        directoryString.push_back('.');
+        directoryString.push_back('p');
+        directoryString.push_back('n');
+        directoryString.push_back('g');
+
+        this->enemyHpBar = LoadTexture(directoryString.c_str());
+    }
 }

@@ -80,6 +80,10 @@ Player::Player(int posX, int posY, bool genderMale)
     this->collisionBox.y = posY;
     this->collisionBox.height = frameRec.height;
     this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
+
+    this->maxHP = 50;
+    this->currentHP = this->maxHP;
+    this->defense = 0;
 }
 
 

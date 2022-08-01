@@ -53,6 +53,9 @@ public:
     bool attackSelected;
     bool enemyStunned;
 
+    // UI related
+    Texture2D playerHpBar;
+    Texture2D enemyHpBar;
 
     // Methods
 public:
@@ -68,4 +71,5 @@ void startAnimation();
 void playerAttack();
 void enemyAttack();
 
+void updateHpBars();
 };
