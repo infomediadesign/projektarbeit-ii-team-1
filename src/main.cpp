@@ -37,6 +37,8 @@ int main() {
 
     GameScreen currentScreen = TITLESCREEN ;
 
+
+
 #ifdef GAME_START_FULLSCREEN
     ToggleFullscreen();
 #endif
@@ -47,7 +49,14 @@ int main() {
     //Implementing menu
     MainMenuScene testMain;
 
-    Texture2D myTexture = LoadTexture("assets/graphics/testimage.png");
+    //Implementing Logo for Titlescreen
+    Texture2D titleScreen = LoadTexture("assets/graphics/ui/Logo02.png");
+
+    // Font loading
+    Font font1 = LoadFont("assets/graphics/fontHabbo.png");
+
+    Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Welcome to the Game!\nPlease press Enter to continue.",
+                             (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 80};
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
@@ -87,9 +96,6 @@ int main() {
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
         // Updates that are made by frame are coded here
-
-        //still need to implement screens in their respective scene folders...
-
 
         switch (currentScreen)
         {
@@ -135,16 +141,18 @@ int main() {
         // ========== DRAW ==========
 
         BeginDrawing();
-        ClearBackground(WHITE);
-
-
+        ClearBackground(BLACK);
 
         switch (currentScreen)
         {
             case TITLESCREEN:
             {
-                DrawText("This is a Titlescreen.\nPress Enter to continue",
-                         10, 10, 30, LIGHTGRAY);
+               // DrawTexture()
+
+                DrawTexture(titleScreen, Game::ScreenWidth/2 - titleScreen.width/2, Game::ScreenHeight/4 - titleScreen.height/4, WHITE);
+
+                DrawTextEx(font1, "Welcome to the Game!\nPlease press Enter to continue.",
+                         fontPosition1, font1.baseSize, 1,LIGHTGRAY);
                 break;
             }
 
@@ -178,9 +186,8 @@ int main() {
 
     // De-initialization here
 
-
-
-    UnloadTexture(myTexture);
+    UnloadTexture(titleScreen);
+    UnloadFont(font1);
 
     // Close window and OpenGL context
     CloseWindow();

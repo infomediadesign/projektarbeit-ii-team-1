@@ -7,6 +7,7 @@
 #include <iostream>
 
 MainMenuScene::MainMenuScene() {
+    //Buttons
     this->active_button = 0;
 
     this->button1 = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
