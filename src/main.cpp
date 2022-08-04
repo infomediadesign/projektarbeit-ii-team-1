@@ -50,13 +50,19 @@ int main() {
     MainMenuScene testMain;
 
     //Implementing Logo for Titlescreen
-    Texture2D titleScreen = LoadTexture("assets/graphics/ui/Logo02.png");
+    Image titleScreen = LoadImage("assets/graphics/ui/Logo02.png");
+    ImageResize(&titleScreen, 500, 500);
+    Texture2D logo = LoadTextureFromImage(titleScreen);
+    UnloadImage(titleScreen);
 
     // Font loading
     Font font1 = LoadFont("assets/graphics/fontHabbo.png");
 
-    Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Welcome to the Game!\nPlease press Enter to continue.",
-                             (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 80};
+    Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Welcome to the Game!",
+                             (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 300};
+
+    Vector2 fontPosition2 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Please press Enter to continue.",
+                                                                 (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
@@ -147,12 +153,11 @@ int main() {
         {
             case TITLESCREEN:
             {
-               // DrawTexture()
+                DrawTexture(logo, Game::ScreenWidth/2 - titleScreen.width/2, Game::ScreenHeight/4 - titleScreen.height/4, WHITE);
 
-                DrawTexture(titleScreen, Game::ScreenWidth/2 - titleScreen.width/2, Game::ScreenHeight/4 - titleScreen.height/4, WHITE);
+                DrawTextEx(font1, "Welcome to the Game!",fontPosition1, font1.baseSize, 1,LIGHTGRAY);
+                DrawTextEx(font1, "Please press Enter to continue.",fontPosition2, font1.baseSize, 1,LIGHTGRAY);
 
-                DrawTextEx(font1, "Welcome to the Game!\nPlease press Enter to continue.",
-                         fontPosition1, font1.baseSize, 1,LIGHTGRAY);
                 break;
             }
 
@@ -186,7 +191,7 @@ int main() {
 
     // De-initialization here
 
-    UnloadTexture(titleScreen);
+    UnloadImage(titleScreen);
     UnloadFont(font1);
 
     // Close window and OpenGL context
