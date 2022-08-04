@@ -20,6 +20,7 @@
         game::Button* button1;
         game::Button* button2;
         game::Button* button3;
+        game::Button* button4;
 
         int active_button;
 

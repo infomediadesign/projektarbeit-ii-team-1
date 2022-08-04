@@ -21,10 +21,7 @@
 #include "Scenes/MainMenuScene.h"
 #include <iostream>
 #include <memory>
-
-//Implementing menu
 #include <vector>
-#include "Scenes/Button.h"
 
 typedef enum GameScreen {TITLESCREEN, MAINMENU, GAME} GameScreen;
 
@@ -38,7 +35,6 @@ int main() {
     GameScreen currentScreen = TITLESCREEN ;
 
 
-
 #ifdef GAME_START_FULLSCREEN
     ToggleFullscreen();
 #endif
@@ -46,23 +42,23 @@ int main() {
     // Your own initialization code here
     // ...
 
-    //Implementing menu
-    MainMenuScene testMain;
-
     //Implementing Logo for Titlescreen
     Image titleScreen = LoadImage("assets/graphics/ui/Logo02.png");
     ImageResize(&titleScreen, 500, 500);
     Texture2D logo = LoadTextureFromImage(titleScreen);
     UnloadImage(titleScreen);
 
-    // Font loading
+    //Font loading
     Font font1 = LoadFont("assets/graphics/fontHabbo.png");
 
     Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Welcome to the Game!",
-                             (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 300};
+                                                                 (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 300};
 
     Vector2 fontPosition2 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Please press Enter to continue.",
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
+
+    //Implementing menu
+    MainMenuScene testMain;
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
@@ -153,7 +149,7 @@ int main() {
         {
             case TITLESCREEN:
             {
-                DrawTexture(logo, Game::ScreenWidth/2 - titleScreen.width/2, Game::ScreenHeight/4 - titleScreen.height/4, WHITE);
+                DrawTexture(logo, Game::ScreenWidth/2 - logo.width/2, Game::ScreenHeight/4 - logo.height/4, WHITE);
 
                 DrawTextEx(font1, "Welcome to the Game!",fontPosition1, font1.baseSize, 1,LIGHTGRAY);
                 DrawTextEx(font1, "Please press Enter to continue.",fontPosition2, font1.baseSize, 1,LIGHTGRAY);
@@ -191,7 +187,7 @@ int main() {
 
     // De-initialization here
 
-    UnloadImage(titleScreen);
+    UnloadTexture(logo);
     UnloadFont(font1);
 
     // Close window and OpenGL context
