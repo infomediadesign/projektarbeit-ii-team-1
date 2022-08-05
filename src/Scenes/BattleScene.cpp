@@ -54,6 +54,30 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->enemyNextAttack = punchEnemy;
 
     this->updateHpBars();
+    this->endBattle = false;
+
+    this->state = Main;
+    this->activeButton = 0;
+    std::shared_ptr<game::Button> workingPtr;
+    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                          LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                          GetScreenWidth() / 3,
+                                          GetScreenHeight() / 4,
+                                          true);
+    this->buttons.push_back(workingPtr);
+    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                GetScreenWidth() / 2 - 150,
+                                                GetScreenHeight() / 4,
+                                                true);
+    this->buttons.push_back(workingPtr);
+    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                GetScreenWidth() / 2,
+                                                GetScreenHeight() / 4,
+                                                true);
+    this->buttons.push_back(workingPtr);
+
 }
 
 void BattleScene::Update() {
@@ -61,13 +85,15 @@ void BattleScene::Update() {
 
     if (this->playerTurn == true && this->animationPlaying == false)
     {
-        // Here goes a method for selecting attacks (Hardcoded for now)
 
-        if (IsKeyPressed(KEY_E))
-        {
-            this->attackType = punchPlayer;
-            this->attackSelected = true;
-        }
+            // Here goes a method for selecting attacks (Hardcoded for now)
+
+            this->menuNavigation();
+
+            if (IsKeyPressed(KEY_L)) {
+                this->attackType = punchPlayer;
+                this->attackSelected = true;
+            }
 
         // Here goes a method for executing a selected attack
         if (this->attackSelected == true)
@@ -146,6 +172,14 @@ void BattleScene::Draw()
     enemyHpPos.y = GetScreenHeight() - GetScreenHeight() * 1.043;
     DrawTexture(this->enemyHpBar, enemyHpPos.x, enemyHpPos.y, WHITE);
     DrawText(this->enemy->getName().c_str(), enemyHpPos.x + GetScreenWidth() * 0.022, enemyHpPos.y + GetScreenHeight() * 0.077, 20, BLACK);
+
+
+    // Draw other UI elements
+
+    for (auto& button : buttons)
+    {
+        DrawTexture(button->getTexture(), button->pos_x, button->pos_y, WHITE);
+    }
 
     EndMode2D();
 }
@@ -438,5 +472,50 @@ void BattleScene::updateHpBars() {
         directoryString.push_back('g');
 
         this->enemyHpBar = LoadTexture(directoryString.c_str());
+    }
+}
+
+void BattleScene::menuNavigation() {
+    switch (this->state) {
+        case Main:
+            if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
+                buttons[activeButton]->active = false;
+                if (activeButton < buttons.size() - 1)
+                    activeButton++;
+                else activeButton = 0;
+
+                buttons[activeButton]->active = true;
+            }
+
+            if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
+                buttons[activeButton]->active = false;
+                if (activeButton == 0)
+                    activeButton = buttons.size() - 1;
+                else activeButton--;
+
+                buttons[activeButton]->active = true;
+            }
+            if (IsKeyPressed(KEY_E)) {
+                switch (activeButton) // 0 = Attack | 1 = Items | 2 = Flee
+                {
+                    case 0:
+                        this->state = Attack;
+                        // Load buttons for Attack!
+                        break;
+                    case 1:
+                        this->state = Items;
+                        // Load item menu
+                        break;
+                    case 2:
+                        this->endBattle = true;
+                        // Randomizer??
+                        break;
+                }
+            }
+            break;
+        case Items:
+            if (IsKeyPressed(KEY_ESCAPE)) {
+                this->state = Main;
+            }
     }
 }

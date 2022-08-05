@@ -8,7 +8,7 @@
 #include "../Actors/Player.h"
 #include "../Actors/Enemies/Enemy.h"
 #include "../Actors/enums.h"
-
+#include "Button.h"
 
 #include <memory>
 
@@ -52,10 +52,15 @@ public:
     bool playerTurn;
     bool attackSelected;
     bool enemyStunned;
+    bool endBattle;
 
     // UI related
     Texture2D playerHpBar;
     Texture2D enemyHpBar;
+    BattleState state;
+    int activeButton;
+    std::vector<std::shared_ptr<game::Button>> buttons;
+
 
     // Methods
 public:
@@ -72,4 +77,6 @@ void playerAttack();
 void enemyAttack();
 
 void updateHpBars();
+
+void menuNavigation();
 };

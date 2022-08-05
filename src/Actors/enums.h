@@ -18,6 +18,12 @@ enum Direction
 enum GameState{Started, Paused, Stopped};
 enum Level{Tutorial, Level01, Rooftop, VIP};
 
+enum BattleState
+{
+    Main,
+    Attack,
+    Items
+};
 
 // Enums for the battle-scene
 enum AttackSource
@@ -40,3 +46,4 @@ enum AttackType
     necklace,
     tazer
 };
+
