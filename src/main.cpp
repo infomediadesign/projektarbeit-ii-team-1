@@ -23,7 +23,7 @@
 #include <memory>
 #include <vector>
 
-typedef enum GameScreen {TITLESCREEN, MAINMENU, GAME} GameScreen;
+typedef enum GameScreen {TITLESCREEN, MAINMENU, /*MAINOPTIONS, CREDITS, */ GAME} GameScreen;
 
 int main() {
     // Raylib initialization
@@ -32,7 +32,7 @@ int main() {
     // Set target FPS
     SetTargetFPS(60);
 
-    GameScreen currentScreen = TITLESCREEN ;
+    GameScreen currentScreen = TITLESCREEN;
 
 
 #ifdef GAME_START_FULLSCREEN
@@ -49,7 +49,7 @@ int main() {
     UnloadImage(titleScreen);
 
     //Font loading
-    Font font1 = LoadFont("assets/graphics/fontHabbo.png");
+    Font font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
     Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Welcome to the Game!",
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 300};
@@ -119,6 +119,24 @@ int main() {
                 break;
             }
 
+            /*case MAINOPTIONS:
+            {
+                if(IsKeyPressed(KEY_ESCAPE))
+                {
+                    currentScreen = MAINMENU;
+                }
+                break;
+            }
+
+            case CREDITS:
+            {
+                if(IsKeyPressed(KEY_ESCAPE))
+                {
+                    currentScreen = MAINMENU;
+                }
+                break;
+            }*/
+
             case GAME:
             {
                 // This is a test
@@ -141,8 +159,6 @@ int main() {
         }
 
         // ========== DRAW ==========
-
-
         BeginDrawing();
         ClearBackground(BLACK);
 
@@ -163,6 +179,30 @@ int main() {
                 testMain.Draw();
                 break;
             }
+
+            /*case MAINOPTIONS:
+            {
+                DrawText("Music\n"
+                         "SFX\n"
+                         "Brightness\n"
+                         "Fullscreen\n", Game::ScreenWidth/2, Game::ScreenHeight/4, 50, WHITE);
+                //Back (Esc)
+
+                break;
+            }
+
+            case CREDITS:
+            {
+                DrawText("Game Design: Marko Lapadatovic, Leah Berner\n"
+                         "Lead Artist: Leah Berner\n"
+                         "Artist: Marko Lapadatovic\n"
+                         "Lead Programmer: Maximilian Röck\n"
+                         "Programmer: Lena White, Sefer Tokdilli\n"
+                         "Sound Artist: Maximilian Röck", Game::ScreenWidth/2, Game::ScreenHeight/4, 50, WHITE);
+                //Back (Esc)
+
+                break;
+            }*/
 
             case GAME:
             {

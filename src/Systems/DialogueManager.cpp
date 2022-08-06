@@ -13,7 +13,7 @@
 DialogueManager::DialogueManager()
 {
 this->panelTexture = LoadTexture("assets/graphics/ui/dialogueWindow.png");
-this->font = LoadFont("assets/graphics/Habbo.ttf");
+this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 }
 
 void DialogueManager::Update()

@@ -16,11 +16,14 @@
     class MainMenuScene : MenuScenes
             {
         // Attributes
+            public:
+
+
     public:
-        game::Button* button1;
-        game::Button* button2;
-        game::Button* button3;
-        game::Button* button4;
+        game::Button* buttonNewGame;
+        game::Button* buttonOptions;
+        game::Button* buttonCredits;
+        game::Button* buttonExit;
 
         int active_button;
 
