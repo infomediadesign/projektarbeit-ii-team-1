@@ -8,6 +8,7 @@
 #include "Actor.h"
 #include "../Systems/DialogueManager.h"
 #include "Enemies/CombatStructs.h"
+#include "../Items/Item.h"
 #include <vector>
 #include <memory>
 
@@ -38,6 +39,9 @@ public:
     float maxHP;
     float currentHP;
 	int defense;
+
+    // Placeholder?
+    std::vector<std::shared_ptr<Item>> inventory;
 
 	bool moveLockAbsolute = false;
 

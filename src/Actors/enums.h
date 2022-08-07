@@ -47,3 +47,14 @@ enum AttackType
     tazer
 };
 
+enum ItemType
+{
+    itemPunchGun,
+    itembottlecapGun,
+    itemLaserGun,
+    itemBomb,
+    itemFrisbee,
+    itemHeal,
+    itemBottlecapAmmo
+};
+

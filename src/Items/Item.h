@@ -5,8 +5,16 @@
 #ifndef RAYLIBSTARTER_ITEM_H
 #define RAYLIBSTARTER_ITEM_H
 
+#include "../Actors/enums.h"
 
 class Item {
+
+public:
+ItemType type;
+
+int uses;
+
+bool showInLevel;
 
 };
 

@@ -53,31 +53,43 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->attackSelected = false;
     this->enemyNextAttack = punchEnemy;
 
+    // Setup for items
+    this->hasBottlecapGun = false;
+    this->hasPunchGun = false;
+    this->hasLaserGun = false;
+    this->bottlecapGunUses = 0;
+    this->punchGunUses = 0;
+    this->laserGunUses = 0;
+
+    for (int i = 0; i < this->player->inventory.size(); i++)
+    {
+        switch (this->player->inventory[i]->type)
+        {
+            case itemPunchGun:
+                this->hasPunchGun = true;
+                this->punchGunUses = this->player->inventory[i]->uses;
+                break;
+            case itemLaserGun:
+                this->hasLaserGun = true;
+                this->laserGunUses = this->player->inventory[i]->uses;
+                break;
+            case itembottlecapGun:
+                this->hasBottlecapGun = true;
+                this->bottlecapGunUses = this->player->inventory[i]->uses;
+                break;
+            case itemBomb:
+                this->bombUses = this->player->inventory[i]->uses;
+                break;
+            case itemFrisbee:
+                this->frisbeeUses = this->player->inventory[i]->uses;
+        }
+    }
+
     this->updateHpBars();
     this->endBattle = false;
 
     this->state = Main;
-    this->activeButton = 0;
-    std::shared_ptr<game::Button> workingPtr;
-    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                          LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                          GetScreenWidth() / 3,
-                                          GetScreenHeight() / 4,
-                                          true);
-    this->buttons.push_back(workingPtr);
-    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                GetScreenWidth() / 2 - 150,
-                                                GetScreenHeight() / 4,
-                                                true);
-    this->buttons.push_back(workingPtr);
-    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                GetScreenWidth() / 2,
-                                                GetScreenHeight() / 4,
-                                                true);
-    this->buttons.push_back(workingPtr);
-
+    this->initMainMenu();
 }
 
 void BattleScene::Update() {
@@ -86,10 +98,10 @@ void BattleScene::Update() {
     if (this->playerTurn == true && this->animationPlaying == false)
     {
 
-            // Here goes a method for selecting attacks (Hardcoded for now)
-
+            // Here goes a method for selecting attacks
             this->menuNavigation();
 
+            // This is hardcoded for now
             if (IsKeyPressed(KEY_L)) {
                 this->attackType = punchPlayer;
                 this->attackSelected = true;
@@ -476,46 +488,166 @@ void BattleScene::updateHpBars() {
 }
 
 void BattleScene::menuNavigation() {
-    switch (this->state) {
-        case Main:
-            if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
-                buttons[activeButton]->active = false;
-                if (activeButton < buttons.size() - 1)
-                    activeButton++;
-                else activeButton = 0;
+    std::shared_ptr<game::Button> workingPtr;
+    bool buttonUnlocked;
+    if (this->state == Main) {
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
+            buttons[activeButton]->active = false;
+            if (activeButton < buttons.size() - 1)
+                activeButton++;
+            else activeButton = 0;
 
-                buttons[activeButton]->active = true;
-            }
+            buttons[activeButton]->active = true;
+        }
 
-            if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
-                buttons[activeButton]->active = false;
-                if (activeButton == 0)
-                    activeButton = buttons.size() - 1;
-                else activeButton--;
+        if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
+            buttons[activeButton]->active = false;
+            if (activeButton == 0)
+                activeButton = buttons.size() - 1;
+            else activeButton--;
 
-                buttons[activeButton]->active = true;
+            buttons[activeButton]->active = true;
+        }
+        if (IsKeyPressed(KEY_E)) {
+            switch (activeButton) // 0 = Attack | 1 = Items | 2 = Flee
+            {
+                case 0:
+                    this->state = Attack;
+                    this->buttons.clear();
+                    // Load buttons for Attack
+                    this->activeButton = 0; // 0 = Upper left (Punch), 1 = Upper right (PunchGun), 2 = Lower left (BottlecapGun), 3 = lower right (LaserGun)
+
+                    // Punch
+                    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                GetScreenWidth() * 0.1,
+                                                                GetScreenHeight() * 0.385,
+                                                                true);
+                    this->buttons.push_back(workingPtr);
+
+                    // PunchGun
+                    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                GetScreenWidth() * 0.25 -
+                                                                workingPtr->texture_active.width,
+                                                                GetScreenHeight() * 0.385,
+                                                                true);
+                    this->buttons.push_back(workingPtr);
+
+                    // BottlecapGun
+                    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                GetScreenWidth() * 0.268,
+                                                                GetScreenHeight() * 0.385,
+                                                                true);
+                    this->buttons.push_back(workingPtr);
+
+                    // LaserGun
+                    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                                GetScreenWidth() * 0.3,
+                                                                GetScreenHeight() * 0.385,
+                                                                true);
+                    this->buttons.push_back(workingPtr);
+                    break;
+                case 1:
+                    this->state = Items;
+                    // Load item menu
+                    break;
+                case 2:
+                    this->endBattle = true;
+                    break;
             }
-            if (IsKeyPressed(KEY_E)) {
-                switch (activeButton) // 0 = Attack | 1 = Items | 2 = Flee
-                {
-                    case 0:
-                        this->state = Attack;
-                        // Load buttons for Attack!
-                        break;
-                    case 1:
-                        this->state = Items;
-                        // Load item menu
-                        break;
-                    case 2:
-                        this->endBattle = true;
-                        // Randomizer??
-                        break;
-                }
-            }
-            break;
-        case Items:
-            if (IsKeyPressed(KEY_ESCAPE)) {
-                this->state = Main;
-            }
+        }
     }
+        else if (this->state == Attack) {
+        if (IsKeyPressed(KEY_ESCAPE)) {
+            this->state = Main;
+            this->buttons.clear();
+            this->initMainMenu();
+        }
+        // Enable / Disable buttons
+
+        if (this->hasPunchGun == false || this->punchGunUses <= 0) {
+            // Disable Button
+        }
+        // Check bottlecap gun ammo
+        int bottlecapAmmo = 0;
+        for (int i = 0; i < this->player->inventory.size(); i++) {
+            if (this->player->inventory[i]->type == itemBottlecapAmmo) {
+                bottlecapAmmo++;
+            }
+        }
+        if (this->hasBottlecapGun == false || this->bottlecapGunUses <= 0 || bottlecapAmmo == 0) {
+            // Disable Button
+        }
+        if (this->hasLaserGun == false || this->laserGunUses <= 0) {
+            // Disable Button
+        }
+    }
+        else if (this->state == Items)
+        {
+            if (IsKeyPressed(KEY_ESCAPE))
+            {
+                this->state = Main;
+                this->buttons.clear();
+                this->initMainMenu();
+            }
+
+        // Get items from inventory
+        int countBomb = 0;
+        int countFrisbee = 0;
+        int countHeal = 0;
+        for (int i = 0; i < this->player->inventory.size(); i++)
+        {
+            switch (this->player->inventory[i]->type)
+            {
+                case itemBomb:
+                    countBomb++;
+                    break;
+                case itemFrisbee:
+                    countFrisbee++;
+                    break;
+                case itemHeal:
+                    countHeal++;
+            }
+        }
+        if (countBomb == 0 || this->bombUses == 0)
+        {
+            // Disable button
+        }
+        if (countFrisbee == 0 || this->frisbeeUses == 0)
+        {
+            // Disable button
+        }
+        if (countHeal == 0)
+        {
+            // Disable button
+        }
+    }
+}
+
+
+void BattleScene::initMainMenu()
+{
+    this->activeButton = 0;
+    std::shared_ptr<game::Button> workingPtr;
+    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                GetScreenWidth() * 0.1,
+                                                GetScreenHeight() * 0.385,
+                                                true);
+    this->buttons.push_back(workingPtr);
+    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                GetScreenWidth() * 0.25 - workingPtr->texture_active.width,
+                                                GetScreenHeight() * 0.385,
+                                                true);
+    this->buttons.push_back(workingPtr);
+    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+                                                GetScreenWidth() * 0.268,
+                                                GetScreenHeight() * 0.385,
+                                                true);
+    this->buttons.push_back(workingPtr);
 }

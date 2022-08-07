@@ -54,6 +54,16 @@ public:
     bool enemyStunned;
     bool endBattle;
 
+    // Core-System Items
+    bool hasPunchGun;
+    int punchGunUses;
+    bool hasLaserGun;
+    int laserGunUses;
+    bool hasBottlecapGun;
+    int bottlecapGunUses;
+    int bombUses;
+    int frisbeeUses;
+
     // UI related
     Texture2D playerHpBar;
     Texture2D enemyHpBar;
@@ -79,4 +89,5 @@ void enemyAttack();
 void updateHpBars();
 
 void menuNavigation();
+void initMainMenu();
 };
