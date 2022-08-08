@@ -19,7 +19,7 @@ class Player : public Actor {
 
 	// Attributes
 public:
-    InventoryScene inventory;
+    //InventoryScene inventory;
     SkillTreeScene skillree;
 
 
