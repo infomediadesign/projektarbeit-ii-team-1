@@ -19,11 +19,12 @@
 #include "Systems/DialogueManager.h"
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
+#include "Scenes/PauseScene.h"
 #include <iostream>
 #include <memory>
 #include <vector>
 
-typedef enum GameScreen {TITLESCREEN, MAINMENU, /*MAINOPTIONS, CREDITS, */ GAME} GameScreen;
+typedef enum GameScreen {TITLESCREEN, MAINMENU, MAINOPTIONS, CREDITS, GAME, PAUSEMENU, PAUSEOPTIONS} GameScreen;
 
 int main() {
     // Raylib initialization
@@ -48,17 +49,34 @@ int main() {
     Texture2D logo = LoadTextureFromImage(titleScreen);
     UnloadImage(titleScreen);
 
-    //Font loading
+    //Messages
+    //for Titlescreen
+    const char msg1[100] = "Welcome to the Game!";
+    const char msg2[100] = "Please press Enter to continue.";
+
+    //for Main Menu
+    //const char msg3[100] = "Please press Enter to continue.";
+
+    //for Options
+    const char msg4[100] = "Options";
+
+    //for Credits
+
+    //Font
     Font font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
-    Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Welcome to the Game!",
+    Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg1,
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 300};
-
-    Vector2 fontPosition2 = {Game::ScreenWidth/2 - MeasureTextEx(font1, "Please press Enter to continue.",
+    Vector2 fontPosition2 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg2,
+                                                                 (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
+    //Vector2 fontPosition3 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg3,
+    //                                                             (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
+    Vector2 fontPosition4 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg4,
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
 
     //Implementing menu
     MainMenuScene testMain;
+    PauseScene testPause;
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
 
@@ -112,14 +130,13 @@ int main() {
 
             case MAINMENU:
             {
-                //Menu with buttons
                 testMain.Update();
                 if(testMain.switchScene == true)
                     currentScreen = GAME;
                 break;
             }
 
-            /*case MAINOPTIONS:
+            case MAINOPTIONS:
             {
                 if(IsKeyPressed(KEY_ESCAPE))
                 {
@@ -135,10 +152,16 @@ int main() {
                     currentScreen = MAINMENU;
                 }
                 break;
-            }*/
+            }
 
             case GAME:
             {
+                //Issue: only works once opening the pausemenu, and lets itself close out with enter
+                if(IsKeyPressed(KEY_P))
+                {
+                    currentScreen = PAUSEMENU;
+                }
+
                 // This is a test
 
                 player.Update();
@@ -156,6 +179,35 @@ int main() {
 
                 break;
             }
+
+            case PAUSEMENU:
+            {
+                testPause.Update();
+
+                if(testPause.switchScene == true)
+                {
+                    currentScreen = GAME;
+                }
+
+                //how do i integrate condition to open options in pausemenu?
+                //maybe something like this?
+
+               /* if(buttonPauseoptions = active_button)
+                {
+                    currentScreen = PAUSEOPTIONS;
+                }*/
+
+                break;
+            }
+
+            case PAUSEOPTIONS:
+            {
+                if(IsKeyPressed(KEY_ESCAPE))
+                {
+                    currentScreen = PAUSEMENU;
+                }
+                break;
+            }
         }
 
         // ========== DRAW ==========
@@ -168,8 +220,8 @@ int main() {
             {
                 DrawTexture(logo, Game::ScreenWidth/2 - logo.width/2, Game::ScreenHeight/4 - logo.height/4, WHITE);
 
-                DrawTextEx(font1, "Welcome to the Game!",fontPosition1, font1.baseSize, 1,LIGHTGRAY);
-                DrawTextEx(font1, "Please press Enter to continue.",fontPosition2, font1.baseSize, 1,LIGHTGRAY);
+                DrawTextEx(font1, msg1,fontPosition1, font1.baseSize, 1,LIGHTGRAY);
+                DrawTextEx(font1, msg2,fontPosition2, font1.baseSize, 1,LIGHTGRAY);
 
                 break;
             }
@@ -180,8 +232,10 @@ int main() {
                 break;
             }
 
-            /*case MAINOPTIONS:
+            case MAINOPTIONS:
             {
+                DrawTextEx(font1, msg4,fontPosition4, font1.baseSize, 1,LIGHTGRAY);
+
                 DrawText("Music\n"
                          "SFX\n"
                          "Brightness\n"
@@ -202,7 +256,7 @@ int main() {
                 //Back (Esc)
 
                 break;
-            }*/
+            }
 
             case GAME:
             {
@@ -219,6 +273,12 @@ int main() {
 
                 player.Draw();
 
+                break;
+            }
+
+            case PAUSEMENU:
+            {
+                testPause.Draw();
                 break;
             }
         }

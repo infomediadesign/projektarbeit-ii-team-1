@@ -8,6 +8,12 @@
 #include <iostream>
 
 MainMenuScene::MainMenuScene() {
+    //Text with font
+    //probably need to work with pointers here (pointer for font type + figure out issue with "Game::etc.")
+    const char msg3[100] = "Please press Enter to continue.";
+
+    //Vector2 fontPosition3 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg3, (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
+
     //Buttons
     this->active_button = 0;
 
@@ -71,13 +77,11 @@ void MainMenuScene::Update() {
         buttons[active_button]->active = true;
     }
 
-
     if (IsKeyPressed(KEY_ENTER))
     {
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " pushed..." << std::endl;
     }
-
 }
 
 void MainMenuScene::Draw() {
