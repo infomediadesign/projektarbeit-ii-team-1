@@ -11,11 +11,17 @@
 #include "../Items/Item.h"
 #include <vector>
 #include <memory>
+#include "../Scenes/InventoryScene.h"
+#include "../Scenes/SkillTreeScene.h"
+
 
 class Player : public Actor {
 
 	// Attributes
 public:
+    InventoryScene inventory;
+    SkillTreeScene skillree;
+
 
     bool genderMale;
 
@@ -42,6 +48,9 @@ public:
 
     // Placeholder?
     std::vector<std::shared_ptr<Item>> inventory;
+
+    bool inventoryOpened = false;
+    bool skilltreeOpend = false;
 
 	bool moveLockAbsolute = false;
 
