@@ -57,7 +57,6 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->hasBottlecapGun = false;
     this->hasPunchGun = false;
     this->hasLaserGun = false;
-    this->bottlecapGunUses = 0;
     this->punchGunUses = 0;
     this->laserGunUses = 0;
 
@@ -75,7 +74,6 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
                 break;
             case itembottlecapGun:
                 this->hasBottlecapGun = true;
-                this->bottlecapGunUses = this->player->inventory[i]->uses;
                 break;
             case itemBomb:
                 this->bombUses = this->player->inventory[i]->uses;
@@ -85,6 +83,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
         }
     }
 
+    this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
     this->updateHpBars();
     this->endBattle = false;
 
@@ -97,15 +96,15 @@ void BattleScene::Update() {
 
     if (this->playerTurn == true && this->animationPlaying == false)
     {
+        // Here goes a method for selecting attacks
+        this->menuNavigation();
 
-            // Here goes a method for selecting attacks
-            this->menuNavigation();
-
-            // This is hardcoded for now
-            if (IsKeyPressed(KEY_L)) {
-                this->attackType = punchPlayer;
-                this->attackSelected = true;
-            }
+        // This is hardcoded for now
+        if (IsKeyPressed(KEY_L))
+        {
+            this->attackType = punchPlayer;
+            this->attackSelected = true;
+        }
 
         // Here goes a method for executing a selected attack
         if (this->attackSelected == true)
@@ -156,17 +155,14 @@ void BattleScene::Draw()
     {
         // Draw enemy animation
         Vector2 enemyPosition;
-        if (this->attackType == bomb || this->attackType == laser)
-        {
+        if (this->attackType == bomb || this->attackType == laser){
             enemyPosition.x = GetScreenWidth() * 0.25;
             enemyPosition.y = GetScreenHeight() - GetScreenHeight() * 1.076;
-        }
-        else
-        {
+        } else {
             enemyPosition.x = GetScreenWidth() * 0.2917;
             enemyPosition.y = GetScreenHeight() * 0.072;
         }
-            DrawTextureRec(this->enemyAnimation.sheet, this->frameRecEnemy, enemyPosition, WHITE);
+        DrawTextureRec(this->enemyAnimation.sheet, this->frameRecEnemy, enemyPosition, WHITE);
     }
 
     // Draw HP bars
@@ -176,20 +172,25 @@ void BattleScene::Draw()
     playerHpPos.x = GetScreenWidth() * 0.03;
     playerHpPos.y = GetScreenHeight() * 0.2;
     DrawTexture(this->playerHpBar, playerHpPos.x, playerHpPos.y, WHITE);
-    DrawText(this->player->getName().c_str(), playerHpPos.x + GetScreenWidth() * 0.022, playerHpPos.y + GetScreenHeight() * 0.077, 20, BLACK);
+    DrawTextEx(this->font, this->player->getName().c_str(),
+               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.022),
+                static_cast<float>(playerHpPos.y + GetScreenHeight() * 0.077)},
+               20, 1, BLACK);
 
     // Enemy HP
     Vector2 enemyHpPos;
     enemyHpPos.x = GetScreenWidth() * 0.38;
     enemyHpPos.y = GetScreenHeight() - GetScreenHeight() * 1.043;
     DrawTexture(this->enemyHpBar, enemyHpPos.x, enemyHpPos.y, WHITE);
-    DrawText(this->enemy->getName().c_str(), enemyHpPos.x + GetScreenWidth() * 0.022, enemyHpPos.y + GetScreenHeight() * 0.077, 20, BLACK);
+    DrawTextEx(this->font, this->enemy->getName().c_str(),
+               {static_cast<float>(enemyHpPos.x + GetScreenWidth() * 0.022),
+                static_cast<float>(enemyHpPos.y + GetScreenHeight() * 0.077)},
+               20, 1, BLACK);
 
 
     // Draw other UI elements
 
-    for (auto& button : buttons)
-    {
+    for (auto &button: buttons) {
         DrawTexture(button->getTexture(), button->pos_x, button->pos_y, WHITE);
     }
 
@@ -199,39 +200,34 @@ void BattleScene::Draw()
 void BattleScene::animateIdle() {
 
 
-    if (this->playPlayerIdle == true)
-    {
+    if (this->playPlayerIdle == true) {
         this->player->playIdle = true;
 
         this->player->framesCounter++;
 
-        if (this->player->framesCounter >= (60 / this->player->frameSpeed))
-        {
+        if (this->player->framesCounter >= (60 / this->player->frameSpeed)) {
             this->player->framesCounter = 0;
             this->player->currentFrame++;
 
-            if (this->player->currentFrame > 3)
-            {
+            if (this->player->currentFrame > 3) {
                 this->player->currentFrame = 0;
             }
 
             this->player->frameRec.x = (float) this->player->currentFrame * (float) this->player->spritesheet.width / 4;
         }
 
-        if (this->playEnemyIdle == true)
-        {
+        if (this->playEnemyIdle == true) {
             this->enemy->framesCounter++;
-            if (this->enemy->framesCounter >= (60 / this->enemy->frameSpeed))
-            {
+            if (this->enemy->framesCounter >= (60 / this->enemy->frameSpeed)) {
                 this->enemy->framesCounter = 0;
                 this->enemy->currentFrame++;
 
-                if (this->enemy->currentFrame > 3)
-                {
+                if (this->enemy->currentFrame > 3) {
                     this->enemy->currentFrame = 0;
                 }
 
-                this->enemy->frameRec.x = (float) this->enemy->currentFrame * (float) this->enemy->spritesheet.width / 4;
+                this->enemy->frameRec.x =
+                        (float) this->enemy->currentFrame * (float) this->enemy->spritesheet.width / 4;
                 this->enemy->framesCounter++;
             }
         }
@@ -291,8 +287,7 @@ void BattleScene::playAnimation() {
         }
         // Makes up for the fact that frisbee sheets have a sprite worth of empty space
         int spriteCountAdjusted = this->playerAnimation.spriteCount;
-        if (this->attackType == frisbee)
-        {
+        if (this->attackType == frisbee) {
             spriteCountAdjusted--;
         }
         if (this->currentFramePlayer >= spriteCountAdjusted) {
@@ -320,13 +315,9 @@ void BattleScene::playAnimation() {
 }
 
 
-
-
-void BattleScene::startAnimation()
-{
+void BattleScene::startAnimation() {
     // This part decides which animation is going to play based on the attackType-attribute
-    switch (this->attackType)
-    {
+    switch (this->attackType) {
         case punchPlayer:
             this->playerAnimation = this->player->spritesheetAttackPunch;
             this->enemyAnimation = this->enemy->spritesheetReactPunch;
@@ -364,7 +355,8 @@ void BattleScene::startAnimation()
             this->enemyAnimation = this->enemy->spritesheetAttackTazer;
             break;
         default:
-            std::cout << "[DEBUG] Error while selecting combat animations. Punch animations are being selected" << std::endl;
+            std::cout << "[DEBUG] Error while selecting combat animations. Punch animations are being selected"
+                      << std::endl;
             this->playerAnimation = this->player->spritesheetAttackPunch;
             this->enemyAnimation = this->enemy->spritesheetReactPunch;
     }
@@ -385,13 +377,11 @@ void BattleScene::startAnimation()
     }
 }
 
-void BattleScene::playerAttack()
-{
+void BattleScene::playerAttack() {
     // First: Items (Using items doesn't end the turn)
     this->attackSource = sourcePlayer;
 
-    switch (this->attackType)
-    {
+    switch (this->attackType) {
         case punchPlayer:
             this->enemy->currentHP = this->enemy->currentHP - 6;
             this->playerTurn = false;
@@ -410,13 +400,11 @@ void BattleScene::playerAttack()
     this->updateHpBars();
 }
 
-void BattleScene::enemyAttack()
-{
+void BattleScene::enemyAttack() {
     this->attackSource = sourceEnemy;
     this->attackType = this->enemyNextAttack;
 
-    switch (this->enemyNextAttack)
-    {
+    switch (this->enemyNextAttack) {
         case punchEnemy:
             this->player->currentHP = this->player->currentHP - this->enemy->damagePunch;
             this->enemyNextAttack = necklace;
@@ -444,9 +432,7 @@ void BattleScene::updateHpBars() {
 
     if (this->player->currentHP <= 0) {
         this->playerHpBar = LoadTexture("assets/graphics/ui/combat/hp0.png");
-    }
-    else
-    {
+    } else {
         std::string directoryString = "assets/graphics/ui/combat/hp";
         std::string workingString = std::to_string((int) playerPercentage);
 
@@ -469,9 +455,7 @@ void BattleScene::updateHpBars() {
 
     if (this->enemy->currentHP <= 0) {
         this->enemyHpBar = LoadTexture("assets/graphics/ui/combat/hp0.png");
-    }
-    else
-    {
+    } else {
         std::string directoryString = "assets/graphics/ui/combat/hp";
         std::string workingString = std::to_string((int) enemyPercentage);
 
@@ -559,8 +543,7 @@ void BattleScene::menuNavigation() {
                     break;
             }
         }
-    }
-        else if (this->state == Attack) {
+    } else if (this->state == Attack) {
         if (IsKeyPressed(KEY_ESCAPE)) {
             this->state = Main;
             this->buttons.clear();
@@ -578,30 +561,25 @@ void BattleScene::menuNavigation() {
                 bottlecapAmmo++;
             }
         }
-        if (this->hasBottlecapGun == false || this->bottlecapGunUses <= 0 || bottlecapAmmo == 0) {
+        if (this->hasBottlecapGun == false || bottlecapAmmo <= 0) {
             // Disable Button
         }
         if (this->hasLaserGun == false || this->laserGunUses <= 0) {
             // Disable Button
         }
-    }
-        else if (this->state == Items)
-        {
-            if (IsKeyPressed(KEY_ESCAPE))
-            {
-                this->state = Main;
-                this->buttons.clear();
-                this->initMainMenu();
-            }
+    } else if (this->state == Items) {
+        if (IsKeyPressed(KEY_ESCAPE)) {
+            this->state = Main;
+            this->buttons.clear();
+            this->initMainMenu();
+        }
 
         // Get items from inventory
         int countBomb = 0;
         int countFrisbee = 0;
         int countHeal = 0;
-        for (int i = 0; i < this->player->inventory.size(); i++)
-        {
-            switch (this->player->inventory[i]->type)
-            {
+        for (int i = 0; i < this->player->inventory.size(); i++) {
+            switch (this->player->inventory[i]->type) {
                 case itemBomb:
                     countBomb++;
                     break;
@@ -612,24 +590,20 @@ void BattleScene::menuNavigation() {
                     countHeal++;
             }
         }
-        if (countBomb == 0 || this->bombUses == 0)
-        {
+        if (countBomb == 0 || this->bombUses == 0) {
             // Disable button
         }
-        if (countFrisbee == 0 || this->frisbeeUses == 0)
-        {
+        if (countFrisbee == 0 || this->frisbeeUses == 0) {
             // Disable button
         }
-        if (countHeal == 0)
-        {
+        if (countHeal == 0) {
             // Disable button
         }
     }
 }
 
 
-void BattleScene::initMainMenu()
-{
+void BattleScene::initMainMenu() {
     this->activeButton = 0;
     std::shared_ptr<game::Button> workingPtr;
     workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),

@@ -60,11 +60,11 @@ public:
     bool hasLaserGun;
     int laserGunUses;
     bool hasBottlecapGun;
-    int bottlecapGunUses;
     int bombUses;
     int frisbeeUses;
 
     // UI related
+    Font font;
     Texture2D playerHpBar;
     Texture2D enemyHpBar;
     BattleState state;
