@@ -54,9 +54,6 @@ int main() {
     const char msg1[100] = "Welcome to the Game!";
     const char msg2[100] = "Please press Enter to continue.";
 
-    //for Main Menu
-    //const char msg3[100] = "Please press Enter to continue.";
-
     //for Options
     const char msg4[100] = "Options";
 
@@ -65,12 +62,13 @@ int main() {
     //Font
     Font font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
+    //Messages TitleScreen
     Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg1,
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 300};
     Vector2 fontPosition2 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg2,
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
-    //Vector2 fontPosition3 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg3,
-    //                                                             (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
+
+    //Messages OptionScreen
     Vector2 fontPosition4 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg4,
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
 
@@ -192,7 +190,7 @@ int main() {
                 //how do i integrate condition to open options in pausemenu?
                 //maybe something like this?
 
-               /* if(buttonPauseoptions = active_button)
+                /*if(buttonPauseoptions = active_button)
                 {
                     currentScreen = PAUSEOPTIONS;
                 }*/

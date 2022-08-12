@@ -3,3 +3,6 @@
 //
 
 #include "frisbee.h"
+
+int damage = 20;
+int use = 1; //per fight

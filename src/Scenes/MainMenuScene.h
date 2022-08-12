@@ -17,8 +17,12 @@
             {
         // Attributes
             public:
+                Texture2D background;
+                Texture2D mainMenuBox;
+                Font font1;
 
-
+                std::string Message1;
+                Vector2 fontPosition1;
 
     public:
         game::Button* buttonNewGame;
@@ -40,7 +44,6 @@
 
         void Update();
         void Draw();
-
 };
 
 #endif //RAYLIBSTARTER_MAINMENUSCENE_H

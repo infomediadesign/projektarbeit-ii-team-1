@@ -4,21 +4,44 @@
 
 #include "Button.h"
 
-Texture2D game::Button::getTexture() {
-    if (active)
-        return this->texture_active;
-
-    return this->texture_inactive;
-}
-
-game::Button::Button(Texture2D texture_active, Texture2D texture_inactive, int pos_x, int pos_y, bool active)
-        : texture_active(texture_active), texture_inactive(texture_inactive), pos_x(pos_x), pos_y(pos_y), active(active)
+game::Button::Button(std::string Text, float pos_x, float pos_y, float fontSize, float fontSpacing, Color colorSelected, Color colorNotSelected)
 {
+this->Text = Text;
+this->Position.x = pos_x;
+this->Position.y = pos_y;
+this->active = false;
 
+this->fontSize = fontSize;
+this->fontSpacing = fontSpacing;
+this->colorSelected = colorSelected;
+this->colorNotSelected = colorNotSelected;
+
+font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+blocked = false;
 }
 
 game::Button::~Button()
 {
-    UnloadTexture(this->texture_active);
-    UnloadTexture(this->texture_inactive);
+
+}
+
+void game::Button::Draw() {
+    Vector2 Positioning;
+    Positioning.x = Position.x - MeasureTextEx(font1, Text.c_str(), fontSize, fontSpacing).x/2;
+    Positioning.y = Position.y;
+
+    if (blocked == false)
+    {
+        DrawTextEx(font1, Text.c_str(), Positioning, fontSize, fontSpacing, colorNotSelected);
+    }
+    else
+    {
+        DrawTextEx(font1, Text.c_str(),Positioning , fontSize, fontSpacing, RED);
+    }
+    if (active == true)
+    {
+        DrawRectangleLines(Positioning.x, Positioning.y,
+                           MeasureTextEx(font1, Text.c_str(), fontSize, fontSpacing).x,
+                           MeasureTextEx(font1, Text.c_str(), fontSize, fontSpacing).y, colorSelected);
+    }
 }

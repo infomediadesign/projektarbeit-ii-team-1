@@ -5,24 +5,33 @@
 #include "raylib.h"
 
 #pragma once
+#include <string>
 
 namespace game {
 
     class Button {
     public:
-        Texture2D texture_active;
-        Texture2D texture_inactive;
 
-        int pos_x;
-        int pos_y;
+        std::string Text;
+
+        Vector2 Position;
 
         Button() = delete;
-        Button(Texture2D texture_active, Texture2D texture_inactive, int pos_x, int pos_y, bool active);
+        Button(std::string Text, float pos_x, float pos_y, float fontSize, float fontSpacing, Color colorSelected, Color colorNotSelected);
 
         ~Button();
 
         bool active;
-        Texture2D getTexture();
+        bool blocked;
+
+        Color colorSelected;
+        Color colorNotSelected;
+
+        float fontSize;
+        float fontSpacing;
+
+        Font font1;
+        void Draw();
     };
 
 }

@@ -18,6 +18,12 @@ class PauseScene : MenuScenes
         //Attributes
         public:
 
+    Texture2D pauseMenuBox;
+    Font font1;
+
+    std::string Message;
+    Vector2 fontPosition;
+
 public:
     game::Button* buttonReturnGame;
     game::Button* buttonPauseOptions;
