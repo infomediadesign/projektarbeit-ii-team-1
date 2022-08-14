@@ -5,13 +5,56 @@
 // This file shouldn't be in the Actors-Folder
 // However, I've failed to find a way to include this file if it isn't
 
+#pragma once
+
 enum Direction
 {
-up,
-down,
-left,
-right
+    up,
+    down,
+    left,
+    right
 };
 
-enum GameState{Started, Paused, Stoped};
-enum Level{Tutorial, LEVEL01, LEVEL02, LEVEL03};
+enum GameState{Started, Paused, Stopped};
+enum Level{Tutorial, Level01, Rooftop, VIP};
+
+enum BattleState
+{
+    Main,
+    Attack,
+    Items
+};
+
+// Enums for the battle-scene
+enum AttackSource
+{
+    sourcePlayer,
+    sourceEnemy
+};
+enum AttackType
+{
+    // Player attack types
+    punchPlayer,
+    punchGun,
+    bottlecap,
+    laser,
+    bomb,
+    frisbee,
+
+    // Enemy attack types
+    punchEnemy,
+    necklace,
+    tazer
+};
+
+enum ItemType
+{
+    itemPunchGun,
+    itembottlecapGun,
+    itemLaserGun,
+    itemBomb,
+    itemFrisbee,
+    itemHeal,
+    itemBottlecapAmmo
+};
+

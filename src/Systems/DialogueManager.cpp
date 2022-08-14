@@ -4,7 +4,7 @@
 
 #define PANEL_HEIGHT (GetScreenHeight() * 0.67777777777777)
 #define DIA_PADDING (GetScreenWidth() * 0.16)
-#define DIA_HEIGHT PANEL_HEIGHT + 125
+#define DIA_HEIGHT GetScreenHeight() * 0.7935;
 
 #include "DialogueManager.h"
 #include <iostream>
@@ -12,8 +12,8 @@
 
 DialogueManager::DialogueManager()
 {
-this->panelTexture = LoadTexture("assets/graphics/dialogueWindow.png");
-this->font = LoadFont("assets/graphics/fontHabbo.PNG");
+this->panelTexture = LoadTexture("assets/graphics/ui/dialogueWindow.png");
+this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 }
 
 void DialogueManager::Update()
@@ -91,21 +91,23 @@ void DialogueManager::drawDialogue()
 
         // Draw portrait
         Vector2 portraitPos;
-        portraitPos.x = 50;
-        portraitPos.y = PANEL_HEIGHT + 120;
+        portraitPos.x = GetScreenWidth() * 0.0305;
+        portraitPos.y = DIA_HEIGHT;
         DrawTextureRec(this->loadedSpritesheet, this->portraitRec, portraitPos , WHITE);
 
         // Draw name
         Vector2 namePos;
-        namePos.x = 30;
-        namePos.y = PANEL_HEIGHT + 26;
-        DrawTextEx(this->font, this->name.c_str(), namePos, 30, 5, BLACK);
+
+
+        namePos.x = (GetScreenWidth() * 0.07) - MeasureTextEx(this->font, this->name.c_str(), 30, 3).x/2;;
+        namePos.y = GetScreenHeight() * 0.702;
+        DrawTextEx(this->font, this->name.c_str(), namePos, 30, 3, BLACK);
 
 		// Draw dialogue
 		//DrawText(this->lineToDraw.c_str(), DIA_PADDING, PANEL_HEIGHT + 200, 60, GREEN);
         Vector2 diaPos;
         diaPos.x = DIA_PADDING;
-        diaPos.y = DIA_HEIGHT;
+        diaPos.y = DIA_HEIGHT
         DrawTextEx(this->font, this->lineToDraw.c_str(), diaPos, 70, 5, BLACK);
 	}
 }

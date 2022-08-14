@@ -7,26 +7,50 @@
 #include "Prop.h"
 #include "Actor.h"
 #include "../Systems/DialogueManager.h"
+#include "Enemies/CombatStructs.h"
+#include "../Items/Item.h"
 #include <vector>
 #include <memory>
+#include "../Scenes/InventoryScene.h"
+#include "../Scenes/SkillTreeScene.h"
+
 
 class Player : public Actor {
 
 	// Attributes
 public:
+    //InventoryScene inventory;
+    SkillTreeScene skillree;
+
+
+    bool genderMale;
 
 	// Regarding idle animation
 	Texture2D spritesheetIdle;
     bool playIdle;
 
-	//Rectangle frameRecWalk = { 0.0f, 0.0f, (float)spritesheetWalk.width / 4, (float)spritesheetWalk.height / 4 };
-
+    // Combat animations
+    CombatSheet spritesheetAttackPunch;
+    CombatSheet spritesheetAttackPunchGun;
+    CombatSheet spritesheetAttackBottlecap;
+    CombatSheet spritesheetAttackLaser;
+    CombatSheet spritesheetAttackBomb;
+    CombatSheet spritesheetAttackFrisbee;
+    CombatSheet spritesheetReactPunch;
+    CombatSheet spritesheetReactTazer;
 
 	Vector2 prevPosition;
 
 	// Character attributes. Better implemented using vectors?
-	int strength;
+    float maxHP;
+    float currentHP;
 	int defense;
+
+    // Placeholder?
+    std::vector<std::shared_ptr<Item>> inventory;
+
+    bool inventoryOpened = false;
+    bool skilltreeOpend = false;
 
 	bool moveLockAbsolute = false;
 
@@ -44,7 +68,7 @@ public:
 public:
 	Player();
 
-	Player(int posX, int posY, Texture2D spritesheet_, Texture2D spritesheetIdle_);
+	Player(int posX, int posY, bool genderMale);
 
 	void Update();
 

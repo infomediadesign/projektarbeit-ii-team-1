@@ -2,13 +2,17 @@
 // Created by Munchkin on 24.05.2022.
 //
 
-#ifndef RAYLIBSTARTER_SCENES_H
-#define RAYLIBSTARTER_SCENES_H
+#pragma once
 
 
 class Scenes {
 
+    // Attributes
+public:
+
+    // Methods
+public:
+    //virtual void Update();
+    //virtual void Draw();
+
 };
-
-
-#endif //RAYLIBSTARTER_SCENES_H
