@@ -32,6 +32,7 @@ namespace game {
 
         Font font1;
         void Draw();
+        void Unload();
     };
 
 }

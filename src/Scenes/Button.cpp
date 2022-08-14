@@ -45,3 +45,7 @@ void game::Button::Draw() {
                            MeasureTextEx(font1, Text.c_str(), fontSize, fontSpacing).y, colorSelected);
     }
 }
+
+void game::Button::Unload() {
+    UnloadFont(font1);
+}

@@ -21,8 +21,8 @@ class PauseScene : MenuScenes
     Texture2D pauseMenuBox;
     Font font1;
 
-    std::string Message;
-    Vector2 fontPosition;
+    std::string Message1;
+    Vector2 fontPosition1;
 
 public:
     game::Button* buttonReturnGame;
@@ -43,6 +43,7 @@ public:
 
     void Update();
     void Draw();
+    void Unload();
         };
 
 

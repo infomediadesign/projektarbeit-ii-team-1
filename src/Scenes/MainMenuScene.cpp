@@ -94,6 +94,13 @@ void MainMenuScene::Update() {
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
+
+    //Skips right ahead, basically skips main menu but why??
+    /*if (this->buttonNewGame->active == true)
+    {
+        this->switchScene = true;
+    }*/
+
 }
 
 void MainMenuScene::Draw() {
@@ -103,11 +110,17 @@ void MainMenuScene::Draw() {
     DrawTexture(mainMenuBox, (GetScreenWidth() - mainMenuBox.width)/2, (GetScreenHeight() - mainMenuBox.height)/2, WHITE);
 
     //Messages
-    DrawTextEx(font1, Message1.c_str(),fontPosition1, 100, 1,LIGHTGRAY);
+    DrawTextEx(font1, Message1.c_str(),fontPosition1, 100, 1,WHITE);
 
     //Buttons
     for (auto& button : buttons)
     {
        button->Draw();
     }
+}
+
+void MainMenuScene::Unload() {
+    UnloadFont(font1);
+    UnloadTexture(background);
+    UnloadTexture(mainMenuBox);
 }
