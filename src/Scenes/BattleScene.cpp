@@ -599,8 +599,6 @@ void BattleScene::menuNavigation() {
             this->initMainMenu();
         }
 
-
-
         // Enable / Disable buttons
         if (this->hasPunchGun == false || this->punchGunUses <= 0) {
             this->buttons[1]->blocked = true;
@@ -617,6 +615,39 @@ void BattleScene::menuNavigation() {
         }
         if (this->hasLaserGun == false || this->laserGunUses <= 0) {
             this->buttons[3]->blocked = true;
+        }
+        // Menu navigation
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
+            buttons[activeButton]->active = false;
+            if (this->activeButton != 1 && this->activeButton != 3)
+                activeButton++;
+            else activeButton--;
+
+            buttons[activeButton]->active = true;
+        }
+        if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
+            this->buttons[this->activeButton]->active = false;
+            if (this->activeButton != 0 && this->activeButton != 2)
+                this->activeButton--;
+            else activeButton++;
+
+            buttons[activeButton]->active = true;
+        }
+        if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)) {
+            this->buttons[this->activeButton]->active = false;
+            if (this->activeButton != 2 && this->activeButton != 3)
+                this->activeButton = this->activeButton + 2;
+            else this->activeButton = this->activeButton - 2;
+
+            buttons[activeButton]->active = true;
+        }
+        if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W)) {
+            this->buttons[this->activeButton]->active = false;
+            if (this->activeButton != 0 && this->activeButton != 1)
+                this->activeButton = this->activeButton - 2;
+            else this->activeButton = this->activeButton + 2;
+
+            buttons[activeButton]->active = true;
         }
     }
         else if (this->state == Items)
