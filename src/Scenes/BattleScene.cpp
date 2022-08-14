@@ -494,6 +494,8 @@ void BattleScene::updateHpBars() {
 
 void BattleScene::menuNavigation() {
     std::shared_ptr<game::Button> workingPtr;
+    std::string workingString;
+    int bottlecapAmmo = 0;
     bool buttonUnlocked;
     if (this->state == Main) {
        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
@@ -525,31 +527,60 @@ void BattleScene::menuNavigation() {
                     // Punch
                     workingPtr = std::make_shared<game::Button>("Punch",
                                                                 GetScreenWidth() * 0.1,
-                                                                GetScreenHeight() * 0.385,
+                                                                GetScreenHeight() * 0.395,
                                                                 50, 1, YELLOW, WHITE);
                     workingPtr->active = true;
                     this->buttons.push_back(workingPtr);
 
                     // PunchGun
                     workingPtr = std::make_shared<game::Button>("Punch Gun",
-                                                                GetScreenWidth() * 0.25,
-                                                                GetScreenHeight() * 0.385,
+                                                                GetScreenWidth() * 0.35,
+                                                                GetScreenHeight() * 0.395,
                                                                 50, 1, YELLOW, WHITE);
                     this->buttons.push_back(workingPtr);
 
                     // BottlecapGun
                     workingPtr = std::make_shared<game::Button>("Bottlecap Gun",
-                                                                GetScreenWidth() * 0.268,
-                                                                GetScreenHeight() * 0.385,
+                                                                GetScreenWidth() * 0.1,
+                                                                GetScreenHeight() * 0.44,
                                                                 50, 1, YELLOW, WHITE);
                     this->buttons.push_back(workingPtr);
 
                     // LaserGun
                     workingPtr = std::make_shared<game::Button>("Laser Gun",
-                                                                GetScreenWidth() * 0.3,
-                                                                GetScreenHeight() * 0.385,
+                                                                GetScreenWidth() * 0.35,
+                                                                GetScreenHeight() * 0.44,
                                                                  50, 1, YELLOW, WHITE);
+
                     this->buttons.push_back(workingPtr);
+
+                    // Adjust button text for uses left
+                    this->buttons[1]->Text.push_back(' ');
+                    this->buttons[1]->Text.push_back('x');
+                    workingString = std::to_string((int) this->punchGunUses);
+                    for (int i = 0; i < workingString.size(); i++) {
+                        this->buttons[1]->Text.push_back(workingString[i]);
+                    }
+                    // Check bottlecap gun ammo
+                    bottlecapAmmo = 0;
+                    TraceLog(LOG_INFO, workingString.c_str());
+                    for (int i = 0; i < this->player->inventory.size(); i++) {
+                        if (this->player->inventory[i]->type == bottlecapAmmo) {
+                            bottlecapAmmo++;
+                        }
+                    }
+                    this->buttons[2]->Text.push_back(' ');
+                    this->buttons[2]->Text.push_back('x');
+                    workingString = std::to_string((int) bottlecapAmmo);
+                    for (int i = 0; i < workingString.size(); i++) {
+                        this->buttons[2]->Text.push_back(workingString[i]);
+                    }
+                    this->buttons[3]->Text.push_back(' ');
+                    this->buttons[3]->Text.push_back('x');
+                    workingString = std::to_string((int) this->laserGunUses);
+                    for (int i = 0; i < workingString.size(); i++) {
+                        this->buttons[3]->Text.push_back(workingString[i]);
+                    }
                     break;
                 case 1:
                     this->state = Items;
@@ -567,23 +598,25 @@ void BattleScene::menuNavigation() {
             this->buttons.clear();
             this->initMainMenu();
         }
-        // Enable / Disable buttons
 
+
+
+        // Enable / Disable buttons
         if (this->hasPunchGun == false || this->punchGunUses <= 0) {
-            // Disable Button
+            this->buttons[1]->blocked = true;
         }
         // Check bottlecap gun ammo
-        int bottlecapAmmo = 0;
+        bottlecapAmmo = 0;
         for (int i = 0; i < this->player->inventory.size(); i++) {
-            if (this->player->inventory[i]->type == itemBottlecapAmmo) {
+            if (this->player->inventory[i]->type == bottlecapAmmo) {
                 bottlecapAmmo++;
             }
         }
         if (this->hasBottlecapGun == false || bottlecapAmmo <= 0) {
-            // Disable Button
+            this->buttons[2]->blocked = true;
         }
         if (this->hasLaserGun == false || this->laserGunUses <= 0) {
-            // Disable Button
+            this->buttons[3]->blocked = true;
         }
     }
         else if (this->state == Items)
