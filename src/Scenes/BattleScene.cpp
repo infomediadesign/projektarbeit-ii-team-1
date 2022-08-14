@@ -595,7 +595,6 @@ void BattleScene::menuNavigation() {
         else if (this->state == Attack) {
         if (IsKeyPressed(KEY_ESCAPE)) {
             this->state = Main;
-            this->buttons.clear();
             this->initMainMenu();
         }
 
@@ -649,13 +648,42 @@ void BattleScene::menuNavigation() {
 
             buttons[activeButton]->active = true;
         }
+        if (IsKeyPressed(KEY_E)) {
+            if (this->buttons[activeButton]->blocked == false) {
+                switch (this->activeButton) {
+                    case 0:
+                        this->attackType = punchPlayer;
+                        break;
+                    case 1:
+                        this->attackType = punchGun;
+                        break;
+                    case 2:
+                        this->attackType = bottlecap;
+                        break;
+                    case 3:
+                        this->attackType = laser;
+                        break;
+                    default:
+                        this->attackType = punchPlayer;
+                        TraceLog(LOG_INFO, "Error while selecting attacks. Default: playerPunch");
+                }
+                this->attackSelected = true;
+                this->state = Main;
+                this->initMainMenu();
+            }
+            else
+            {
+                // Play "blocked" sound
+            }
+        }
+
+
     }
         else if (this->state == Items)
         {
             if (IsKeyPressed(KEY_ESCAPE))
             {
                 this->state = Main;
-                this->buttons.clear();
                 this->initMainMenu();
             }
 
@@ -696,6 +724,7 @@ void BattleScene::menuNavigation() {
 void BattleScene::initMainMenu()
 {
    this->activeButton = 0;
+   this->buttons.clear();
     std::shared_ptr<game::Button> workingPtr;
     workingPtr = std::make_shared<game::Button>("Attack",
                                                 GetScreenWidth() * 0.1,
