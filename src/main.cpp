@@ -288,6 +288,8 @@ int main() {
 
     UnloadTexture(logo);
     UnloadFont(font1);
+    testMain.Unload();
+    testPause.Unload();
 
     // Close window and OpenGL context
     CloseWindow();

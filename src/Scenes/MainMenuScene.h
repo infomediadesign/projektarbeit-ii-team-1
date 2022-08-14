@@ -44,6 +44,7 @@
 
         void Update();
         void Draw();
+        void Unload();
 };
 
 #endif //RAYLIBSTARTER_MAINMENUSCENE_H

@@ -43,6 +43,7 @@ public:
 
     void Update();
     void Draw();
+    void Unload();
         };
 
 

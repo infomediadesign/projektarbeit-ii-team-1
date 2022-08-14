@@ -97,3 +97,8 @@ void PauseScene::Draw() {
         button->Draw();
     }
 }
+
+void PauseScene::Unload() {
+    UnloadFont(font1);
+    UnloadTexture(pauseMenuBox);
+}
