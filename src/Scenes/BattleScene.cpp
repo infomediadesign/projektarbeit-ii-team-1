@@ -53,6 +53,8 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->attackSelected = false;
     this->enemyNextAttack = punchEnemy;
 
+    this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
+
     // Setup for items
     this->hasBottlecapGun = false;
     this->hasPunchGun = false;
@@ -175,14 +177,18 @@ void BattleScene::Draw()
     playerHpPos.x = GetScreenWidth() * 0.03;
     playerHpPos.y = GetScreenHeight() * 0.2;
     DrawTexture(this->playerHpBar, playerHpPos.x, playerHpPos.y, WHITE);
-    DrawText(this->player->getName().c_str(), playerHpPos.x + GetScreenWidth() * 0.022, playerHpPos.y + GetScreenHeight() * 0.077, 20, BLACK);
+    DrawTextEx(this->font, this->player->getName().c_str(),
+               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.048 - MeasureTextEx(this->font, this->player->getName().c_str(), 20, 1).x/2),
+                static_cast<float>(playerHpPos.y + GetScreenHeight() * 0.077)}, 20, 1, BLACK);
 
     // Enemy HP
     Vector2 enemyHpPos;
-    enemyHpPos.x = GetScreenWidth() * 0.38;
+    enemyHpPos.x = GetScreenWidth() * 0.389;
     enemyHpPos.y = GetScreenHeight() - GetScreenHeight() * 1.043;
     DrawTexture(this->enemyHpBar, enemyHpPos.x, enemyHpPos.y, WHITE);
-    DrawText(this->enemy->getName().c_str(), enemyHpPos.x + GetScreenWidth() * 0.022, enemyHpPos.y + GetScreenHeight() * 0.077, 20, BLACK);
+    DrawTextEx(this->font, this->enemy->getName().c_str(),
+               {static_cast<float>(enemyHpPos.x + GetScreenWidth() * 0.048 - MeasureTextEx(this->font, this->enemy->getName().c_str(), 20, 1).x/2),
+                static_cast<float>(enemyHpPos.y + GetScreenHeight() * 0.077)}, 20, 1, BLACK);
 
 
     // Draw other UI elements
@@ -486,7 +492,7 @@ void BattleScene::updateHpBars() {
     }
 }
 
-void BattleScene::menuNavigation() { /*
+void BattleScene::menuNavigation() {
     std::shared_ptr<game::Button> workingPtr;
     bool buttonUnlocked;
     if (this->state == Main) {
@@ -517,32 +523,32 @@ void BattleScene::menuNavigation() { /*
                     this->activeButton = 0; // 0 = Upper left (Punch), 1 = Upper right (PunchGun), 2 = Lower left (BottlecapGun), 3 = lower right (LaserGun)
 
                     // Punch
-                    workingPtr = std::make_shared<game::Button>("Text1",
+                    workingPtr = std::make_shared<game::Button>("Punch",
                                                                 GetScreenWidth() * 0.1,
                                                                 GetScreenHeight() * 0.385,
                                                                 50, 1, YELLOW, WHITE);
+                    workingPtr->active = true;
                     this->buttons.push_back(workingPtr);
 
                     // PunchGun
-                    workingPtr = std::make_shared<game::Button>("Text2",
-                                                                GetScreenWidth() * 0.25 -
-                                                                workingPtr->texture_active.width,
+                    workingPtr = std::make_shared<game::Button>("Punch Gun",
+                                                                GetScreenWidth() * 0.25,
                                                                 GetScreenHeight() * 0.385,
                                                                 50, 1, YELLOW, WHITE);
                     this->buttons.push_back(workingPtr);
 
                     // BottlecapGun
-                    workingPtr = std::make_shared<game::Button>("Text3",
+                    workingPtr = std::make_shared<game::Button>("Bottlecap Gun",
                                                                 GetScreenWidth() * 0.268,
                                                                 GetScreenHeight() * 0.385,
                                                                 50, 1, YELLOW, WHITE);
                     this->buttons.push_back(workingPtr);
 
                     // LaserGun
-                    workingPtr = std::make_shared<game::Button>("Text4",
+                    workingPtr = std::make_shared<game::Button>("Laser Gun",
                                                                 GetScreenWidth() * 0.3,
                                                                 GetScreenHeight() * 0.385,
-                                                                50, 1, YELLOW, WHITE);
+                                                                 50, 1, YELLOW, WHITE);
                     this->buttons.push_back(workingPtr);
                     break;
                 case 1:
@@ -619,30 +625,28 @@ void BattleScene::menuNavigation() { /*
         {
             // Disable button
         }
-    }*/
+    }
 }
 
 
 void BattleScene::initMainMenu()
 {
-   /* this->activeButton = 0;
+   this->activeButton = 0;
     std::shared_ptr<game::Button> workingPtr;
-    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
+    workingPtr = std::make_shared<game::Button>("Attack",
                                                 GetScreenWidth() * 0.1,
                                                 GetScreenHeight() * 0.385,
-                                                true);
+                                                50, 1, YELLOW, WHITE);
+    workingPtr->active = true;
     this->buttons.push_back(workingPtr);
-    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                GetScreenWidth() * 0.25 - workingPtr->texture_active.width,
+    workingPtr = std::make_shared<game::Button>("Items",
+                                                GetScreenWidth() * 0.25,
                                                 GetScreenHeight() * 0.385,
-                                                true);
+                                                50, 1, YELLOW, WHITE);
     this->buttons.push_back(workingPtr);
-    workingPtr = std::make_shared<game::Button>(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                                GetScreenWidth() * 0.268,
+    workingPtr = std::make_shared<game::Button>("Flee",
+                                                GetScreenWidth() * 0.35,
                                                 GetScreenHeight() * 0.385,
-                                                true);
-    this->buttons.push_back(workingPtr);*/
+                                                50, 1, YELLOW, WHITE);
+    this->buttons.push_back(workingPtr);
 }
