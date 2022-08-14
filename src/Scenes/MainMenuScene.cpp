@@ -103,7 +103,7 @@ void MainMenuScene::Draw() {
     DrawTexture(mainMenuBox, (GetScreenWidth() - mainMenuBox.width)/2, (GetScreenHeight() - mainMenuBox.height)/2, WHITE);
 
     //Messages
-    DrawTextEx(font1, Message1.c_str(),fontPosition1, 100, 1,LIGHTGRAY);
+    DrawTextEx(font1, Message1.c_str(),fontPosition1, 100, 1,WHITE);
 
     //Buttons
     for (auto& button : buttons)

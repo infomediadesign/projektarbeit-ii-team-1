@@ -17,29 +17,29 @@ PauseScene::PauseScene()
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
-    Message = "Pause Menu";
+    Message1 = "Pause Menu";
 
-    fontPosition = {GetScreenWidth()/2 -
-                    MeasureTextEx(font1, Message.c_str(), (float)font1.baseSize, 1).x/2,
-                    GetScreenHeight() - (float)font1.baseSize/2 - 800};
+    fontPosition1 = {GetScreenWidth()/2 -
+                    MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
+                    GetScreenHeight() - (float)100/2 - 750};
 
     //Buttons
     this->active_button = 0;
 
     this->buttonReturnGame = new game::Button("Return to Game",
-                                           100,
-                                           100,
+                                              GetScreenWidth()/2,
+                                              GetScreenHeight()/2 - 100,
                                               50, 1, YELLOW, WHITE);
     this->buttonReturnGame->active = true;
 
     this->buttonPauseOptions = new game::Button("Options",
-                                           100,
-                                           200,
+                                                GetScreenWidth()/2,
+                                                GetScreenHeight()/2,
                                            50, 1, YELLOW, WHITE);
 
     this->buttonReturnMainMenu = new game::Button("Return to Main Menu",
-                                        100,
-                                        300,
+                                                  GetScreenWidth()/2,
+                                                  GetScreenHeight()/2 + 100,
                                         50, 1, YELLOW, WHITE);
 
     this->buttons.push_back(buttonReturnGame);
@@ -79,17 +79,19 @@ void PauseScene::Update() {
     if (IsKeyPressed(KEY_ENTER))
     {
         this->switchScene = true;
-        std::cout << "Button Nr. " << active_button << " pushed..." << std::endl;
+        std::cout << "Button Nr. " << active_button << "was pushed..." << std::endl;
     }
 }
 
 void PauseScene::Draw() {
 
-    DrawText("This is the Pause Menu.\nPlease use the arrow keys to select your desired option:\nThen press Enter to continue.",
-             10, 10, 30, LIGHTGRAY);
-
+    //Textures
     DrawTexture(pauseMenuBox, (GetScreenWidth() - pauseMenuBox.width)/2, (GetScreenHeight() - pauseMenuBox.height)/2, WHITE);
 
+    //Messages
+    DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
+
+    //Buttons
     for (auto& button : buttons)
     {
         button->Draw();

@@ -218,8 +218,8 @@ int main() {
             {
                 DrawTexture(logo, Game::ScreenWidth/2 - logo.width/2, Game::ScreenHeight/4 - logo.height/4, WHITE);
 
-                DrawTextEx(font1, msg1,fontPosition1, font1.baseSize, 1,LIGHTGRAY);
-                DrawTextEx(font1, msg2,fontPosition2, font1.baseSize, 1,LIGHTGRAY);
+                DrawTextEx(font1, msg1,fontPosition1, font1.baseSize, 1,WHITE);
+                DrawTextEx(font1, msg2,fontPosition2, font1.baseSize, 1,WHITE);
 
                 break;
             }
