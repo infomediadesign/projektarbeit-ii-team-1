@@ -4,10 +4,14 @@
 
 #include "BattleScene.h"
 #include <iostream>
-#include "../Items/PunchGun.h"
+#include "../Items/Bomb.h"
+#include "../Items/Frisbee.h"
+#include "../Items/Longdrink.h"
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
+    this->endBattle = false;
+    this->gameOver = false;
 
     this->controlsLocked = false;
     this->animationPlaying = false;
@@ -51,6 +55,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->frameRecEnemy.x = 0;
     this->frameRecEnemy.y = 0;
 
+    this->enemyStunnedFor = 0;
     this->playerTurn = true;
     this->attackSelected = false;
     this->enemyNextAttack = punchEnemy;
@@ -66,6 +71,8 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->bottlecapGunDmg = 0;
     this->laserGunDmg = 0;
     this->punchGunDmg = 0;
+    this->frisbeeUses = 0;
+    this->bombUses = 0;
 
 
     for (int i = 0; i < this->player->inventory.size(); i++)
@@ -104,34 +111,22 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 void BattleScene::Update() {
     this->framesCounter++;
 
+    if (this->player->currentHP <= 0)
+    {
+        this->gameOver = true;
+    }
+
     if (this->playerTurn == true && this->animationPlaying == false)
     {
+        this->menuNavigation();
 
-            // Here goes a method for selecting attacks
-            this->menuNavigation();
-
-            // This is hardcoded for now
-            if (IsKeyPressed(KEY_L))
-            {
-                this->attackType = punchPlayer;
-                this->attackSelected = true;
-            }
-
-        // Here goes a method for executing a selected attack
-        if (this->attackSelected == true)
-        {
+        if (this->attackSelected == true) {
             this->playerAttack();
         }
     }
     if (this->playerTurn == false && this->animationPlaying == false)
     {
-        if (this->enemyStunned == false) {
-            this->enemyAttack();
-        }
-        else
-        {
-            this->enemyStunned = false;
-        }
+        this->enemyAttack();
     }
 
 
@@ -416,18 +411,21 @@ void BattleScene::playerAttack()
         case punchPlayer:
             this->enemy->currentHP = this->enemy->currentHP - 6;
             this->playerTurn = false;
+            this->enemyStunnedFor--;
             this->startAnimation();
             break;
         case punchGun:
             this->enemy->currentHP = this->enemy->currentHP - this->punchGunDmg;
             this->punchGunUses--;
             this->playerTurn = false;
+            this->enemyStunnedFor--;
             this->startAnimation();
             break;
         case laser:
             this->enemy->currentHP = this->enemy->currentHP - this->laserGunDmg;
             this->laserGunUses--;
             this->playerTurn = false;
+            this->enemyStunnedFor--;
             this->startAnimation();
             break;
         case bottlecap:
@@ -441,6 +439,7 @@ void BattleScene::playerAttack()
                 }
             }
             this->playerTurn = false;
+            this->enemyStunnedFor--;
             this->startAnimation();
             break;
         case frisbee:
@@ -449,7 +448,7 @@ void BattleScene::playerAttack()
             this->startAnimation();
             break;
         case bomb:
-            this->enemyStunned = true;
+            this->enemyStunnedFor = 2;
             this->bombUses--;
             this->startAnimation();
             break;
@@ -476,25 +475,27 @@ void BattleScene::playerAttack()
 
 void BattleScene::enemyAttack()
 {
-    this->attackSource = sourceEnemy;
-    this->attackType = this->enemyNextAttack;
-
-    switch (this->enemyNextAttack)
+    if (this->enemyStunnedFor <= 0)
     {
-        case punchEnemy:
-            this->player->currentHP = this->player->currentHP - this->enemy->damagePunch;
-            this->enemyNextAttack = necklace;
-            break;
-        case necklace:
-            this->player->currentHP = this->player->currentHP - this->enemy->damageNecklace;
-            this->enemyNextAttack = tazer;
-            break;
-        case tazer:
-            this->player->currentHP = this->player->currentHP - this->enemy->damageTazer;
-            this->enemyNextAttack = punchEnemy;
-            break;
+        this->attackSource = sourceEnemy;
+        this->attackType = this->enemyNextAttack;
+
+        switch (this->enemyNextAttack) {
+            case punchEnemy:
+                this->player->currentHP = this->player->currentHP - this->enemy->damagePunch;
+                this->enemyNextAttack = necklace;
+                break;
+            case necklace:
+                this->player->currentHP = this->player->currentHP - this->enemy->damageNecklace;
+                this->enemyNextAttack = tazer;
+                break;
+            case tazer:
+                this->player->currentHP = this->player->currentHP - this->enemy->damageTazer;
+                this->enemyNextAttack = punchEnemy;
+                break;
+        }
+        this->startAnimation();
     }
-    this->startAnimation();
     this->playerTurn = true;
     this->updateHpBars();
 }
@@ -555,6 +556,9 @@ void BattleScene::menuNavigation() {
     std::shared_ptr<game::Button> workingPtr;
     std::string workingString;
     int bottlecapAmmo = 0;
+    int healItems = 0;
+    bool hasFrisbee = false;
+    bool hasBomb = false;
     bool buttonUnlocked;
     if (this->state == Main) {
        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
@@ -622,7 +626,6 @@ void BattleScene::menuNavigation() {
                     }
                     // Check bottlecap gun ammo
                     bottlecapAmmo = 0;
-                    TraceLog(LOG_INFO, workingString.c_str());
                     for (int i = 0; i < this->player->inventory.size(); i++) {
                         if (this->player->inventory[i]->type == itemBottlecapAmmo) {
                             bottlecapAmmo++;
@@ -643,7 +646,80 @@ void BattleScene::menuNavigation() {
                     break;
                 case 1:
                     this->state = Items;
-                    // Load item menu
+                    this->buttons.clear();
+                    this->activeButton = 0;
+
+                    workingPtr = std::make_shared<game::Button>("Frisbee",
+                                                                GetScreenWidth() * 0.075,
+                                                                GetScreenHeight() * 0.415,
+                                                                50, 1, YELLOW, WHITE);
+                    workingPtr->active = true;
+                    this->buttons.push_back(workingPtr);
+                    workingPtr = std::make_shared<game::Button>("Discobomb",
+                                                                GetScreenWidth() * 0.24,
+                                                                GetScreenHeight() * 0.415,
+                                                                50, 1, YELLOW, WHITE);
+                    this->buttons.push_back(workingPtr);
+                    workingPtr = std::make_shared<game::Button>("Longdrink",
+                                                                GetScreenWidth() * 0.42,
+                                                                GetScreenHeight() * 0.415,
+                                                                50, 1, YELLOW, WHITE);
+                    this->buttons.push_back(workingPtr);
+
+                    // Adjust button text for uses left / item count
+
+                    // Just to be sure...
+                    hasBomb = false;
+                    hasFrisbee = false;
+                    healItems = 0;
+
+                    for (int i = 0; i < this->player->inventory.size(); i++)
+                    {
+                        switch (this->player->inventory[i]->type)
+                        {
+                            case itemBomb:
+                                hasBomb = true;
+                                break;
+                            case itemFrisbee:
+                                hasFrisbee = true;
+                                break;
+                            case itemHeal:
+                                healItems++;
+                        }
+                    }
+
+                    this->buttons[0]->Text.push_back(' ');
+                    this->buttons[0]->Text.push_back('x');
+                    if (hasFrisbee == true && this->frisbeeUses > 0) {
+                        workingString = std::to_string((int) this->frisbeeUses);
+                        for (int i = 0; i < workingString.size(); i++) {
+                            this->buttons[0]->Text.push_back(workingString[i]);
+                        }
+                    }
+                    else
+                    {
+                        this->buttons[0]->Text.push_back('0');
+                    }
+
+                    this->buttons[1]->Text.push_back(' ');
+                    this->buttons[1]->Text.push_back('x');
+                    if (hasBomb == true && bombUses > 0) {
+                        workingString = std::to_string((int) this->bombUses);
+                        for (int i = 0; i < workingString.size(); i++) {
+                            this->buttons[1]->Text.push_back(workingString[i]);
+                        }
+                    }
+                    else
+                    {
+                        this->buttons[1]->Text.push_back('0');
+                    }
+
+                    this->buttons[2]->Text.push_back(' ');
+                    this->buttons[2]->Text.push_back('x');
+                    workingString = std::to_string((int) healItems);
+                    for (int i = 0; i < workingString.size(); i++) {
+                        this->buttons[2]->Text.push_back(workingString[i]);
+                    }
                     break;
                 case 2:
                     this->endBattle = true;
@@ -764,18 +840,61 @@ void BattleScene::menuNavigation() {
                     countHeal++;
             }
         }
-        if (countBomb == 0 || this->bombUses == 0)
+        if (countBomb <= 0 || this->bombUses <= 0)
         {
-            // Disable button
+            this->buttons[1]->blocked = true;
         }
-        if (countFrisbee == 0 || this->frisbeeUses == 0)
+        if (countFrisbee <= 0 || this->frisbeeUses <= 0)
         {
-            // Disable button
+            this->buttons[0]->blocked = true;
         }
-        if (countHeal == 0)
+        if (countHeal <= 0)
         {
-            // Disable button
+            this->buttons[2]->blocked = true;
         }
+            if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
+                buttons[activeButton]->active = false;
+                if (activeButton < buttons.size() - 1)
+                    activeButton++;
+                else activeButton = 0;
+
+                buttons[activeButton]->active = true;
+            }
+
+            if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
+                buttons[activeButton]->active = false;
+                if (activeButton == 0)
+                    activeButton = buttons.size() - 1;
+                else activeButton--;
+
+                buttons[activeButton]->active = true;
+            }
+
+            if (IsKeyPressed(KEY_E)) {
+                if (this->buttons[activeButton]->blocked == false) {
+                    switch (this->activeButton) {
+                        case 0:
+                            this->attackType = frisbee;
+                            break;
+                        case 1:
+                            this->attackType = bomb;
+                            break;
+                        case 2:
+                            this->attackType = heal;
+                            break;
+                        default:
+                            this->attackType = punchPlayer;
+                            TraceLog(LOG_INFO, "Error while selecting items. Default: playerPunch");
+                    }
+                    this->attackSelected = true;
+                    this->state = Main;
+                    this->initMainMenu();
+                }
+                else
+                {
+                    // Play "blocked" sound
+                }
+            }
     }
 }
 
@@ -787,18 +906,18 @@ void BattleScene::initMainMenu()
     std::shared_ptr<game::Button> workingPtr;
     workingPtr = std::make_shared<game::Button>("Attack",
                                                 GetScreenWidth() * 0.1,
-                                                GetScreenHeight() * 0.385,
+                                                GetScreenHeight() * 0.415,
                                                 50, 1, YELLOW, WHITE);
     workingPtr->active = true;
     this->buttons.push_back(workingPtr);
     workingPtr = std::make_shared<game::Button>("Items",
                                                 GetScreenWidth() * 0.25,
-                                                GetScreenHeight() * 0.385,
+                                                GetScreenHeight() * 0.415,
                                                 50, 1, YELLOW, WHITE);
     this->buttons.push_back(workingPtr);
     workingPtr = std::make_shared<game::Button>("Flee",
                                                 GetScreenWidth() * 0.35,
-                                                GetScreenHeight() * 0.385,
+                                                GetScreenHeight() * 0.415,
                                                 50, 1, YELLOW, WHITE);
     this->buttons.push_back(workingPtr);
 }

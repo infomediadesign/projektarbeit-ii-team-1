@@ -51,8 +51,9 @@ public:
     AttackType enemyNextAttack;
     bool playerTurn;
     bool attackSelected;
-    bool enemyStunned;
+    int enemyStunnedFor;
     bool endBattle;
+    bool gameOver;
 
     // Core-System Items
     bool hasPunchGun;
