@@ -7,10 +7,10 @@
 
 #include "Item.h"
 
-class laserGun : public Item {
+class LaserGun : public Item {
 
 public:
-    laserGun(Vector2 position);
+    LaserGun(Vector2 position);
 
 };
 

@@ -2,9 +2,9 @@
 // Created by Munchkin on 04.08.2022.
 //
 
-#include "bottlecapGun.h"
+#include "BottlecapGun.h"
 
-bottlecapGun::bottlecapGun(Vector2 position)
+BottlecapGun::BottlecapGun(Vector2 position)
 {
     this->levelPosition = position;
     this->type = itemBottlecapGun;

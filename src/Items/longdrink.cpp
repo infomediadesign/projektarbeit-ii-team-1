@@ -2,9 +2,9 @@
 // Created by Munchkin on 04.08.2022.
 //
 
-#include "longdrink.h"
+#include "Longdrink.h"
 
-longdrink::longdrink()
+Longdrink::Longdrink()
 {
     this->type = itemHeal;
     this->name = "Longdrink";

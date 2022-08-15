@@ -2,9 +2,9 @@
 // Created by Munchkin on 04.08.2022.
 //
 
-#include "punchGun.h"
+#include "PunchGun.h"
 
-punchGun::punchGun(Vector2 position)
+PunchGun::PunchGun(Vector2 position)
 {
     this->levelPosition = position;
     this->type = itemPunchGun;

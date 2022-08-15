@@ -6,7 +6,7 @@
 
 #include "Item.h"
 
-class bottlecapGun : public Item {
+class Bomb : public Item{
 public:
-    bottlecapGun(Vector2 position);
+    Bomb();
 };

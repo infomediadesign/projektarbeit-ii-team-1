@@ -2,10 +2,10 @@
 // Created by Munchkin on 04.08.2022.
 //
 
-#include "frisbee.h"
+#include "Frisbee.h"
 
 
-frisbee::frisbee()
+Frisbee::Frisbee()
 {
     this->type = itemFrisbee;
     this->name = "Frisbee";

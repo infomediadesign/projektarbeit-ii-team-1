@@ -4,6 +4,7 @@
 
 #include "BattleScene.h"
 #include <iostream>
+#include "../Items/PunchGun.h"
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
@@ -18,6 +19,11 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->player = player;
     this->enemy = enemy;
+
+    // Test
+    std::shared_ptr<punchGun> testPtr = std::make_shared<PunchGun>({1, 2});
+
+    this->player->inventory.push_back()
 
     this->player->turn(up);
     this->enemy->turn(down);
@@ -158,7 +164,7 @@ void BattleScene::Draw()
     {
         // Draw enemy animation
         Vector2 enemyPosition;
-        if (this->attackType == bomb || this->attackType == laser)
+        if (this->attackType == Bomb || this->attackType == laser)
         {
             enemyPosition.x = GetScreenWidth() * 0.25;
             enemyPosition.y = GetScreenHeight() - GetScreenHeight() * 1.076;
@@ -297,7 +303,7 @@ void BattleScene::playAnimation() {
         }
         // Makes up for the fact that frisbee sheets have a sprite worth of empty space
         int spriteCountAdjusted = this->playerAnimation.spriteCount;
-        if (this->attackType == frisbee)
+        if (this->attackType == Frisbee)
         {
             spriteCountAdjusted--;
         }
@@ -337,7 +343,7 @@ void BattleScene::startAnimation()
             this->playerAnimation = this->player->spritesheetAttackPunch;
             this->enemyAnimation = this->enemy->spritesheetReactPunch;
             break;
-        case punchGun:
+        case PunchGun:
             this->playerAnimation = this->player->spritesheetAttackPunchGun;
             this->enemyAnimation = this->enemy->spritesheetReactPunch;
             break;
@@ -349,11 +355,11 @@ void BattleScene::startAnimation()
             this->playerAnimation = this->player->spritesheetAttackLaser;
             this->enemyAnimation = this->enemy->spritesheetReactLaser;
             break;
-        case bomb:
+        case Bomb:
             this->playerAnimation = this->player->spritesheetAttackBomb;
             this->enemyAnimation = this->enemy->spritesheetReactBomb;
             break;
-        case frisbee:
+        case Frisbee:
             this->playerAnimation = this->player->spritesheetAttackFrisbee;
             this->enemyAnimation = this->enemy->spritesheetReactFrisbee;
             break;
@@ -402,7 +408,7 @@ void BattleScene::playerAttack()
             this->enemy->currentHP = this->enemy->currentHP - 6;
             this->playerTurn = false;
             this->startAnimation();
-        case punchGun:
+        case PunchGun:
             // If there are uses left:
             //if ()
             // Has to account for upgraded damage
@@ -656,7 +662,7 @@ void BattleScene::menuNavigation() {
                         this->attackType = punchPlayer;
                         break;
                     case 1:
-                        this->attackType = punchGun;
+                        this->attackType = PunchGun;
                         break;
                     case 2:
                         this->attackType = bottlecap;

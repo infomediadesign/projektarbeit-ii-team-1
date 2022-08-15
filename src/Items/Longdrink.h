@@ -7,9 +7,9 @@
 
 #include "Item.h"
 
-class longdrink : public Item {
+class Longdrink : public Item {
 public:
-    longdrink();
+    Longdrink();
 };
 
 

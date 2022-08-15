@@ -2,9 +2,9 @@
 // Created by Munchkin on 04.08.2022.
 //
 
-#include "bomb.h"
+#include "Bomb.h"
 
-bomb::bomb()
+Bomb::Bomb()
 {
     this->type = itemBomb;
     this->name = "Discobomb";

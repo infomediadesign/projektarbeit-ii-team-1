@@ -7,9 +7,9 @@
 
 #include "Item.h"
 
-class frisbee : public Item {
+class Frisbee : public Item {
 public:
-    frisbee();
+    Frisbee();
 };
 
 

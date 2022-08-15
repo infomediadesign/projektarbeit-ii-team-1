@@ -2,9 +2,9 @@
 // Created by Munchkin on 04.08.2022.
 //
 
-#include "laserGun.h"
+#include "LaserGun.h"
 
-laserGun::laserGun(Vector2 position) {
+LaserGun::LaserGun(Vector2 position) {
     this->levelPosition = position;
     this->type = itemLaserGun;
     this->name = "Laser-Gun";
