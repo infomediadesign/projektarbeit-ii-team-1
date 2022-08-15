@@ -41,6 +41,8 @@ enum AttackType
     bomb,
     frisbee,
 
+    heal,
+
     // Enemy attack types
     punchEnemy,
     necklace,

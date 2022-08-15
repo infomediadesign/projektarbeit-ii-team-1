@@ -57,9 +57,12 @@ public:
     // Core-System Items
     bool hasPunchGun;
     int punchGunUses;
+    float punchGunDmg;
     bool hasLaserGun;
     int laserGunUses;
+    float laserGunDmg;
     bool hasBottlecapGun;
+    float bottlecapGunDmg;
     int bombUses;
     int frisbeeUses;
 

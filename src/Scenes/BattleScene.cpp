@@ -19,12 +19,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->player = player;
     this->enemy = enemy;
-
-    // Test
-    std::shared_ptr<punchGun> testPtr = std::make_shared<PunchGun>({1, 2});
-
-    this->player->inventory.push_back()
-
+    
     this->player->turn(up);
     this->enemy->turn(down);
     this->player->moveLockAbsolute = true;
@@ -68,6 +63,10 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->hasLaserGun = false;
     this->punchGunUses = 0;
     this->laserGunUses = 0;
+    this->bottlecapGunDmg = 0;
+    this->laserGunDmg = 0;
+    this->punchGunDmg = 0;
+
 
     for (int i = 0; i < this->player->inventory.size(); i++)
     {
@@ -76,13 +75,16 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
             case itemPunchGun:
                 this->hasPunchGun = true;
                 this->punchGunUses = this->player->inventory[i]->uses;
+                this->punchGunDmg = this->player->inventory[i]->damage;
                 break;
             case itemLaserGun:
                 this->hasLaserGun = true;
                 this->laserGunUses = this->player->inventory[i]->uses;
+                this->bottlecapGunDmg = this->player->inventory[i]->damage;
                 break;
             case itemBottlecapGun:
                 this->hasBottlecapGun = true;
+                this->laserGunDmg = this->player->inventory[i]->damage;
                 break;
             case itemBomb:
                 this->bombUses = this->player->inventory[i]->uses;
@@ -123,7 +125,13 @@ void BattleScene::Update() {
     }
     if (this->playerTurn == false && this->animationPlaying == false)
     {
-        this->enemyAttack();
+        if (this->enemyStunned == false) {
+            this->enemyAttack();
+        }
+        else
+        {
+            this->enemyStunned = false;
+        }
     }
 
 
@@ -164,7 +172,7 @@ void BattleScene::Draw()
     {
         // Draw enemy animation
         Vector2 enemyPosition;
-        if (this->attackType == Bomb || this->attackType == laser)
+        if (this->attackType == bomb || this->attackType == laser)
         {
             enemyPosition.x = GetScreenWidth() * 0.25;
             enemyPosition.y = GetScreenHeight() - GetScreenHeight() * 1.076;
@@ -303,7 +311,7 @@ void BattleScene::playAnimation() {
         }
         // Makes up for the fact that frisbee sheets have a sprite worth of empty space
         int spriteCountAdjusted = this->playerAnimation.spriteCount;
-        if (this->attackType == Frisbee)
+        if (this->attackType == frisbee)
         {
             spriteCountAdjusted--;
         }
@@ -343,7 +351,7 @@ void BattleScene::startAnimation()
             this->playerAnimation = this->player->spritesheetAttackPunch;
             this->enemyAnimation = this->enemy->spritesheetReactPunch;
             break;
-        case PunchGun:
+        case punchGun:
             this->playerAnimation = this->player->spritesheetAttackPunchGun;
             this->enemyAnimation = this->enemy->spritesheetReactPunch;
             break;
@@ -355,11 +363,11 @@ void BattleScene::startAnimation()
             this->playerAnimation = this->player->spritesheetAttackLaser;
             this->enemyAnimation = this->enemy->spritesheetReactLaser;
             break;
-        case Bomb:
+        case bomb:
             this->playerAnimation = this->player->spritesheetAttackBomb;
             this->enemyAnimation = this->enemy->spritesheetReactBomb;
             break;
-        case Frisbee:
+        case frisbee:
             this->playerAnimation = this->player->spritesheetAttackFrisbee;
             this->enemyAnimation = this->enemy->spritesheetReactFrisbee;
             break;
@@ -401,6 +409,7 @@ void BattleScene::playerAttack()
 {
     // First: Items (Using items doesn't end the turn)
     this->attackSource = sourcePlayer;
+    bool stopSearch = false; // Used for stopping item search when healing / attacking with the bottle cap gun
 
     switch (this->attackType)
     {
@@ -408,13 +417,56 @@ void BattleScene::playerAttack()
             this->enemy->currentHP = this->enemy->currentHP - 6;
             this->playerTurn = false;
             this->startAnimation();
-        case PunchGun:
-            // If there are uses left:
-            //if ()
-            // Has to account for upgraded damage
-            //this->enemy->currentHP = this->enemy->currentHP - 6;
+            break;
+        case punchGun:
+            this->enemy->currentHP = this->enemy->currentHP - this->punchGunDmg;
+            this->punchGunUses--;
             this->playerTurn = false;
             this->startAnimation();
+            break;
+        case laser:
+            this->enemy->currentHP = this->enemy->currentHP - this->laserGunDmg;
+            this->laserGunUses--;
+            this->playerTurn = false;
+            this->startAnimation();
+            break;
+        case bottlecap:
+            this->enemy->currentHP = this->enemy->currentHP - this->bottlecapGunDmg;
+            // Remove ammo
+            for (int i = 0; (i < this->player->inventory.size()) && stopSearch == false; i++) {
+                if (this->player->inventory[i]->type == itemBottlecapAmmo)
+                {
+                    this->player->inventory.erase(this->player->inventory.begin() + i);
+                    stopSearch = true;
+                }
+            }
+            this->playerTurn = false;
+            this->startAnimation();
+            break;
+        case frisbee:
+            this->enemy->currentHP = this->enemy->currentHP - 20;
+            this->frisbeeUses--;
+            this->startAnimation();
+            break;
+        case bomb:
+            this->enemyStunned = true;
+            this->bombUses--;
+            this->startAnimation();
+            break;
+        case heal:
+            this->player->currentHP = this->player->currentHP + 20;
+            if (this->player->currentHP > this->player->maxHP)
+            {
+                this->player->currentHP = this->player->maxHP;
+            }
+            // Remove item
+            for (int i = 0; (i < this->player->inventory.size()) && stopSearch == false; i++) {
+                if (this->player->inventory[i]->type == itemHeal) {
+                    this->player->inventory.erase(this->player->inventory.begin() + i);
+                    stopSearch = true;
+                }
+            }
+            break;
     }
 
     this->attackSelected = false;
@@ -572,7 +624,7 @@ void BattleScene::menuNavigation() {
                     bottlecapAmmo = 0;
                     TraceLog(LOG_INFO, workingString.c_str());
                     for (int i = 0; i < this->player->inventory.size(); i++) {
-                        if (this->player->inventory[i]->type == bottlecapAmmo) {
+                        if (this->player->inventory[i]->type == itemBottlecapAmmo) {
                             bottlecapAmmo++;
                         }
                     }
@@ -662,7 +714,7 @@ void BattleScene::menuNavigation() {
                         this->attackType = punchPlayer;
                         break;
                     case 1:
-                        this->attackType = PunchGun;
+                        this->attackType = punchGun;
                         break;
                     case 2:
                         this->attackType = bottlecap;
