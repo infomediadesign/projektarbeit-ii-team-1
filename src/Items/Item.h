@@ -10,34 +10,37 @@
 #define RAYLIBSTARTER_ITEM_H
 
 #include "../Actors/enums.h"
+#include <string>
 
-//namespace game{
-
-    //why is this greyed out???
     class Item {
 
     public:
         ItemType type;
 
-//alles andere zum item
-//den kindklassen (einzelne items) werden die attribute zugewiesen
-        char itemName;
-        int itemTexture; //not int here, but what else??
-        int price; //as attribute
-        int upgradePrice;
-        int damage; //even tho with heal items? //--> substract from health points
-        int heal; //add to health points
-//what else???
-        int uses; //(how) or (times)??? //--> as attribute
+        std::string name;
+        Texture2D texture;
+        Vector2 levelPosition; // Position of the Item inside a level
+        int price;
 
-        Item() = delete;
-        //Item(Texture2D, );
-        ~Item();
+        // Redundant: Is the same for every weapon. Will be handled by the shop-class
+        //int upgradePrice;
+
+        bool upgraded;
+
+        // The damage stat will be ignored for heal items and bombs
+        float damage; //--> substract from health points
+
+        int uses; // determines how many times an item / a weapon can be used in a single fight
 
         bool showInLevel;
 
-        Texture2D getTexture();
+        // We don't need constructors for an interface class :)
+        //Item() = delete;
+        //Item(Texture2D, );
+        //~Item();
+
+        // Not really necessary if itemTexture is public (good thinking, tho)
+        //virtual Texture2D getTexture();
     };
-//}
 
 #endif //RAYLIBSTARTER_ITEM_H

@@ -2,13 +2,11 @@
 // Created by Munchkin on 04.08.2022.
 //
 
-#ifndef RAYLIBSTARTER_BOMB_H
-#define RAYLIBSTARTER_BOMB_H
+#pragma once
 
+#include "Item.h"
 
-class bomb {
-
+class bomb : public Item{
+public:
+    bomb();
 };
-
-
-#endif //RAYLIBSTARTER_BOMB_H

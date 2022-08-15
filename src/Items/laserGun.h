@@ -5,8 +5,12 @@
 #ifndef RAYLIBSTARTER_LASERGUN_H
 #define RAYLIBSTARTER_LASERGUN_H
 
+#include "Item.h"
 
-class laserGun {
+class laserGun : public Item {
+
+public:
+    laserGun(Vector2 position);
 
 };
 

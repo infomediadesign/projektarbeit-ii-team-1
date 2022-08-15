@@ -5,8 +5,12 @@
 #ifndef RAYLIBSTARTER_PUNCHGUN_H
 #define RAYLIBSTARTER_PUNCHGUN_H
 
+#include "Item.h"
 
-class punchGun {
+class punchGun : public Item {
+
+public:
+    punchGun(Vector2 position);
 
 };
 

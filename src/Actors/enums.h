@@ -50,7 +50,7 @@ enum AttackType
 enum ItemType
 {
     itemPunchGun,
-    itembottlecapGun,
+    itemBottlecapGun,
     itemLaserGun,
     itemBomb,
     itemFrisbee,

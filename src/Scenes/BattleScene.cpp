@@ -7,6 +7,7 @@
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
+
     this->controlsLocked = false;
     this->animationPlaying = false;
     this->attackSource = sourcePlayer;
@@ -74,7 +75,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
                 this->hasLaserGun = true;
                 this->laserGunUses = this->player->inventory[i]->uses;
                 break;
-            case itembottlecapGun:
+            case itemBottlecapGun:
                 this->hasBottlecapGun = true;
                 break;
             case itemBomb:
