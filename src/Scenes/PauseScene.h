@@ -13,7 +13,7 @@
 #include "Button.h"
 #include <vector>
 
-class PauseScene : MenuScenes
+class PauseScene : public MenuScenes
         {
         //Attributes
         public:
@@ -41,8 +41,8 @@ public:
     PauseScene();
     ~PauseScene();
 
-    void Update();
-    void Draw();
+    void CustomUpdate() override;
+    void CustomDraw() override;
     void Unload();
         };
 

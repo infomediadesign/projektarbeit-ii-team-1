@@ -55,7 +55,7 @@ PauseScene::~PauseScene() {
     delete buttonReturnMainMenu;
 }
 
-void PauseScene::Update() {
+void PauseScene::CustomUpdate() {
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;
@@ -83,7 +83,7 @@ void PauseScene::Update() {
     }
 }
 
-void PauseScene::Draw() {
+void PauseScene::CustomDraw() {
 
     //Textures
     DrawTexture(pauseMenuBox, (GetScreenWidth() - pauseMenuBox.width)/2, (GetScreenHeight() - pauseMenuBox.height)/2, WHITE);

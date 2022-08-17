@@ -3,3 +3,13 @@
 //
 
 #include "SkillTreeScene.h"
+
+void SkillTreeScene::CustomUpdate()
+{
+
+}
+
+void SkillTreeScene::CustomDraw()
+{
+
+}

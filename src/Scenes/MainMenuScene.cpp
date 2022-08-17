@@ -68,7 +68,7 @@ MainMenuScene::~MainMenuScene() {
     delete buttonExit;
 }
 
-void MainMenuScene::Update() {
+void MainMenuScene::CustomUpdate() {
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;
@@ -92,6 +92,7 @@ void MainMenuScene::Update() {
     if (IsKeyPressed(KEY_ENTER))
     {
         this->switchScene = true;
+        this->switchTo = TESTSCENE; // HAS TO BE REPLACED WITH "GAME" WHEN POSSIBLE!!
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
 
@@ -103,7 +104,7 @@ void MainMenuScene::Update() {
 
 }
 
-void MainMenuScene::Draw() {
+void MainMenuScene::CustomDraw() {
 
     //Textures
     DrawTexture(background, 0, 0, WHITE);

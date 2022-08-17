@@ -108,7 +108,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->initMainMenu();
 }
 
-void BattleScene::Update() {
+void BattleScene::CustomUpdate() {
     this->framesCounter++;
 
     if (this->player->currentHP <= 0)
@@ -137,7 +137,7 @@ void BattleScene::Update() {
     animateIdle();
 }
 
-void BattleScene::Draw()
+void BattleScene::CustomDraw()
 {
     BeginMode2D(this->camera);
 

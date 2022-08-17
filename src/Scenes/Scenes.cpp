@@ -3,3 +3,13 @@
 //
 
 #include "Scenes.h"
+
+void Scenes::Update()
+{
+    this->CustomUpdate();
+}
+
+void Scenes::Draw()
+{
+    this->CustomDraw();
+}

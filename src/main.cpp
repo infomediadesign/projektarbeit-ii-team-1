@@ -21,11 +21,12 @@
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
 #include "Scenes/CreditScene.h"
+#include "Scenes/LevelScene.h"
 #include <iostream>
 #include <memory>
 #include <vector>
 
-typedef enum GameScreen {TITLESCREEN, MAINMENU, MAINOPTIONS, CREDITS, GAME, PAUSEMENU, PAUSEOPTIONS} GameScreen;
+
 
 int main() {
     // Raylib initialization
@@ -34,8 +35,6 @@ int main() {
     // Set target FPS
     SetTargetFPS(60);
 
-    GameScreen currentScreen = TITLESCREEN;
-
 
 #ifdef GAME_START_FULLSCREEN
     ToggleFullscreen();
@@ -43,6 +42,8 @@ int main() {
 
     // Your own initialization code here
     // ...
+
+    GameScreen currentScreen = TITLESCREEN;
 
     //Implementing Logo for Titlescreen
     Image titleScreen = LoadImage("assets/graphics/ui/Logo02.png");
@@ -78,7 +79,18 @@ int main() {
     CreditScene testCredit;
     PauseScene testPause;
 
-    // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
+
+    // Level initialisation goes here (use shared pointers!)
+    // Maybe you need to use pointers for rooms
+    //std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>();
+    std::shared_ptr<LevelScene> level01;
+    std::shared_ptr<LevelScene> levelRooftop;
+
+    // Scene management
+    std::shared_ptr<Scenes> activeScene = std::make_shared<MainMenuScene>();
+    std::shared_ptr<LevelScene> activeLevel;
+
+    // ALL OF THIS IS FOR TEST PURPOSES
 
     Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
 
@@ -105,9 +117,9 @@ int main() {
 
     actors.push_back(pActor);
 
-    std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
-    std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
-    BattleScene testBattle(testPlayer, testEnemy);
+    //std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
+    //std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
+    //BattleScene testBattle(testPlayer, testEnemy);
 
     // END OF TEST
 
@@ -115,105 +127,171 @@ int main() {
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        // Updates that are made by frame are coded here
+        // ========== UPDATE ==========
 
-        switch (currentScreen)
+        // Scene transition
+        if (activeScene->switchScene == true)
         {
-            case TITLESCREEN:
-            {
-                if(IsKeyPressed(KEY_ENTER))
-                {
-                    currentScreen = MAINMENU;
-                }
-                break;
-            }
+            activeScene->switchScene = false;
+            currentScreen = activeScene->switchTo;
 
-            case MAINMENU:
+            switch (activeScene->switchTo)
             {
-                testMain.Update();
-                if(testMain.switchScene == true)
-                    currentScreen = GAME;
-                break;
-            }
 
-            case MAINOPTIONS:
-            {
-                if(IsKeyPressed(KEY_ESCAPE))
+                case MAINMENU:
                 {
-                    currentScreen = MAINMENU;
-                }
-                break;
-            }
-
-            case CREDITS:
-            {
-                if(IsKeyPressed(KEY_ESCAPE))
-                {
-                    currentScreen = MAINMENU;
-                }
-                break;
-            }
-
-            case GAME:
-            {
-                //Issue: only works once opening the pausemenu, and lets itself close out with enter
-                if(IsKeyPressed(KEY_P))
-                {
-                    currentScreen = PAUSEMENU;
+                    activeScene = std::make_shared<MainMenuScene>();
+                    //if(testMain.switchScene == true)
+                    //    currentScreen = GAME;
+                    break;
                 }
 
-                // This is a test
+                case MAINOPTIONS:
+                {
+                    // Should be moved to scene update / into a class
+                    if(IsKeyPressed(KEY_ESCAPE))
+                    {
+                        currentScreen = MAINMENU;
+                    }
+                    break;
+                }
 
+                case CREDITS:
+                {
+                    // Should be moved to scene update / into a class
+                    if(IsKeyPressed(KEY_ESCAPE))
+                    {
+                        currentScreen = MAINMENU;
+                    }
+                    break;
+                }
+
+                case GAME:
+                {
+                    activeScene = activeLevel;
+
+
+
+                    /* All of this has to go to LevelScene.Update()!!
+
+                    //Issue: only works once opening the pausemenu, and lets itself close out with enter
+                    if(IsKeyPressed(KEY_P))
+                    {
+                        this->switchScene = true;
+                        this->switchTo = PAUSEMENU;
+                    }
+
+                    // This is a test
+
+                    player.Update();
+
+                    player.checkActorCollision(actors);
+
+                    player.interact(actors); //This garbage can be solved when we implemented a level-class
+
+                    for (int i = 0; i < actors.size(); i++)
+                    {
+                        actors[i]->Update();
+                    }
+                    */
+                    break;
+                }
+                case BATTLE:
+                    // Extract player and enemy from active level
+                    // Then make a new shared pointer with the extracted actors
+                    break;
+                case PAUSEMENU:
+                {
+                    activeScene = std::make_shared<PauseScene>();
+
+                    /* All of this has to go to PauseScene.Update()!
+                    if(testPause.switchScene == true)
+                    {
+                        currentScreen = GAME;
+                    }
+
+                    //how do i integrate condition to open options in pausemenu?
+                    //maybe something like this?
+
+                    if(buttonPauseoptions == active_button)
+                    {
+                        currentScreen = PAUSEOPTIONS;
+                    }*/
+
+                    break;
+                }
+
+                case PAUSEOPTIONS:
+                {
+                    if(IsKeyPressed(KEY_ESCAPE))
+                    {
+                        currentScreen = PAUSEMENU;
+                    }
+                    break;
+                }
+                case TESTSCENE:
+                    // This is a test
+                    
+                    break;
+            }
+        }
+
+        // Scene update
+        if (currentScreen != TITLESCREEN)
+            // TEMPORARY
+            if (currentScreen == TESTSCENE) {
                 player.Update();
 
                 player.checkActorCollision(actors);
 
                 player.interact(actors); //This garbage can be solved when we implemented a level-class
 
-                for (int i = 0; i < actors.size(); i++)
-                {
+                for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Update();
                 }
-
-                testBattle.Update();
-
-                break;
-            }
-
-            case PAUSEMENU:
-            {
-                testPause.Update();
-
-                if(testPause.switchScene == true)
+            } else {
                 {
-                    currentScreen = GAME;
+                    activeScene->Update();
                 }
-
-                //how do i integrate condition to open options in pausemenu?
-                //maybe something like this?
-
-                /*if(buttonPauseoptions = active_button)
-                {
-                    currentScreen = PAUSEOPTIONS;
-                }*/
-
-                break;
             }
-
-            case PAUSEOPTIONS:
+        else
+        {
+            if(IsKeyPressed(KEY_ENTER))
             {
-                if(IsKeyPressed(KEY_ESCAPE))
-                {
-                    currentScreen = PAUSEMENU;
-                }
-                break;
+                currentScreen = MAINMENU;
             }
         }
+
+
 
         // ========== DRAW ==========
         BeginDrawing();
         ClearBackground(BLACK);
 
+        if (currentScreen != TITLESCREEN) {
+            // TEMPORARY
+            if (currentScreen == TESTSCENE) {
+                player.Draw();
+
+                for (int i = 0; i < actors.size(); i++) {
+                    actors[i]->Draw();
+                }
+            } else {
+                if (activeScene->drawLevelBackground == true) {
+                    activeLevel->Draw();
+                }
+                activeScene->Draw();
+            }
+        }
+        else
+        {
+            DrawTexture(logo, Game::ScreenWidth/2 - logo.width/2, Game::ScreenHeight/4 - logo.height/4, WHITE);
+
+            DrawTextEx(font1, msg1,fontPosition1, font1.baseSize, 1,WHITE);
+            DrawTextEx(font1, msg2,fontPosition2, font1.baseSize, 1,WHITE);
+        }
+
+        /*
         switch (currentScreen)
         {
             case TITLESCREEN:
@@ -255,7 +333,6 @@ int main() {
 
             case GAME:
             {
-                testBattle.Draw();
                 DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
                          10, 10, 30, LIGHTGRAY);
 
@@ -277,7 +354,7 @@ int main() {
                 break;
             }
         }
-
+        */
         EndDrawing();
     } // Main game loop end
 
