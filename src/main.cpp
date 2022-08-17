@@ -20,6 +20,7 @@
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
+#include "Scenes/CreditScene.h"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -72,8 +73,9 @@ int main() {
     Vector2 fontPosition4 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg4,
                                                                  (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
 
-    //Implementing menu
+    //Implementing scenes
     MainMenuScene testMain;
+    CreditScene testCredit;
     PauseScene testPause;
 
     // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
@@ -245,12 +247,7 @@ int main() {
 
             case CREDITS:
             {
-                DrawText("Game Design: Marko Lapadatovic, Leah Berner\n"
-                         "Lead Artist: Leah Berner\n"
-                         "Artist: Marko Lapadatovic\n"
-                         "Lead Programmer: Maximilian Röck\n"
-                         "Programmer: Lena White, Sefer Tokdilli\n"
-                         "Sound Artist: Maximilian Röck", Game::ScreenWidth/2, Game::ScreenHeight/4, 50, WHITE);
+                testCredit.Draw();
                 //Back (Esc)
 
                 break;
@@ -289,6 +286,7 @@ int main() {
     UnloadTexture(logo);
     UnloadFont(font1);
     testMain.Unload();
+    testCredit.Unload();
     testPause.Unload();
 
     // Close window and OpenGL context
