@@ -92,7 +92,7 @@ int main() {
 
     // ALL OF THIS IS FOR TEST PURPOSES
 
-    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
+    std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
 
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
 
@@ -122,6 +122,9 @@ int main() {
     pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
     enemies.push_back(pEnemy);
     allActors.push_back(pEnemy);
+
+    std::shared_ptr<Player> fightPlayer;
+    std::shared_ptr<Enemy> fightEnemy;
 
     //std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
     //std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
@@ -205,6 +208,10 @@ int main() {
                 case BATTLE:
                     // Extract player and enemy from active level
                     // Then make a new shared pointer with the extracted actors
+
+                    // Hardcoded for now
+                    activeScene = std::make_shared<BattleScene>(fightPlayer, fightEnemy);
+
                     break;
                 case PAUSEMENU:
                 {
@@ -248,32 +255,43 @@ int main() {
             if (currentScreen == TESTSCENE) {
 
                 // This is going to be moved to LevelScene::Update()
-                player.Update();
+                player->Update();
 
                 // Check if a fight has to be started
-                if(player.startCombat == true && player.dialogueManager.dialoguePlaying == false)
+                if(player->startCombat == true && player->dialogueManager.dialoguePlaying == false)
                 {
                     TraceLog(LOG_INFO, "Starting combat...");
-                    player.startCombat = false;
+                    player->startCombat = false;
                     // Start combat with player and player->enemyToFight
+                    // Has to remember the player's position in the level before battle!
+
+
+                    // This is hardcoded for now, because the level class isn't ready yet
+                    activeScene->switchTo = BATTLE;
+                    activeScene->switchScene = true;
+                    fightPlayer = player;
+
                 }
 
-                player.checkActorCollision(allActors);
+                player->checkActorCollision(allActors);
 
                 // Check enemy aggro radius collision (maybe move this into a method of the level-class
                 bool stopSearch = false;
-                for (int i = 0; i < enemies.size() && stopSearch == false && player.dialogueManager.dialoguePlaying == false; i++)
+                for (int i = 0; i < enemies.size() && stopSearch == false && player->dialogueManager.dialoguePlaying == false; i++)
                 {
                     if (CheckCollisionCircleRec({enemies[i]->position.x + enemies[i]->frameRec.width / 2, enemies[i]->position.y + enemies[i]->frameRec.height / 2},
-                                                enemies[i]->aggroRadius, player.collisionBox) && enemies[i]->defeated == false)
+                                                enemies[i]->aggroRadius, player->collisionBox) && enemies[i]->defeated == false)
                     {
-                        player.interactionForced(enemies[i]);
+                        player->interactionForced(enemies[i]);
                         stopSearch = true;
+
+                        // This is hardcoded for now!
+                        fightEnemy = enemies[i];
                     }
                 }
 
-                player.interact(actors);
-                player.interact(enemies);
+                player->interact(actors);
+                player->interact(enemies);
 
                 for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Update();
@@ -303,7 +321,7 @@ int main() {
         if (currentScreen != TITLESCREEN) {
             // TEMPORARY
             if (currentScreen == TESTSCENE) {
-                player.Draw();
+                player->Draw();
 
                 for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Draw();
