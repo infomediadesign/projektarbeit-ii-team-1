@@ -13,7 +13,7 @@
 DialogueManager::DialogueManager()
 {
 this->panelTexture = LoadTexture("assets/graphics/ui/dialogueWindow.png");
-this->font = LoadFont("assets/graphics/fontHabbo.PNG");
+this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 }
 
 void DialogueManager::Update()
@@ -97,9 +97,11 @@ void DialogueManager::drawDialogue()
 
         // Draw name
         Vector2 namePos;
-        namePos.x = GetScreenWidth() * 0.015;
+
+
+        namePos.x = (GetScreenWidth() * 0.07) - MeasureTextEx(this->font, this->name.c_str(), 30, 3).x/2;;
         namePos.y = GetScreenHeight() * 0.702;
-        DrawTextEx(this->font, this->name.c_str(), namePos, 30, 5, BLACK);
+        DrawTextEx(this->font, this->name.c_str(), namePos, 30, 3, BLACK);
 
 		// Draw dialogue
 		//DrawText(this->lineToDraw.c_str(), DIA_PADDING, PANEL_HEIGHT + 200, 60, GREEN);

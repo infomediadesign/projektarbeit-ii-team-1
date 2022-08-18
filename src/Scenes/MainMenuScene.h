@@ -9,23 +9,31 @@
 
 #include "MenuScenes.h"
 #include "raylib.h"
+#include "../Actors/enums.h"
 
 #include "Button.h"
 #include <vector>
 
-    class MainMenuScene : MenuScenes
+    class MainMenuScene : public MenuScenes
             {
         // Attributes
+            public:
+                Texture2D background;
+                Texture2D mainMenuBox;
+                Font font1;
+
+                std::string Message1;
+                Vector2 fontPosition1;
+
     public:
-        game::Button* button1;
-        game::Button* button2;
-        game::Button* button3;
+        game::Button* buttonNewGame;
+        game::Button* buttonOptions;
+        game::Button* buttonCredits;
+        game::Button* buttonExit;
 
         int active_button;
 
         std::vector<game::Button*> buttons;
-
-        bool switchScene; // temporary
 
         // Methods
     public:
@@ -33,9 +41,9 @@
         MainMenuScene();
         ~MainMenuScene();
 
-        void Update();
-        void Draw();
-
+        void CustomUpdate() override;
+        void CustomDraw() override;
+        void Unload();
 };
 
 #endif //RAYLIBSTARTER_MAINMENUSCENE_H

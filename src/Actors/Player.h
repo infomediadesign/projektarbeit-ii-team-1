@@ -8,13 +8,20 @@
 #include "Actor.h"
 #include "../Systems/DialogueManager.h"
 #include "Enemies/CombatStructs.h"
+#include "../Items/Item.h"
 #include <vector>
 #include <memory>
+#include "../Scenes/InventoryScene.h"
+#include "../Scenes/SkillTreeScene.h"
+
 
 class Player : public Actor {
 
 	// Attributes
 public:
+    //InventoryScene inventory;
+    SkillTreeScene skillree;
+
 
     bool genderMale;
 
@@ -38,6 +45,12 @@ public:
     float maxHP;
     float currentHP;
 	int defense;
+
+    // Placeholder?
+    std::vector<std::shared_ptr<Item>> inventory;
+
+    bool inventoryOpened = false;
+    bool skilltreeOpend = false;
 
 	bool moveLockAbsolute = false;
 

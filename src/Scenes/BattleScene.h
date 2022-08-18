@@ -8,7 +8,7 @@
 #include "../Actors/Player.h"
 #include "../Actors/Enemies/Enemy.h"
 #include "../Actors/enums.h"
-
+#include "Button.h"
 
 #include <memory>
 
@@ -51,18 +51,37 @@ public:
     AttackType enemyNextAttack;
     bool playerTurn;
     bool attackSelected;
-    bool enemyStunned;
+    int enemyStunnedFor;
+    bool endBattle;
+    bool gameOver;
+
+    // Core-System Items
+    bool hasPunchGun;
+    int punchGunUses;
+    float punchGunDmg;
+    bool hasLaserGun;
+    int laserGunUses;
+    float laserGunDmg;
+    bool hasBottlecapGun;
+    float bottlecapGunDmg;
+    int bombUses;
+    int frisbeeUses;
 
     // UI related
+    Font font;
     Texture2D playerHpBar;
     Texture2D enemyHpBar;
+    BattleState state;
+    int activeButton;
+    std::vector<std::shared_ptr<game::Button>> buttons;
+
 
     // Methods
 public:
 BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy);
 
-void Update();
-void Draw();
+void CustomUpdate() override;
+void CustomDraw() override;
 
 void animateIdle();
 void playAnimation();
@@ -72,4 +91,7 @@ void playerAttack();
 void enemyAttack();
 
 void updateHpBars();
+
+void menuNavigation();
+void initMainMenu();
 };

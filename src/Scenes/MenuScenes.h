@@ -9,7 +9,7 @@
 
 
 
-class MenuScenes : Scenes {
+class MenuScenes : public Scenes {
 
 
 };
