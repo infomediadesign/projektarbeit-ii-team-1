@@ -96,8 +96,13 @@ int main() {
 
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
 
+    std::vector<std::shared_ptr<Prop>> props;
     std::vector<std::shared_ptr<Actor>> actors;
+    std::vector<std::shared_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Actor>> allActors;
+    std::shared_ptr<Prop> pProp;
     std::shared_ptr<Actor> pActor;
+    std::shared_ptr<Enemy> pEnemy;
 
     std::vector<std::string> testDialogue =
             {
@@ -110,12 +115,13 @@ int main() {
                     "It's not like the game will crash or anything...",
                     "... I hope."
             };
-    pActor = std::make_shared<Actor>(GetScreenWidth() / 4, GetScreenHeight() / 3, actorTest, testDialogue);
+    pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
     pActor->setName("Test NPC");
     actors.push_back(pActor);
-    pActor = std::make_shared<GangsterFemale>(1, 1, Level01, testDialogue);
-
-    actors.push_back(pActor);
+    allActors.push_back(pActor);
+    pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
+    enemies.push_back(pEnemy);
+    allActors.push_back(pEnemy);
 
     //std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
     //std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
@@ -231,23 +237,49 @@ int main() {
                 }
                 case TESTSCENE:
                     // This is a test
-                    
+
                     break;
             }
         }
 
         // Scene update
         if (currentScreen != TITLESCREEN)
-            // TEMPORARY
+            // TEMPORARY?
             if (currentScreen == TESTSCENE) {
+
+                // This is going to be moved to LevelScene::Update()
                 player.Update();
 
-                player.checkActorCollision(actors);
+                // Check if a fight has to be started
+                if(player.startCombat == true && player.dialogueManager.dialoguePlaying == false)
+                {
+                    TraceLog(LOG_INFO, "Starting combat...");
+                    player.startCombat = false;
+                    // Start combat with player and player->enemyToFight
+                }
 
-                player.interact(actors); //This garbage can be solved when we implemented a level-class
+                player.checkActorCollision(allActors);
+
+                // Check enemy aggro radius collision (maybe move this into a method of the level-class
+                bool stopSearch = false;
+                for (int i = 0; i < enemies.size() && stopSearch == false && player.dialogueManager.dialoguePlaying == false; i++)
+                {
+                    if (CheckCollisionCircleRec({enemies[i]->position.x + enemies[i]->frameRec.width / 2, enemies[i]->position.y + enemies[i]->frameRec.height / 2},
+                                                enemies[i]->aggroRadius, player.collisionBox) && enemies[i]->defeated == false)
+                    {
+                        player.interactionForced(enemies[i]);
+                        stopSearch = true;
+                    }
+                }
+
+                player.interact(actors);
+                player.interact(enemies);
 
                 for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Update();
+                }
+                for (int i = 0; i < enemies.size(); i++) {
+                    enemies[i]->Update();
                 }
             } else {
                 {
@@ -275,6 +307,9 @@ int main() {
 
                 for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Draw();
+                }
+                for (int i = 0; i < enemies.size(); i++) {
+                    enemies[i]->Draw();
                 }
             } else {
                 if (activeScene->drawLevelBackground == true) {

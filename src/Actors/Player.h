@@ -8,6 +8,7 @@
 #include "Actor.h"
 #include "../Systems/DialogueManager.h"
 #include "Enemies/CombatStructs.h"
+#include "Enemies/Enemy.h"
 #include "../Items/Item.h"
 #include <vector>
 #include <memory>
@@ -64,6 +65,10 @@ public:
 
     DialogueManager dialogueManager;
 
+    // Combat
+    std::shared_ptr<Enemy> enemyToFight;
+    bool startCombat;
+
 	// Methods
 public:
 	Player();
@@ -78,6 +83,8 @@ public:
 
 	void interact(std::vector<std::shared_ptr<Prop>> actors_);
     void interact(std::vector<std::shared_ptr<Actor>> actors_);
+    void interact(std::vector<std::shared_ptr<Enemy>> actors_);
+    void interactionForced(std::shared_ptr<Enemy> enemy);
 
 	void checkActorCollision(std::vector<std::shared_ptr<Prop>> actors);
     void checkActorCollision(std::vector<std::shared_ptr<Actor>> actors);

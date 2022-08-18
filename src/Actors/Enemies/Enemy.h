@@ -20,6 +20,7 @@ public:
 
     float aggroRadius;
     bool detectedPlayer = false;
+    bool defeated = false;
 
     float damagePunch;
     float damageNecklace;

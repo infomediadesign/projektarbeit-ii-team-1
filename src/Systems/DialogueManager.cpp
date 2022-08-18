@@ -7,7 +7,6 @@
 #define DIA_HEIGHT GetScreenHeight() * 0.7935;
 
 #include "DialogueManager.h"
-#include <iostream>
 #include <memory>
 
 DialogueManager::DialogueManager()
@@ -23,7 +22,7 @@ void DialogueManager::Update()
 
 void DialogueManager::startDialogue(std::string name, std::vector<std::string> dialogue, Texture2D spritesheet)
 {
-	std::cout << "[DEBUG] Dialogue started.";
+    TraceLog(LOG_INFO, "Dialogue started...");
 	this->lineCounter = 0;
 	this->charCounter = 0;
 
