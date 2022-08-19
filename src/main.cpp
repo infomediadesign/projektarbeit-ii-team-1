@@ -20,6 +20,7 @@
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
+#include "./Scenes/LevelScene.h"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -48,6 +49,8 @@ int main() {
     ImageResize(&titleScreen, 500, 500);
     Texture2D logo = LoadTextureFromImage(titleScreen);
     UnloadImage(titleScreen);
+
+    LevelScene testL;
 
     //Messages
     //for Titlescreen
@@ -156,6 +159,8 @@ int main() {
 
             case GAME:
             {
+
+
                 //Issue: only works once opening the pausemenu, and lets itself close out with enter
                 if(IsKeyPressed(KEY_P))
                 {
@@ -260,7 +265,9 @@ int main() {
 
             case GAME:
             {
-                testBattle.Draw();
+                //testBattle.Draw();
+                testL.DrawMap();
+
                 DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
                          10, 10, 30, LIGHTGRAY);
 
