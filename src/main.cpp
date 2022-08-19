@@ -51,6 +51,8 @@ int main() {
     Texture2D logo = LoadTextureFromImage(titleScreen);
     UnloadImage(titleScreen);
 
+    LevelScene testL;
+
     //Messages
     //for Titlescreen
     const char msg1[100] = "Welcome to the Game!";
@@ -164,6 +166,7 @@ int main() {
                     }
                     break;
                 }
+
 
                 case CREDITS:
                 {
@@ -386,6 +389,9 @@ int main() {
 
             case GAME:
             {
+                //testBattle.Draw();
+                testL.DrawMap();
+
                 DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
                          10, 10, 30, LIGHTGRAY);
 
