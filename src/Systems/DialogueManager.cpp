@@ -7,7 +7,6 @@
 #define DIA_HEIGHT GetScreenHeight() * 0.7935;
 
 #include "DialogueManager.h"
-#include <iostream>
 #include <memory>
 
 DialogueManager::DialogueManager()
@@ -23,7 +22,7 @@ void DialogueManager::Update()
 
 void DialogueManager::startDialogue(std::string name, std::vector<std::string> dialogue, Texture2D spritesheet)
 {
-	std::cout << "[DEBUG] Dialogue started.";
+    TraceLog(LOG_INFO, "Dialogue started...");
 	this->lineCounter = 0;
 	this->charCounter = 0;
 
@@ -97,9 +96,11 @@ void DialogueManager::drawDialogue()
 
         // Draw name
         Vector2 namePos;
-        namePos.x = GetScreenWidth() * 0.015;
+
+
+        namePos.x = (GetScreenWidth() * 0.07) - MeasureTextEx(this->font, this->name.c_str(), 30, 3).x/2;;
         namePos.y = GetScreenHeight() * 0.702;
-        DrawTextEx(this->font, this->name.c_str(), namePos, 30, 5, BLACK);
+        DrawTextEx(this->font, this->name.c_str(), namePos, 30, 3, BLACK);
 
 		// Draw dialogue
 		//DrawText(this->lineToDraw.c_str(), DIA_PADDING, PANEL_HEIGHT + 200, 60, GREEN);

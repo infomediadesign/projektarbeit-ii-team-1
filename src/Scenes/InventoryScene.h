@@ -16,7 +16,8 @@ public:
     const int slotCount = 20;
 
     InventoryScene();
-    void Update();
+    void CustomUpdate() override;
+    void CustomDraw() override;
     void DrawInventory();
     void AddItem();
     void RemoveItem();

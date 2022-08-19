@@ -10,7 +10,7 @@
 #include "vector"
 
 
-class LevelScene : Scenes {
+class LevelScene : public Scenes {
     private:
     ;
     public:
@@ -26,9 +26,14 @@ class LevelScene : Scenes {
     LevelScene();
 
     void DrawMap();
+
     void Update();
     void Draw();
     void Test();
+
+
+    void CustomUpdate() override;
+    void CustomDraw() override;
 
     protected:
     ;

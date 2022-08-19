@@ -5,9 +5,11 @@
 #ifndef RAYLIBSTARTER_LONGDRINK_H
 #define RAYLIBSTARTER_LONGDRINK_H
 
+#include "Item.h"
 
-class longdrink {
-
+class Longdrink : public Item {
+public:
+    Longdrink();
 };
 
 

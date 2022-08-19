@@ -41,6 +41,8 @@ enum AttackType
     bomb,
     frisbee,
 
+    heal,
+
     // Enemy attack types
     punchEnemy,
     necklace,
@@ -50,7 +52,7 @@ enum AttackType
 enum ItemType
 {
     itemPunchGun,
-    itembottlecapGun,
+    itemBottlecapGun,
     itemLaserGun,
     itemBomb,
     itemFrisbee,
@@ -58,3 +60,4 @@ enum ItemType
     itemBottlecapAmmo
 };
 
+enum GameScreen{TITLESCREEN, MAINMENU, MAINOPTIONS, CREDITS, GAME, BATTLE, PAUSEMENU, PAUSEOPTIONS, TESTSCENE};

@@ -13,10 +13,16 @@
 #include "Button.h"
 #include <vector>
 
-class PauseScene : MenuScenes
+class PauseScene : public MenuScenes
         {
         //Attributes
         public:
+
+    Texture2D pauseMenuBox;
+    Font font1;
+
+    std::string Message1;
+    Vector2 fontPosition1;
 
 public:
     game::Button* buttonReturnGame;
@@ -35,8 +41,9 @@ public:
     PauseScene();
     ~PauseScene();
 
-    void Update();
-    void Draw();
+    void CustomUpdate() override;
+    void CustomDraw() override;
+    void Unload();
         };
 
 

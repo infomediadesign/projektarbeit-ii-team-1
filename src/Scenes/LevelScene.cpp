@@ -61,13 +61,13 @@ LevelScene::LevelScene()
     std::cout << "bis hier her"<< std::endl;
 }
 
-void update()
+void LevelScene::CustomUpdate()
 {
 // Player Kolliosn hier überprüfen und dann "CheckActorCollision()" aufrufen
 // Alle "Update()" aller Objekte in dem Level hier aufrufen
 }
 
-void Draw()
+void LevelScene::CustomDraw()
 {
     void Test();
 // Alle "Draw()" Mthoden aller Objekte in dem Level aufrufen

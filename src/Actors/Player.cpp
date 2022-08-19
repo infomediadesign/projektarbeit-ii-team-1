@@ -86,6 +86,8 @@ Player::Player(int posX, int posY, bool genderMale)
     this->maxHP = 50;
     this->currentHP = this->maxHP;
     this->defense = 0;
+
+    this->startCombat = false;
 }
 
 
@@ -247,6 +249,82 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
         }
     }
 }
+// Interaction for enemies
+void Player::interact(std::vector<std::shared_ptr<Enemy>> actors_) {
+
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false)
+    {
+        for (int i = 0; i < actors_.size(); i++)
+        {
+
+            if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
+            {
+                this->interactionForced(actors_[i]);
+            }
+        }
+    }
+}
+
+void Player::interactionForced(std::shared_ptr<Enemy> enemy)
+{
+    std::cout << "[DEBUG] Interaction successful!" << std::endl;
+    std::cout << "[DEBUG] Starting dialogue with " << enemy->getName() << std::endl;
+
+    Vector2 workingPosPlayer;
+    workingPosPlayer.x = this->position.x + this->frameRec.width / 2;
+    workingPosPlayer.y = this->position.y + this->frameRec.height / 2;
+
+    Vector2 workingPosEnemy;
+    workingPosEnemy.x = enemy->position.x + enemy->frameRec.width / 2;
+    workingPosEnemy.y = enemy->position.y + enemy->frameRec.height / 2;
+
+
+    Vector2 distance;
+    distance.x = workingPosPlayer.x - workingPosEnemy.x; // Positive: Enemy is on the left, Negative: enemy is on the right
+    distance.y = workingPosPlayer.y - workingPosEnemy.y; // Positive: Enemy is above, Negative: enemy is below
+
+    int workingX;
+    int workingY;
+
+    // Make positive
+    if (distance.x < 0)
+        workingX = distance.x * -1;
+    if (distance.y < 0)
+        workingY = distance.y * -1;
+
+    if (workingX >= workingY)
+    {
+        if (distance.x > 0)
+        {
+            this->turn(left);
+            enemy->turn(right);
+        }
+        else
+        {
+            this->turn(right);
+            enemy->turn(left);
+        }
+    }
+    else if (distance.y > 0)
+    {
+        this->turn(up);
+        enemy->turn(down);
+    }
+    else
+    {
+        this->turn(down);
+        enemy->turn(up);
+    }
+
+    this->moveLockAbsolute = true;
+    this->interactionDisabled = true;
+    this->dialogueManager.startDialogue(enemy->getName(), enemy->getDialogue(), enemy->spritesheet);
+    if (enemy->defeated == false) {
+        this->enemyToFight = enemy;
+        this->startCombat = true;
+    }
+}
+
 
 void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
 {
@@ -383,4 +461,5 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
         }
     }
 }
+
 

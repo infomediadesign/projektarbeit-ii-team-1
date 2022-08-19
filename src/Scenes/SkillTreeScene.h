@@ -7,7 +7,11 @@
 
 #include "MenuScenes.h"
 
-class SkillTreeScene : MenuScenes {
+class SkillTreeScene : public MenuScenes {
+
+public:
+    void CustomUpdate() override;
+    void CustomDraw() override;
 
 };
 

@@ -8,26 +8,39 @@
 
 PauseScene::PauseScene()
 {
+    //PauseMenuBox
+    Image pauseMenuBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
+    ImageResize(&pauseMenuBoxImage, pauseMenuBoxImage.width*2.5, pauseMenuBoxImage.height*2.5);
+    this->pauseMenuBox = LoadTextureFromImage(pauseMenuBoxImage);
+    UnloadImage(pauseMenuBoxImage);
+
+    //Text with font
+    this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    Message1 = "Pause Menu";
+
+    fontPosition1 = {GetScreenWidth()/2 -
+                    MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
+                    GetScreenHeight() - (float)100/2 - 750};
+
     //Buttons
     this->active_button = 0;
 
-    this->buttonReturnGame = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                           LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                           100,
-                                           100,
-                                           true);
+    this->buttonReturnGame = new game::Button("Return to Game",
+                                              GetScreenWidth()/2,
+                                              GetScreenHeight()/2 - 100,
+                                              50, 1, YELLOW, WHITE);
+    this->buttonReturnGame->active = true;
 
-    this->buttonPauseOptions = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                           LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                           100,
-                                           200,
-                                           false);
+    this->buttonPauseOptions = new game::Button("Options",
+                                                GetScreenWidth()/2,
+                                                GetScreenHeight()/2,
+                                           50, 1, YELLOW, WHITE);
 
-    this->buttonReturnMainMenu = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                        LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                        100,
-                                        300,
-                                        false);
+    this->buttonReturnMainMenu = new game::Button("Return to Main Menu",
+                                                  GetScreenWidth()/2,
+                                                  GetScreenHeight()/2 + 100,
+                                        50, 1, YELLOW, WHITE);
 
     this->buttons.push_back(buttonReturnGame);
     this->buttons.push_back(buttonPauseOptions);
@@ -42,7 +55,7 @@ PauseScene::~PauseScene() {
     delete buttonReturnMainMenu;
 }
 
-void PauseScene::Update() {
+void PauseScene::CustomUpdate() {
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;
@@ -66,19 +79,26 @@ void PauseScene::Update() {
     if (IsKeyPressed(KEY_ENTER))
     {
         this->switchScene = true;
-        std::cout << "Button Nr. " << active_button << " pushed..." << std::endl;
+        std::cout << "Button Nr. " << active_button << "was pushed..." << std::endl;
     }
 }
 
-void PauseScene::Draw() {
+void PauseScene::CustomDraw() {
+
+    //Textures
+    DrawTexture(pauseMenuBox, (GetScreenWidth() - pauseMenuBox.width)/2, (GetScreenHeight() - pauseMenuBox.height)/2, WHITE);
+
+    //Messages
+    DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
+
+    //Buttons
     for (auto& button : buttons)
     {
-        DrawText("This is the Pause Menu.\nPlease use the arrow keys to select your desired option:\nThen press Enter to continue.",
-                 10, 10, 30, LIGHTGRAY);
-
-        // DrawTexture("assets/graphics/ui/menu/mainMenuBox.png", Game::ScreenWidth/2 - titleScreen.width/2, Game::ScreenHeight/4 - titleScreen.height/4,WHITE);
-        // DrawTexture("assets/graphics/ui/menu/mainMenuBox.png",  screenWidth/2 - texture.width/2, screenHeight/2 - texture.height/2,WHITE);
-
-        DrawTexture(button->getTexture(), button->pos_x, button->pos_y, WHITE);
+        button->Draw();
     }
+}
+
+void PauseScene::Unload() {
+    UnloadFont(font1);
+    UnloadTexture(pauseMenuBox);
 }

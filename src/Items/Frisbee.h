@@ -5,9 +5,11 @@
 #ifndef RAYLIBSTARTER_FRISBEE_H
 #define RAYLIBSTARTER_FRISBEE_H
 
+#include "Item.h"
 
-class frisbee {
-
+class Frisbee : public Item {
+public:
+    Frisbee();
 };
 
 

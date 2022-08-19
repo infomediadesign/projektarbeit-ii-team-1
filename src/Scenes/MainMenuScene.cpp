@@ -8,38 +8,50 @@
 #include <iostream>
 
 MainMenuScene::MainMenuScene() {
-    //Text with font
-    //probably need to work with pointers here (pointer for font type + figure out issue with "Game::etc.")
-    const char msg3[100] = "Please press Enter to continue.";
+    //background texture
+    Image mainMenuBackground = LoadImage("assets/graphics/ui/menu/mainMenuBackground.png");
+    ImageResize(&mainMenuBackground, GetScreenWidth(), GetScreenHeight());
+    this->background = LoadTextureFromImage(mainMenuBackground);
+    UnloadImage(mainMenuBackground);
 
-    //Vector2 fontPosition3 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg3, (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
+    //MainMenuBox
+    Image mainMenuBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
+    ImageResize(&mainMenuBoxImage, mainMenuBoxImage.width*2.5, mainMenuBoxImage.height*2.5);
+    this->mainMenuBox = LoadTextureFromImage(mainMenuBoxImage);
+    UnloadImage(mainMenuBoxImage);
+
+    //Text with font
+    this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    Message1 = "Main Menu";
+
+    fontPosition1 = {GetScreenWidth()/2 -
+                    MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
+                    GetScreenHeight() - (float)100/2 -750};
 
     //Buttons
     this->active_button = 0;
 
-    this->buttonNewGame = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     100,
-                                     100,
-                                     true);
+    this->buttonNewGame = new game::Button("New Game",
+                                           GetScreenWidth()/2,
+                                           GetScreenHeight()/2 - 100,
+                                     50, 1, YELLOW, WHITE);
+    this->buttonNewGame->active = true;
 
-    this->buttonOptions = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     100,
-                                     200,
-                                     false);
+    this->buttonOptions = new game::Button("Options",
+                                           GetScreenWidth()/2,
+                                           GetScreenHeight()/2,
+                                           50, 1, YELLOW, WHITE);
 
-    this->buttonCredits = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     100,
-                                     300,
-                                     false);
+    this->buttonCredits = new game::Button("Credits",
+                                           GetScreenWidth()/2,
+                                           GetScreenHeight()/2 + 100,
+                                           50, 1, YELLOW, WHITE);
 
-    this->buttonExit = new game::Button(LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     LoadTexture("assets/graphics/ui/combat/Button.png"),
-                                     100,
-                                     400,
-                                     false);
+    this->buttonExit = new game::Button("Exit",
+                                        GetScreenWidth()/2,
+                                        GetScreenHeight()/2 + 200,
+                                        50, 1, YELLOW, WHITE);
 
     this->buttons.push_back(buttonNewGame);
     this->buttons.push_back(buttonOptions);
@@ -56,7 +68,7 @@ MainMenuScene::~MainMenuScene() {
     delete buttonExit;
 }
 
-void MainMenuScene::Update() {
+void MainMenuScene::CustomUpdate() {
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;
@@ -80,19 +92,36 @@ void MainMenuScene::Update() {
     if (IsKeyPressed(KEY_ENTER))
     {
         this->switchScene = true;
-        std::cout << "Button Nr. " << active_button << " pushed..." << std::endl;
+        this->switchTo = TESTSCENE; // HAS TO BE REPLACED WITH "GAME" WHEN POSSIBLE!!
+        std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
+    }
+
+    //Skips right ahead, basically skips main menu but why??
+    /*if (this->buttonNewGame->active == true)
+    {
+        this->switchScene = true;
+    }*/
+
+}
+
+void MainMenuScene::CustomDraw() {
+
+    //Textures
+    DrawTexture(background, 0, 0, WHITE);
+    DrawTexture(mainMenuBox, (GetScreenWidth() - mainMenuBox.width)/2, (GetScreenHeight() - mainMenuBox.height)/2, WHITE);
+
+    //Messages
+    DrawTextEx(font1, Message1.c_str(),fontPosition1, 100, 1,WHITE);
+
+    //Buttons
+    for (auto& button : buttons)
+    {
+       button->Draw();
     }
 }
 
-void MainMenuScene::Draw() {
-    for (auto& button : buttons)
-    {
-        DrawText("This is the Main Menu.\nPlease use the arrow keys to select your desired option:\nThen press Enter to continue.",
-                 10, 10, 30, LIGHTGRAY);
-
-       // DrawTexture("assets/graphics/ui/menu/mainMenuBox.png", Game::ScreenWidth/2 - titleScreen.width/2, Game::ScreenHeight/4 - titleScreen.height/4,WHITE);
-       // DrawTexture("assets/graphics/ui/menu/mainMenuBox.png",  screenWidth/2 - texture.width/2, screenHeight/2 - texture.height/2,WHITE);
-
-        DrawTexture(button->getTexture(), button->pos_x, button->pos_y, WHITE);
-    }
+void MainMenuScene::Unload() {
+    UnloadFont(font1);
+    UnloadTexture(background);
+    UnloadTexture(mainMenuBox);
 }

@@ -13,13 +13,19 @@ InventoryScene::InventoryScene()
                                    Vector2 {10,11}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17}};
 }
 
-void Update()
+
+
+void InventoryScene::CustomUpdate()
 {
     // Check Changes
 
 }
 
-void DrawInventory()
+void InventoryScene::CustomDraw()
+{
+    //this->DrawInventory();
+}
+void InventoryScene::DrawInventory()
 {
     /*Rectangle rectOut = {100, 100, Game::ScreenWidth-200, Game::ScreenHeight-200 };
     DrawRectangle(100, 100, Game::ScreenWidth-200, Game::ScreenHeight-200, LIGHTGRAY);
