@@ -15,7 +15,7 @@ GangsterMale::GangsterMale(int posX, int posY, Level enemyLevel, std::vector<std
     this->position.x = posX;
     this->position.y = posY;
 
-    this->aggroRadius = 30;
+    this->aggroRadius = 100;
 
     // Load textures
 

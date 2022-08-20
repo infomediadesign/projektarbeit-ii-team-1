@@ -13,7 +13,7 @@
 #include <memory>
 
 
-class BattleScene : MenuScenes {
+class BattleScene : public MenuScenes {
 
     // Attributes
 public:

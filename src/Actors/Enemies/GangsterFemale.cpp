@@ -14,7 +14,7 @@ GangsterFemale::GangsterFemale(int posX, int posY, Level enemyLevel, std::vector
     this->position.x = posX;
     this->position.y = posY;
 
-    this->aggroRadius = 30;
+    this->aggroRadius = 150;
 
     // Load textures
 
@@ -50,8 +50,6 @@ GangsterFemale::GangsterFemale(int posX, int posY, Level enemyLevel, std::vector
     this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
 
     this->dialogue = dialogue;
-
-    this->aggroRadius = 30;
 
     switch (enemyLevel)
     {
