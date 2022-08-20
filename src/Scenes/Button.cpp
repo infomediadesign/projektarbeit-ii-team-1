@@ -7,6 +7,7 @@
 game::Button::Button(std::string Text, float pos_x, float pos_y, float fontSize, float fontSpacing, Color colorSelected, Color colorNotSelected)
 {
 this->Text = Text;
+this->centerText = true;
 this->Position.x = pos_x;
 this->Position.y = pos_y;
 this->active = false;
@@ -27,7 +28,13 @@ game::Button::~Button()
 
 void game::Button::Draw() {
     Vector2 Positioning;
-    Positioning.x = Position.x - MeasureTextEx(font1, Text.c_str(), fontSize, fontSpacing).x/2;
+    if (this->centerText = true) {
+        Positioning.x = Position.x - MeasureTextEx(font1, Text.c_str(), fontSize, fontSpacing).x / 2;
+    }
+    else
+    {
+        Positioning.x = Position.x;
+    }
     Positioning.y = Position.y;
 
     if (blocked == false)
