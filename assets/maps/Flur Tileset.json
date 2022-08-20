@@ -1,0 +1,48 @@
+{ "columns":0,
+ "grid":
+    {
+     "height":1,
+     "orientation":"orthogonal",
+     "width":1
+    },
+ "margin":0,
+ "name":"Flur",
+ "spacing":0,
+ "tilecount":5,
+ "tiledversion":"1.8.6",
+ "tileheight":160,
+ "tiles":[
+        {
+         "id":0,
+         "image":"..\/..\/..\/Art\/Pixel Bilder\/Tiles\/Disco W\u00e4nde\/wand mit neonstreifen 3.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":1,
+         "image":"..\/..\/..\/Art\/Pixel Bilder\/Tiles\/T\u00fcr\/T\u00fcr mit Neonlinien.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":2,
+         "image":"..\/..\/..\/Art\/Pixel Bilder\/Tiles\/Toilette\/WC Schild.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":3,
+         "image":"..\/..\/..\/Art\/Pixel Bilder\/Tiles\/T\u00fcr\/Glast\u00fcr mit Neon.png",
+         "imageheight":160,
+         "imagewidth":160
+        }, 
+        {
+         "id":5,
+         "image":"..\/..\/..\/Art\/Pixel Bilder\/Tiles\/B\u00f6den\/normaler Boden Disco 2.png",
+         "imageheight":160,
+         "imagewidth":160
+        }],
+ "tilewidth":160,
+ "type":"tileset",
+ "version":"1.8"
+}
