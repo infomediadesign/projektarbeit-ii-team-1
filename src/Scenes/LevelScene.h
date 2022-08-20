@@ -18,7 +18,7 @@ class LevelScene : public Scenes {
     nlohmann::json levelMap;
     Texture2D tileAtlasTexture;
 
-    std::ifstream file_;
+    std::ifstream ifStreamFile;
 
     std::vector<Enemy> listOfNPCs;
     std::vector<int> tileAtlas;
