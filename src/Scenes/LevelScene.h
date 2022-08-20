@@ -27,8 +27,6 @@ class LevelScene : public Scenes {
 
     void DrawMap();
 
-    void Update();
-    void Draw();
     void Test();
 
 
