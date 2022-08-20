@@ -19,20 +19,28 @@ LevelScene::LevelScene()
     levelTilesetJson.close();*/
 
     // tileset als json "assets/maps/Floor_1_in_Tiles.json"  / "assets/maps/tilset.json"
-    file_.open("assets/maps/tilset.json");
-    if(!file_.is_open()){
-        TraceLog(LOG_INFO, "JSON-ERROR: File is not available");
+    ifStreamFile.open("assets/maps/tilset.json");
+    if(!ifStreamFile.is_open()){
+        TraceLog(LOG_INFO, "JSON-ERROR: File tileset.json is not available");
     }
-    assert(file_.is_open());
-    file_ >> levelTilesetDescription;
-    file_.close();
+    assert(ifStreamFile.is_open());
+    ifStreamFile >> levelTilesetDescription;
+    ifStreamFile.close();
 
     TraceLog(LOG_INFO, "Array durch2");
 
     // Fertiges Level als JSON "./assets/maps/Floor_1.jSON"   / "./assets/maps/msp_als_json.json"
-    std::ifstream levelMapFile("./assets/maps/msp_als_json.json");
-    levelMap = nlohmann::json::parse(levelMapFile);
-    levelMapFile.close();
+    //std::ifstream levelMapFile("./assets/maps/msp_als_json.json");
+    //levelMap = nlohmann::json::parse(levelMapFile);
+    //levelMapFile.close();
+
+    ifStreamFile.open("./assets/maps/msp_als_json.json");
+    if(!ifStreamFile.is_open()){
+        TraceLog(LOG_INFO, "JSON-ERROR: File Level.json is not available");
+    }
+    assert(ifStreamFile.is_open());
+    ifStreamFile >> levelMap;
+    ifStreamFile.close();
 
     TraceLog(LOG_INFO, "Array durch3");
 
@@ -41,13 +49,13 @@ LevelScene::LevelScene()
 
     //2. die Json überprüfen ob die Datei geöffnet ist
     // Bei Fehler meldung -> Siehe tipp!!
-    /*file_.open(levelTilesetDescription);
-    if(!file_.is_open()){
+    /*ifStreamFile.open(levelTilesetDescription);
+    if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File is not available");
     }
-    assert(file_.is_open());
-    file_ >> levelTilesetDescription;
-    file_.close();*/
+    assert(ifStreamFile.is_open());
+    ifStreamFile >> levelTilesetDescription;
+    ifStreamFile.close();*/
 
     TraceLog(LOG_INFO, "Array durch4");
     //Tile IDs in einem Vector<int> speichern
@@ -63,21 +71,20 @@ LevelScene::LevelScene()
 
 void update()
 {
-// Player Kolliosn hier überprüfen und dann "CheckActorCollision()" aufrufen
+// Player Kollision hier überprüfen und dann "CheckActorCollision()" aufrufen
 // Alle "Update()" aller Objekte in dem Level hier aufrufen
 }
 
 void Draw()
 {
-    void Test();
-// Alle "Draw()" Mthoden aller Objekte in dem Level aufrufen
+// Alle "Draw()" Methoden aller Objekte in dem Level aufrufen
 }
 
 
 
 void LevelScene::DrawMap()
 {
-    TraceLog(LOG_INFO, "anfang zeichn");
+    TraceLog(LOG_INFO, "anfang zeichnen");
     // Tipp:Fehler ausgeben lassen mit "TraceLog(LOG_INFO, "ProtectTiles constructor called")";
 
     // tilesetDescriptionFile -> json vom Tileset
@@ -138,12 +145,10 @@ void LevelScene::DrawMap()
                     vec.y += (float) levelMap["height"];
                 }
             }
+            vec = {0, 0};
         }
     }
-    TraceLog(LOG_INFO, "ende zeichn");
+    TraceLog(LOG_INFO, "ende zeichnen");
 
 }
 
-void LevelScene::Test() {
-    TraceLog(LOG_INFO, "Test funktion");
-}
