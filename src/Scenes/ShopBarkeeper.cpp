@@ -14,8 +14,6 @@ ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Bar
     this->player = player;
     this->barkeeper = barkeeper;
 
-    //this->drawLevelBackground = true;
-
     this->panelTexture = LoadTexture("assets/graphics/ui/shopAndInv/shopBarkeeper.png");
 
     //this->bombTexture = LoadImage("assets/graphics/items/weapons/bomb.png");

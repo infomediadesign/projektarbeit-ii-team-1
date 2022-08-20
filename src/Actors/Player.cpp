@@ -21,6 +21,8 @@ Player::Player(int posX, int posY, bool genderMale)
 
     this->prevPosition = this->position;
 
+    this->augmentationCount = 0;
+
     this->name = "Dt. Carver";
 
     this->genderMale = genderMale;
@@ -284,6 +286,32 @@ void Player::interact(std::vector<std::shared_ptr<Barkeeper>> actors_) {
         }
     }
 }
+
+void Player::interact(std::vector<std::shared_ptr<Dealer>> actors_)
+{
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false)
+    {
+        for (int i = 0; i < actors_.size(); i++)
+        {
+
+            if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
+            {
+                TraceLog(LOG_INFO, "Interaction successful!");
+
+                this->moveLockAbsolute = true;
+                this->interactionDisabled = true;
+                if (actors_[i]->firstInteraction == true)
+                {
+                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                        actors_[i]->spritesheet);
+                    actors_[i]->firstInteraction = false;
+                }
+                this->openShopDealer = true;
+            }
+        }
+    }
+}
+
 // Interaction for enemies
 void Player::interact(std::vector<std::shared_ptr<Enemy>> actors_) {
 
@@ -495,5 +523,4 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
         }
     }
 }
-
 

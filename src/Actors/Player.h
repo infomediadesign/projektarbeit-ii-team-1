@@ -7,6 +7,7 @@
 #include "Prop.h"
 #include "Actor.h"
 #include "Barkeeper.h"
+#include "Dealer.h"
 #include "../Systems/DialogueManager.h"
 #include "Enemies/CombatStructs.h"
 #include "Enemies/Enemy.h"
@@ -44,6 +45,7 @@ public:
 	Vector2 prevPosition;
 
 	// Character attributes. Better implemented using vectors?
+    int augmentationCount; // 0 = No augmentations, 6 = Fully augmented
     float maxHP;
     float currentHP;
 	int defense;
@@ -73,6 +75,7 @@ public:
     // Shop
     std::shared_ptr<Barkeeper> barkeeperPtr;
     bool openShopBarkeeper;
+    bool openShopDealer;
 
 	// Methods
 public:
@@ -89,6 +92,7 @@ public:
 	void interact(std::vector<std::shared_ptr<Prop>> actors_);
     void interact(std::vector<std::shared_ptr<Actor>> actors_);
     void interact(std::vector<std::shared_ptr<Barkeeper>> actors_);
+    void interact(std::vector<std::shared_ptr<Dealer>> actors_);
     void interact(std::vector<std::shared_ptr<Enemy>> actors_);
     void interactionForced(std::shared_ptr<Enemy> enemy);
 

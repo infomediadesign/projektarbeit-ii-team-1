@@ -16,6 +16,7 @@
 
 #include "Actors/enums.h"
 #include "Actors/Player.h"
+#include "Actors/Dealer.h"
 #include "Systems/DialogueManager.h"
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
@@ -23,6 +24,7 @@
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
 #include "Scenes/ShopBarkeeper.h"
+#include "Scenes/ShopDealer.h"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -103,11 +105,13 @@ int main() {
     std::vector<std::shared_ptr<Actor>> actors;
     std::vector<std::shared_ptr<Enemy>> enemies;
     std::vector<std::shared_ptr<Barkeeper>> barkeepers;
+    std::vector<std::shared_ptr<Dealer>> dealers;
     std::vector<std::shared_ptr<Actor>> allActors;
     std::shared_ptr<Prop> pProp;
     std::shared_ptr<Actor> pActor;
     std::shared_ptr<Enemy> pEnemy;
     std::shared_ptr<Barkeeper> pBarkeeper;
+    std::shared_ptr<Dealer> pDealer;
 
     std::vector<std::string> testDialogue =
             {
@@ -130,6 +134,10 @@ int main() {
     pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
     barkeepers.push_back(pBarkeeper);
     allActors.push_back(pBarkeeper);
+    pDealer = std::make_shared<Dealer>(1200, 800, testDialogue);
+    dealers.push_back(pDealer);
+    allActors.push_back(pDealer);
+
 
 
 
@@ -226,12 +234,16 @@ int main() {
                     activeScene = std::make_shared<BattleScene>(player, enemyPtr);
                     break;
                 case SHOP_BARKEEPER:
-                    // Extract player and enemy from active level
+                    // Extract player and barkeeper from active level
                     // Then make a new shared pointer with the extracted actors
 
-                    // Hardcoded for now
-                    enemyPtr = player->enemyToFight;
-                    activeScene = std::make_shared<ShopBarkeeper>(player, pBarkeeper);
+                    activeScene = std::make_shared<ShopBarkeeper>(player, player->barkeeperPtr);
+                    break;
+                case SHOP_DEALER:
+                    // Extract player from active level
+                    // Then make a new shared pointer with the extracted actor
+
+                    activeScene = std::make_shared<ShopDealer>(player);
                     break;
                 case PAUSEMENU:
                 {
@@ -283,15 +295,21 @@ int main() {
                 {
                     TraceLog(LOG_INFO, "Opening shop...");
                     player->openShopBarkeeper = false;
-                    // Start combat with player and player->enemyToFight
-                    // Has to remember the player's position in the level before battle!
-
 
                     // This is hardcoded for now, because the level class isn't ready yet
                     activeScene->switchTo = SHOP_BARKEEPER;
                     activeScene->switchScene = true;
                 }
+                if(player->openShopDealer == true && player->dialogueManager.dialoguePlaying == false)
+                {
+                    TraceLog(LOG_INFO, "Opening shop...");
+                    player->openShopDealer = false;
 
+
+                    // This is hardcoded for now, because the level class isn't ready yet (would be this->switchTo, etc.)
+                    activeScene->switchTo = SHOP_DEALER;
+                    activeScene->switchScene = true;
+                }
                 // Check if a fight has to be started
                 if(player->startCombat == true && player->dialogueManager.dialoguePlaying == false)
                 {
@@ -323,6 +341,7 @@ int main() {
                 player->interact(actors);
                 player->interact(enemies);
                 player->interact(barkeepers);
+                player->interact(dealers);
 
                 for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Update();
@@ -332,6 +351,9 @@ int main() {
                 }
                 for (int i = 0; i < barkeepers.size(); i++) {
                     barkeepers[i]->Update();
+                }
+                for (int i = 0; i < dealers.size(); i++) {
+                    dealers[i]->Update();
                 }
             } else {
                 {
@@ -365,6 +387,9 @@ int main() {
                 }
                 for (int i = 0; i < barkeepers.size(); i++) {
                     barkeepers[i]->Draw();
+                }
+                for (int i = 0; i < dealers.size(); i++) {
+                    dealers[i]->Draw();
                 }
                 // Draw player after NPCs
                 player->Draw();
