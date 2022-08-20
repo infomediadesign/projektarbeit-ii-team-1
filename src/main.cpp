@@ -84,7 +84,7 @@ int main() {
 
     // Level initialisation goes here (use shared pointers!)
     // Maybe you need to use pointers for rooms
-    //std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>();
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>();
     std::shared_ptr<LevelScene> level01;
     std::shared_ptr<LevelScene> levelRooftop;
 
@@ -324,7 +324,7 @@ int main() {
         if (currentScreen != TITLESCREEN) {
             // TEMPORARY
             if (currentScreen == TESTSCENE) {
-                player->Draw();
+                levelTutorial->Draw();
 
                 for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Draw();
@@ -332,6 +332,8 @@ int main() {
                 for (int i = 0; i < enemies.size(); i++) {
                     enemies[i]->Draw();
                 }
+                player->Draw();
+
             } else {
                 if (activeScene->drawLevelBackground == true) {
                     activeLevel->Draw();

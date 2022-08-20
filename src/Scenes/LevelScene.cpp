@@ -77,7 +77,7 @@ void LevelScene::CustomUpdate()
 
 void LevelScene::CustomDraw()
 {
-// Alle "Draw()" Methoden aller Objekte in dem Level aufrufen
+    this->DrawMap();
 }
 
 
