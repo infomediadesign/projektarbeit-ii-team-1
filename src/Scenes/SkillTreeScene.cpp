@@ -56,6 +56,7 @@ void SkillTreeScene::DrawSkillTree()
 
     //DrawTexture(skillUnlockedImg,100,100, WHITE);
 
+    /*
     for (int i = 1; i <= ; ++i) {
         if ( >0)
         {
@@ -66,5 +67,5 @@ void SkillTreeScene::DrawSkillTree()
             DrawTexture(skillUnlockedImg,100,100, WHITE);
 
     }
-
+*/
 }

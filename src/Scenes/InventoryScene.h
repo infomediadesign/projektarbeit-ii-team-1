@@ -11,15 +11,25 @@
 #include "../Actors/enums.h"
 #include "../Items/item.h"
 
-class InventoryScene : MenuScenes {
+class InventoryScene : public MenuScenes {
 private:
     ;
 public:
     const int slotMaxCount = 20;
 
-    std::vector<Item> items = {Item01(type itemPunchGun, name "test02", price 100, damage 0.2, uses 1),
-                                Item02(type itemBomb, name "test02", price 50, damage 0.2, uses 2)
-    };
+    std::vector<Item> items;
+
+
+
+    //= {Item01(type itemPunchGun, name "test02", price 100, damage 0.2, uses 1),
+      //                          Item02(type itemBomb, name "test02", price 50, damage 0.2, uses 2);
+
+
+
+
+
+
+    //};
 
     // Slot positions
     std::vector<Vector2> slotPos ={Vector2 {10,11}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17},
