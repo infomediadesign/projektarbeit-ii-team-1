@@ -283,12 +283,12 @@ int main() {
                 }
                 case INVENTORY:
                 {
-                   activeScene = std::make_shared<InventoryScene>();
+                   activeScene = std::make_shared<InventoryScene>(Player);
 
                 }
                 case SKILLTHREE:
                 {
-                    activeScene = std::make_shared<SkillTreeScene>();
+                    activeScene = std::make_shared<SkillTreeScene>(Player);
                 }
             }
 

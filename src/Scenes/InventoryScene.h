@@ -9,7 +9,15 @@
 #include "Structs.h"
 #include "vector"
 #include "../Actors/enums.h"
+#include "../Actors/player.h"
 #include "../Items/item.h"
+#include "../Items/Bomb.h"
+#include "../Items/BottlecapAmmo.h"
+#include "../Items/BottlecapGun.h"
+#include "../Items/Frisbee.h"
+#include "../Items/LaserGun.h"
+#include "../Items/Longdrink.h"
+#include "../Items/PunchGun.h"
 
 class InventoryScene : MenuScenes {
 private:
