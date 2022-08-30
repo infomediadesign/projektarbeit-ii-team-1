@@ -74,7 +74,7 @@ void ShopBarkeeper::CustomUpdate()
     }
     if (IsKeyPressed(KEY_ESCAPE))
     {
-        this->switchTo = GAME;
+        this->switchTo = TESTSCENE; // HAS TO BE CHANGED TO GAME WHEN IT WORKS!!!
         this->switchScene = true;
     }
 }
