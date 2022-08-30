@@ -23,6 +23,7 @@
 #include "Scenes/PauseScene.h"
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
+#include "Scenes/InventoryScene.h"
 #include "Scenes/ShopBarkeeper.h"
 #include "Scenes/ShopDealer.h"
 #include <iostream>
@@ -275,10 +276,22 @@ int main() {
                     break;
                 }
                 case TESTSCENE:
+                {
                     // This is a test
 
                     break;
+                }
+                case INVENTORY:
+                {
+                   activeScene = std::make_shared<InventoryScene>();
+
+                }
+                case SKILLTHREE:
+                {
+                    activeScene = std::make_shared<SkillTreeScene>();
+                }
             }
+
         }
 
         // Scene update
