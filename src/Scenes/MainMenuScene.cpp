@@ -91,17 +91,19 @@ void MainMenuScene::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ENTER))
     {
+        if (this->buttonCredits->active == true)
+        {
+            this->switchTo = CREDITS;
+        }
+
+        // AN LENA: Diese Codezeile kann gelöscht werden, wenn der New Game-Button funktioniert!
+        // (Falls die anderen Menübuttons nicht funktionieren: Wahrscheinlich deswegen)
+        this->switchTo = TESTSCENE;
+        // ^ Diese hier ^
+
         this->switchScene = true;
-        this->switchTo = TESTSCENE; // HAS TO BE REPLACED WITH "GAME" WHEN POSSIBLE!!
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
-
-    //Skips right ahead, basically skips main menu but why??
-    /*if (this->buttonNewGame->active == true)
-    {
-        this->switchScene = true;
-    }*/
-
 }
 
 void MainMenuScene::CustomDraw() {

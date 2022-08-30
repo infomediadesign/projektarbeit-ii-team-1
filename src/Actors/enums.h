@@ -7,6 +7,23 @@
 
 #pragma once
 
+enum GameScreen
+{
+    TITLESCREEN,
+    MAINMENU,
+    MAINOPTIONS,
+    CREDITS,
+    GAME,
+    BATTLE,
+    PAUSEMENU,
+    PAUSEOPTIONS,
+    SHOP_BARKEEPER,
+    SHOP_DEALER,
+    TESTSCENE,
+    INVENTORY,
+    SKILLTHREE
+};
+
 enum Direction
 {
     up,
@@ -59,7 +76,3 @@ enum ItemType
     itemHeal,
     itemBottlecapAmmo
 };
-
-
-enum GameScreen{TITLESCREEN, MAINMENU, MAINOPTIONS, CREDITS, GAME, BATTLE, PAUSEMENU, PAUSEOPTIONS, SHOP_BARKEEPER, SHOP_DEALER, TESTSCENE, INVENTORY, SKILLTHREE};
-

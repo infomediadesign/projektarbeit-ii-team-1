@@ -3,6 +3,8 @@
 //
 #pragma once
 #include "raylib.h"
+#include "../Actors/enums.h"
+#include "MenuScenes.h"
 
 #include "Button.h"
 #include <vector>
@@ -11,7 +13,7 @@
 #define RAYLIBSTARTER_CREDITSCENE_H
 
 
-class CreditScene {
+class CreditScene : public MenuScenes {
     //Attributes
 public:
 
@@ -38,8 +40,8 @@ public:
     CreditScene();
     ~CreditScene();
 
-    void Update();
-    void Draw();
+    void CustomUpdate() override;
+    void CustomDraw() override;
     void Unload();
 };
 
