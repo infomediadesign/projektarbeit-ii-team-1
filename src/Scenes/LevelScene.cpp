@@ -73,6 +73,17 @@ void LevelScene::CustomUpdate()
 {
 // Player Kollision hier überprüfen und dann "CheckActorCollision()" aufrufen
 // Alle "Update()" aller Objekte in dem Level hier aufrufen
+    if(IsKeyPressed(KEY_I))
+    {
+        switchTo = INVENTORY;
+        switchScene = true;
+    }
+
+    if(IsKeyPressed(KEY_C))
+    {
+        switchTo = SKILLTHREE;
+        switchScene = true;
+    }
 }
 
 void LevelScene::CustomDraw()

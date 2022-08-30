@@ -14,16 +14,15 @@
 #include "../Items/Item.h"
 #include <vector>
 #include <memory>
-#include "../Scenes/InventoryScene.h"
-#include "../Scenes/SkillTreeScene.h"
+
 
 
 class Player : public Actor {
 
 	// Attributes
 public:
-    //InventoryScene inventory;
-    SkillTreeScene skillree;
+
+
 
 
     bool genderMale;

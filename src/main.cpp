@@ -24,6 +24,7 @@
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
 #include "Scenes/InventoryScene.h"
+#include "Scenes/SkillTreeScene.h"
 #include "Scenes/ShopBarkeeper.h"
 #include "Scenes/ShopDealer.h"
 #include <iostream>
@@ -39,12 +40,12 @@ int main() {
     // Set target FPS
     SetTargetFPS(60);
     //Window fullscreen
-    ToggleFullscreen();
+
 
     SetExitKey(KEY_BACKSPACE);
 
 #ifdef GAME_START_FULLSCREEN
-
+    ToggleFullscreen();
 #endif
 
     // Your own initialization code here
@@ -286,12 +287,15 @@ int main() {
                 }
                 case INVENTORY:
                 {
-                   activeScene = std::make_shared<InventoryScene>();
-
+                    activeScene->switchScene = false;
+                    activeScene = std::make_shared<InventoryScene>(player);
+                    break;
                 }
                 case SKILLTHREE:
                 {
-                    activeScene = std::make_shared<SkillTreeScene>();
+                    activeScene->switchScene = false;
+                    activeScene = std::make_shared<SkillTreeScene>(player);
+                    break;
                 }
             }
 
@@ -304,6 +308,22 @@ int main() {
 
                 // This is going to be moved to LevelScene::Update()
                 player->Update();
+
+
+                //TEST
+                if(IsKeyPressed(KEY_I))
+                {
+                    activeScene->switchTo = INVENTORY;
+                    activeScene->switchScene = true;
+                }
+
+                if(IsKeyPressed(KEY_C))
+                {
+                    activeScene->switchTo = SKILLTHREE;
+                    activeScene->switchScene = true;
+                }
+                //TEST
+
 
 
                 // Check if a shop has to be opened

@@ -3,17 +3,27 @@
 #include "config.h"
 #include "../Items/PunchGun.h"
 
-InventoryScene::InventoryScene()
+InventoryScene::InventoryScene(std::shared_ptr<Player> player)
 {
     PunchGun test({1, 1});
-    this->items.push_back(test);
+    //this->items.push_back(test);
+    this->player = player;
+    font1 = LoadFont("../../assets/graphics/ui/Habbo.ttf");
 
 
 }
 
 void InventoryScene::CustomUpdate()
 {
-    // Check Changes
+    // Check Change
+
+    // TEST
+    if(IsKeyPressed(KEY_ESCAPE))
+    {
+        switchTo = TESTSCENE;
+        switchScene = true;
+    }
+    // TEST
 
 }
 
@@ -24,36 +34,48 @@ void InventoryScene::CustomDraw()
 void InventoryScene::DrawInventory()
 {
     // Draw basics, Background, Text,
-    ClearBackground(GRAY);
-    /*Rectangle rectOut = {100, 100, Game::ScreenWidth-200, Game::ScreenHeight-200 };
-    DrawRectangle(100, 100, Game::ScreenWidth-200, Game::ScreenHeight-200, LIGHTGRAY);
-    DrawRectangleLinesEx(rectOut, 5,BLACK);
-    */
-    Texture2D inventoryImg = LoadTexture("../../assets/graphics/UI/Shop&Inventory/InventoryNew.png");
-    DrawTexture(inventoryImg,100,100, WHITE);
-    DrawText("Inventory", Game::ScreenWidth/2-100,110, 30, RED);
+    Color lightGray = {210,210,210,10};
+    Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
+    DrawRectangleRec(recBackground, LIGHTGRAY);
 
-    /*Rectangle rectIn = {120, 150, Game::ScreenWidth-240, Game::ScreenHeight-270 };
-    DrawRectangle(rectIn.width/2, 150, rectIn.width/2, rectIn.height, RED);
-    DrawRectangleLinesEx(rectIn, 5,BLACK);
-     */
+    // Header text
+    const std::string inventoryHeaderTxt = "Inventory";
+    const Vector2 inventoryTxtSize =  MeasureTextEx(font1, inventoryHeaderTxt.c_str(), 2, 60);
+    DrawTextEx( font1, inventoryHeaderTxt.c_str(), {Game::ScreenWidth/2 - (inventoryTxtSize.x/4),110}, 60, 2, BLACK);
+
+    // Close Inventory text
+    const std::string escapeInventoryTxt = "Escape to close Inventory";
+    //const Vector2 escapeTxtSize =  MeasureTextEx(font1, escapeInventoryTxt.c_str(), 2, 30);
+    DrawTextEx( font1, escapeInventoryTxt.c_str(), {20,20}, 30, 1, BLACK);
+
+    //Inventory Image
+    Texture2D inventoryImg = LoadTexture("../../assets/graphics/UI/Shop&Inventory/InventoryNew.png");
+    Vector2 posInventoryImg = {float (Game::ScreenWidth/2 - (inventoryImg.width/2)),float(Game::ScreenHeight/2 - (inventoryImg.height/2))};
+
+    DrawTexture(inventoryImg,posInventoryImg.x,posInventoryImg.y, WHITE);
+
+
+    Texture2D testimg = LoadTexture("../../assets/graphics/items/weapons/Frisbee.png");
+    Texture2D testimg2 = LoadTexture("../../assets/graphics/items/weapons/Frisbee.png");
+    DrawTextureEx(testimg, {posInventoryImg.x+20,posInventoryImg.y+20}, 0, 1, WHITE);
+    DrawTextureEx(testimg2, {posInventoryImg.x+80,posInventoryImg.y+20}, 0, 1, WHITE);
 
     // Draw item imgs
-    for (int i = 0; i <=items.size() ; ++i) {
+    //for (int i = 0; i <=items.size() ; ++i) {
         //DrawTextureEx(items[i].texture, slotPos[i].x, slotPos[i].y, 0, 50%);
         // Draw count of "uses"
-    }
+    //}
 }
 
 void InventoryScene::AddItem(Item newItem)
 {
-    if (items.size() <= slotMaxCount)
-    {
-        items.push_back(newItem);
-    }else{
+    //if (items.size() <= slotMaxCount)
+    //{
+    //    items.push_back(newItem);
+    //}else{
         // Tell User that the inventory is fulls
 
-    }
+    //}
 }
 
 void InventoryScene::RemoveItem(Item delItem)
