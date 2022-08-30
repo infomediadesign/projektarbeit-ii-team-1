@@ -38,10 +38,13 @@ int main() {
     InitWindow(Game::ScreenWidth, Game::ScreenHeight, Game::PROJECT_NAME);
     // Set target FPS
     SetTargetFPS(60);
+    //Window fullscreen
+    ToggleFullscreen();
 
+    SetExitKey(KEY_BACKSPACE);
 
 #ifdef GAME_START_FULLSCREEN
-    ToggleFullscreen();
+
 #endif
 
     // Your own initialization code here
@@ -283,12 +286,12 @@ int main() {
                 }
                 case INVENTORY:
                 {
-                   activeScene = std::make_shared<InventoryScene>(Player);
+                   activeScene = std::make_shared<InventoryScene>();
 
                 }
                 case SKILLTHREE:
                 {
-                    activeScene = std::make_shared<SkillTreeScene>(Player);
+                    activeScene = std::make_shared<SkillTreeScene>();
                 }
             }
 

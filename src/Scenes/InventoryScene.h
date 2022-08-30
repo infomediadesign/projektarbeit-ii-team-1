@@ -27,13 +27,8 @@ public:
 
     std::vector<Item> items;
 
-
-
     //= {Item01(type itemPunchGun, name "test02", price 100, damage 0.2, uses 1),
       //                          Item02(type itemBomb, name "test02", price 50, damage 0.2, uses 2);
-
-
-
 
 
 
