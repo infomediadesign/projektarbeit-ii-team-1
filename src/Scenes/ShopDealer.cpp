@@ -11,7 +11,7 @@ ShopDealer::ShopDealer(std::shared_ptr<Player> player)
     this->drawLevelBackground = false; // NOT FINAL, HAS TO BE CHANGED WHEN LEVELS WORK
     this->switchScene = false;
 
-    this->panelPos = {static_cast<float>(GetScreenWidth() / 3.5), static_cast<float>(GetScreenHeight() / 20)};
+    this->panelPos = {static_cast<float>(GetScreenWidth() * 0.345), static_cast<float>(GetScreenHeight() / 20)};
 
     this->player = player;
 
@@ -224,7 +224,7 @@ void ShopDealer::updateButtons()
     TraceLog(LOG_INFO, "Updating buttons");
     this->buttons.clear();
     std::string workingString;
-    float posX = this->panelPos.x + GetScreenWidth() * 0.1; // Button posX
+    float posX = this->panelPos.x + GetScreenWidth() * 0.175; // Button posX
 
     workingString = "Augmentation ";
     switch (this->player->augmentationCount)
