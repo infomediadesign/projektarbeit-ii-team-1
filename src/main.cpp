@@ -14,7 +14,6 @@
 #include "Actors/Enemies/GangsterMale.h"
 #include "Actors/Enemies/Bouncer1.h"
 
-#include "Actors/enums.h"
 #include "Actors/Player.h"
 #include "Actors/Dealer.h"
 #include "Systems/DialogueManager.h"
@@ -24,12 +23,12 @@
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
 #include "Scenes/InventoryScene.h"
+#include "Scenes/SkillTreeScene.h"
 #include "Scenes/ShopBarkeeper.h"
 #include "Scenes/ShopDealer.h"
 #include <iostream>
 #include <memory>
 #include <vector>
-
 
 
 int main() {
@@ -38,7 +37,10 @@ int main() {
     InitWindow(Game::ScreenWidth, Game::ScreenHeight, Game::PROJECT_NAME);
     // Set target FPS
     SetTargetFPS(60);
+    //Window fullscreen
 
+
+    SetExitKey(KEY_BACKSPACE);
 
 #ifdef GAME_START_FULLSCREEN
     ToggleFullscreen();
@@ -49,7 +51,7 @@ int main() {
 
     GameScreen currentScreen = TITLESCREEN;
 
-    //Implementing Logo for Titlescreen
+    //Titlescreen
     Image titleScreen = LoadImage("assets/graphics/ui/Logo02.png");
     ImageResize(&titleScreen, 500, 500);
     Texture2D logo = LoadTextureFromImage(titleScreen);
@@ -166,7 +168,6 @@ int main() {
 
             switch (activeScene->switchTo)
             {
-
                 case MAINMENU:
                 {
                     activeScene = std::make_shared<MainMenuScene>();
@@ -188,6 +189,7 @@ int main() {
 
                 case CREDITS:
                 {
+                    activeScene = std::make_shared<CreditScene>();
                     // Should be moved to scene update / into a class
                     if(IsKeyPressed(KEY_ESCAPE))
                     {
@@ -283,12 +285,15 @@ int main() {
                 }
                 case INVENTORY:
                 {
-                   activeScene = std::make_shared<InventoryScene>();
-
+                    activeScene->switchScene = false;
+                    activeScene = std::make_shared<InventoryScene>(player);
+                    break;
                 }
                 case SKILLTHREE:
                 {
-                    activeScene = std::make_shared<SkillTreeScene>();
+                    activeScene->switchScene = false;
+                    activeScene = std::make_shared<SkillTreeScene>(player);
+                    break;
                 }
             }
 
@@ -301,6 +306,22 @@ int main() {
 
                 // This is going to be moved to LevelScene::Update()
                 player->Update();
+
+
+                //TEST
+                if(IsKeyPressed(KEY_I))
+                {
+                    activeScene->switchTo = INVENTORY;
+                    activeScene->switchScene = true;
+                }
+
+                if(IsKeyPressed(KEY_C))
+                {
+                    activeScene->switchTo = SKILLTHREE;
+                    activeScene->switchScene = true;
+                }
+                //TEST
+
 
 
                 // Check if a shop has to be opened
