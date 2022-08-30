@@ -14,13 +14,25 @@ class LevelScene : public Scenes {
     private:
     ;
     public:
-    std::vector<Enemy> listOfNPCs();
+    nlohmann::json levelTilesetDescription;
+    nlohmann::json levelMap;
+    Texture2D tileAtlasTexture;
+
+    std::ifstream ifStreamFile;
+
+    std::vector<Enemy> listOfNPCs;
+    std::vector<int> tileAtlas;
 
     LevelScene();
 
     void DrawMap();
+
+    void Test();
+
+
     void CustomUpdate() override;
     void CustomDraw() override;
+
     protected:
     ;
 

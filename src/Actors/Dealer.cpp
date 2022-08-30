@@ -1,18 +1,18 @@
 //
-// Created by 22max on 18.08.2022.
+// Created by 22max on 20.08.2022.
 //
 
-#include "Barkeeper.h"
+#include "Dealer.h"
 
 #define COLLISION_OFFSET 0.4
 
-Barkeeper::Barkeeper(int posX, int posY, std::vector<std::string> dialogue_)
+Dealer::Dealer(int posX, int posY, std::vector<std::string> dialogue_)
 {
-    this->name = "Barkeeper";
+    this->name = "Dealer";
     this->position.x = posX;
     this->position.y = posY;
 
-    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/npcRobot/barkeeper.png");
+    this->spritesheet = LoadTexture("assets/graphics/character/npcIdle/npcMerchant/Dealer.png");
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
 
@@ -26,7 +26,4 @@ Barkeeper::Barkeeper(int posX, int posY, std::vector<std::string> dialogue_)
     this->turn(down);
 
     this->firstInteraction = true;
-
-    this->stockBomb = 3;
-    this->stockFrisbee = 3;
 }
