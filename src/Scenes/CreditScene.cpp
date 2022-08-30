@@ -17,7 +17,7 @@ UnloadImage(creditBoxImage);
 //Text with font
 this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
-Message1 = "Pause Menu";
+Message1 = "Credits";
 Message2 = "Game Design: Marko Lapadatovic, Leah Berner\nLead Artist: Leah Berner\nArtist: Marko Lapadatovic\nLead Programmer: Maximilian Röck\nProgrammer: Lena White, Sefer Tokdilli\nSound Artist: Maximilian Röck";
 
 fontPosition1 = {GetScreenWidth()/2 -
@@ -45,7 +45,7 @@ CreditScene::~CreditScene() {
         delete buttonReturnMainMenu;
 }
 
-void CreditScene::Update() {
+void CreditScene::CustomUpdate() {
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;
@@ -66,14 +66,15 @@ void CreditScene::Update() {
         buttons[active_button]->active = true;
     }
 
-    if (IsKeyPressed(KEY_ENTER))
+    if (IsKeyPressed(KEY_ESCAPE))
     {
+        this->switchTo = MAINMENU;
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << "was pushed..." << std::endl;
     }
 }
 
-void CreditScene::Draw() {
+void CreditScene::CustomDraw() {
 
     //Textures
     DrawTexture(creditBox, (GetScreenWidth() - creditBox.width)/2, (GetScreenHeight() - creditBox.height)/2, WHITE);
