@@ -21,6 +21,8 @@ Player::Player(int posX, int posY, bool genderMale)
 
     this->prevPosition = this->position;
 
+    this->augmentationCount = 0;
+
     this->name = "Dt. Carver";
 
     this->genderMale = genderMale;
@@ -88,6 +90,7 @@ Player::Player(int posX, int posY, bool genderMale)
     this->defense = 0;
 
     this->startCombat = false;
+    this->openShopBarkeeper = false;
 }
 
 
@@ -208,8 +211,7 @@ void Player::interact(std::vector<std::shared_ptr<Prop>> actors_) {
 
             if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
             {
-                std::cout << "[DEBUG] Interaction successful!" << std::endl;
-                std::cout << "[DEBUG] Starting dialogue with " << actors_[i]->getName() << std::endl;
+                TraceLog(LOG_INFO, "Interaction successful!");
                 this->moveLockAbsolute = true;
                 this->interactionDisabled = true;
                 this->dialogueManager.startDialogue(this->getName(), actors_[i]->getDialogue(), this->spritesheet);
@@ -227,8 +229,7 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
 
             if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
             {
-                std::cout << "[DEBUG] Interaction successful!" << std::endl;
-                std::cout << "[DEBUG] Starting dialogue with " << actors_[i]->getName() << std::endl;
+                TraceLog(LOG_INFO, "Interaction successful!");
                 switch (this->facing)
                 {
                     case down: actors_[i]->turn(up);
@@ -238,7 +239,6 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
                     case left: actors_[i]->turn(right);
                     break;
                     case right: actors_[i]->turn(left);
-                    std::cout << "[DEBUG] Error while checking player facing during interaction" << std::endl;
                 }
 
 
@@ -249,6 +249,69 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
         }
     }
 }
+// Interaction for barkeepers
+void Player::interact(std::vector<std::shared_ptr<Barkeeper>> actors_) {
+
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false)
+    {
+        for (int i = 0; i < actors_.size(); i++)
+        {
+
+            if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
+            {
+                TraceLog(LOG_INFO, "Interaction successful!");
+
+
+                float workingHeightBarkeeper = actors_[i]->position.y + actors_[i]->frameRec.height / 2;
+
+                float workingHeightPlayer = this->position.y + this->frameRec.height / 2;
+
+                if (workingHeightPlayer < workingHeightBarkeeper)
+                    actors_[i]->turn(up);
+                else
+                    actors_[i]->turn(down);
+
+
+                this->moveLockAbsolute = true;
+                this->interactionDisabled = true;
+                if (actors_[i]->firstInteraction == true)
+                {
+                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                        actors_[i]->spritesheet);
+                    actors_[i]->firstInteraction = false;
+                }
+                this->barkeeperPtr = actors_[i];
+                this->openShopBarkeeper = true;
+            }
+        }
+    }
+}
+
+void Player::interact(std::vector<std::shared_ptr<Dealer>> actors_)
+{
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false)
+    {
+        for (int i = 0; i < actors_.size(); i++)
+        {
+
+            if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
+            {
+                TraceLog(LOG_INFO, "Interaction successful!");
+
+                this->moveLockAbsolute = true;
+                this->interactionDisabled = true;
+                if (actors_[i]->firstInteraction == true)
+                {
+                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                        actors_[i]->spritesheet);
+                    actors_[i]->firstInteraction = false;
+                }
+                this->openShopDealer = true;
+            }
+        }
+    }
+}
+
 // Interaction for enemies
 void Player::interact(std::vector<std::shared_ptr<Enemy>> actors_) {
 
@@ -267,8 +330,7 @@ void Player::interact(std::vector<std::shared_ptr<Enemy>> actors_) {
 
 void Player::interactionForced(std::shared_ptr<Enemy> enemy)
 {
-    std::cout << "[DEBUG] Interaction successful!" << std::endl;
-    std::cout << "[DEBUG] Starting dialogue with " << enemy->getName() << std::endl;
+    TraceLog(LOG_INFO, "Interaction successful!");
 
     Vector2 workingPosPlayer;
     workingPosPlayer.x = this->position.x + this->frameRec.width / 2;
@@ -461,5 +523,4 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
         }
     }
 }
-
 

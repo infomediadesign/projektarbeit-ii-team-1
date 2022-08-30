@@ -31,6 +31,8 @@ namespace game {
         float fontSpacing;
 
         Font font1;
+        bool centerText;
+
         void Draw();
         void Unload();
     };

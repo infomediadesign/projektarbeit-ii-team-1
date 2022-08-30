@@ -16,13 +16,16 @@
 
 #include "Actors/enums.h"
 #include "Actors/Player.h"
+#include "Actors/Dealer.h"
 #include "Systems/DialogueManager.h"
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
-//#include "Scenes/InventoryScene.h"
+#include "Scenes/InventoryScene.h"
+#include "Scenes/ShopBarkeeper.h"
+#include "Scenes/ShopDealer.h"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -102,10 +105,14 @@ int main() {
     std::vector<std::shared_ptr<Prop>> props;
     std::vector<std::shared_ptr<Actor>> actors;
     std::vector<std::shared_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Barkeeper>> barkeepers;
+    std::vector<std::shared_ptr<Dealer>> dealers;
     std::vector<std::shared_ptr<Actor>> allActors;
     std::shared_ptr<Prop> pProp;
     std::shared_ptr<Actor> pActor;
     std::shared_ptr<Enemy> pEnemy;
+    std::shared_ptr<Barkeeper> pBarkeeper;
+    std::shared_ptr<Dealer> pDealer;
 
     std::vector<std::string> testDialogue =
             {
@@ -125,9 +132,19 @@ int main() {
     pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
     enemies.push_back(pEnemy);
     allActors.push_back(pEnemy);
+    pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
+    barkeepers.push_back(pBarkeeper);
+    allActors.push_back(pBarkeeper);
+    pDealer = std::make_shared<Dealer>(1200, 800, testDialogue);
+    dealers.push_back(pDealer);
+    allActors.push_back(pDealer);
 
-    std::shared_ptr<Player> fightPlayer;
-    std::shared_ptr<Enemy> fightEnemy;
+
+
+
+
+    std::shared_ptr<Enemy> enemyPtr;
+    std::shared_ptr<Barkeeper> barkeeperPtr;
 
     //std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
     //std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
@@ -214,8 +231,20 @@ int main() {
                     // Then make a new shared pointer with the extracted actors
 
                     // Hardcoded for now
-                    activeScene = std::make_shared<BattleScene>(fightPlayer, fightEnemy);
+                    enemyPtr = player->enemyToFight;
+                    activeScene = std::make_shared<BattleScene>(player, enemyPtr);
+                    break;
+                case SHOP_BARKEEPER:
+                    // Extract player and barkeeper from active level
+                    // Then make a new shared pointer with the extracted actors
 
+                    activeScene = std::make_shared<ShopBarkeeper>(player, player->barkeeperPtr);
+                    break;
+                case SHOP_DEALER:
+                    // Extract player from active level
+                    // Then make a new shared pointer with the extracted actor
+
+                    activeScene = std::make_shared<ShopDealer>(player);
                     break;
                 case PAUSEMENU:
                 {
@@ -273,6 +302,27 @@ int main() {
                 // This is going to be moved to LevelScene::Update()
                 player->Update();
 
+
+                // Check if a shop has to be opened
+                if(player->openShopBarkeeper == true && player->dialogueManager.dialoguePlaying == false)
+                {
+                    TraceLog(LOG_INFO, "Opening shop...");
+                    player->openShopBarkeeper = false;
+
+                    // This is hardcoded for now, because the level class isn't ready yet
+                    activeScene->switchTo = SHOP_BARKEEPER;
+                    activeScene->switchScene = true;
+                }
+                if(player->openShopDealer == true && player->dialogueManager.dialoguePlaying == false)
+                {
+                    TraceLog(LOG_INFO, "Opening shop...");
+                    player->openShopDealer = false;
+
+
+                    // This is hardcoded for now, because the level class isn't ready yet (would be this->switchTo, etc.)
+                    activeScene->switchTo = SHOP_DEALER;
+                    activeScene->switchScene = true;
+                }
                 // Check if a fight has to be started
                 if(player->startCombat == true && player->dialogueManager.dialoguePlaying == false)
                 {
@@ -285,8 +335,6 @@ int main() {
                     // This is hardcoded for now, because the level class isn't ready yet
                     activeScene->switchTo = BATTLE;
                     activeScene->switchScene = true;
-                    fightPlayer = player;
-
                 }
 
                 player->checkActorCollision(allActors);
@@ -300,20 +348,25 @@ int main() {
                     {
                         player->interactionForced(enemies[i]);
                         stopSearch = true;
-
-                        // This is hardcoded for now!
-                        fightEnemy = enemies[i];
                     }
                 }
 
                 player->interact(actors);
                 player->interact(enemies);
+                player->interact(barkeepers);
+                player->interact(dealers);
 
                 for (int i = 0; i < actors.size(); i++) {
                     actors[i]->Update();
                 }
                 for (int i = 0; i < enemies.size(); i++) {
                     enemies[i]->Update();
+                }
+                for (int i = 0; i < barkeepers.size(); i++) {
+                    barkeepers[i]->Update();
+                }
+                for (int i = 0; i < dealers.size(); i++) {
+                    dealers[i]->Update();
                 }
             } else {
                 {
@@ -345,6 +398,13 @@ int main() {
                 for (int i = 0; i < enemies.size(); i++) {
                     enemies[i]->Draw();
                 }
+                for (int i = 0; i < barkeepers.size(); i++) {
+                    barkeepers[i]->Draw();
+                }
+                for (int i = 0; i < dealers.size(); i++) {
+                    dealers[i]->Draw();
+                }
+                // Draw player after NPCs
                 player->Draw();
 
             } else {
