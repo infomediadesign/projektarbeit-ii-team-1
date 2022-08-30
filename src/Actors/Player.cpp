@@ -91,6 +91,7 @@ Player::Player(int posX, int posY, bool genderMale)
 
     this->startCombat = false;
     this->openShopBarkeeper = false;
+    this->openShopDealer = false;
 }
 
 

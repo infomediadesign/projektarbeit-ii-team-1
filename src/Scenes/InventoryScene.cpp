@@ -1,10 +1,13 @@
 #include "InventoryScene.h"
 #include "raylib.h"
 #include "config.h"
-
+#include "../Items/PunchGun.h"
 
 InventoryScene::InventoryScene()
 {
+    PunchGun test({1, 1});
+    this->items.push_back(test);
+
 
 }
 
@@ -37,7 +40,7 @@ void InventoryScene::DrawInventory()
 
     // Draw item imgs
     for (int i = 0; i <=items.size() ; ++i) {
-        DrawTextureEx(items[i].texture, slotPos[i].x, slotPos[i].y, 0, 50%);
+        //DrawTextureEx(items[i].texture, slotPos[i].x, slotPos[i].y, 0, 50%);
         // Draw count of "uses"
     }
 }
