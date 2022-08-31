@@ -17,6 +17,7 @@ class CreditScene : public MenuScenes {
     //Attributes
 public:
 
+    Texture2D background;
     Texture2D creditBox;
     Font font1;
 

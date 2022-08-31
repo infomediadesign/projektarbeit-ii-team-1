@@ -8,24 +8,24 @@
 #include "Actors/enums.h"
 #include "Actors/Prop.h"
 #include "Actors/Enemies/Enemy.h"
-
 #include "Actors/Enemies/GangsterFemale.h"
 #include "Actors/Enemies/Bouncer2.h"
 #include "Actors/Enemies/GangsterMale.h"
 #include "Actors/Enemies/Bouncer1.h"
-
 #include "Actors/Player.h"
 #include "Actors/Dealer.h"
+
 #include "Systems/DialogueManager.h"
+
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
 #include "Scenes/InventoryScene.h"
-#include "Scenes/SkillTreeScene.h"
 #include "Scenes/ShopBarkeeper.h"
 #include "Scenes/ShopDealer.h"
+#include "Scenes/SkillTreeScene.h"
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -37,8 +37,6 @@ int main() {
     InitWindow(Game::ScreenWidth, Game::ScreenHeight, Game::PROJECT_NAME);
     // Set target FPS
     SetTargetFPS(60);
-    //Window fullscreen
-
 
     SetExitKey(KEY_BACKSPACE);
 
@@ -47,8 +45,6 @@ int main() {
 #endif
 
     // Your own initialization code here
-    // ...
-
     GameScreen currentScreen = TITLESCREEN;
 
     //Titlescreen
@@ -285,9 +281,9 @@ int main() {
                 }
                 case INVENTORY:
                 {
-                    activeScene->switchScene = false;
-                    activeScene = std::make_shared<InventoryScene>(player);
-                    break;
+                   activeScene->switchScene = false;
+                   activeScene = std::make_shared<InventoryScene>(player);
+                   break;
                 }
                 case SKILLTHREE:
                 {
@@ -296,7 +292,6 @@ int main() {
                     break;
                 }
             }
-
         }
 
         // Scene update
@@ -307,22 +302,18 @@ int main() {
                 // This is going to be moved to LevelScene::Update()
                 player->Update();
 
-
                 //TEST
                 if(IsKeyPressed(KEY_I))
                 {
                     activeScene->switchTo = INVENTORY;
                     activeScene->switchScene = true;
                 }
-
                 if(IsKeyPressed(KEY_C))
                 {
                     activeScene->switchTo = SKILLTHREE;
                     activeScene->switchScene = true;
                 }
                 //TEST
-
-
 
                 // Check if a shop has to be opened
                 if(player->openShopBarkeeper == true && player->dialogueManager.dialoguePlaying == false)
@@ -401,7 +392,6 @@ int main() {
                 currentScreen = MAINMENU;
             }
         }
-
 
 
         // ========== DRAW ==========

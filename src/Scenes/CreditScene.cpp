@@ -8,11 +8,17 @@
 
 CreditScene::CreditScene()
 {
+    //background texture
+    Image mainMenuBackground = LoadImage("assets/graphics/ui/menu/mainMenuBackground.png");
+    ImageResize(&mainMenuBackground, GetScreenWidth(), GetScreenHeight());
+    this->background = LoadTextureFromImage(mainMenuBackground);
+    UnloadImage(mainMenuBackground);
+
     //CreditBox
-Image creditBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
-ImageResize(&creditBoxImage, creditBoxImage.width*2.5, creditBoxImage.height*2.5);
-this->creditBox = LoadTextureFromImage(creditBoxImage);
-UnloadImage(creditBoxImage);
+    Image creditBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
+    ImageResize(&creditBoxImage, creditBoxImage.width*2.5, creditBoxImage.height*2.5);
+    this->creditBox = LoadTextureFromImage(creditBoxImage);
+    UnloadImage(creditBoxImage);
 
 //Text with font
 this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
@@ -81,7 +87,7 @@ void CreditScene::CustomDraw() {
 
     //Messages
     DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
-    DrawTextEx(font1, Message2.c_str(), fontPosition2, 100, 1, WHITE);
+    DrawTextEx(font1, Message2.c_str(), fontPosition2, 50, 1, WHITE);
 
     //Buttons
     for (auto& button : buttons)
