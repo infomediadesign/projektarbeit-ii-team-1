@@ -96,11 +96,6 @@ void MainMenuScene::CustomUpdate() {
             this->switchTo = CREDITS;
         }
 
-        // AN LENA: Diese Codezeile kann gelöscht werden, wenn der New Game-Button funktioniert!
-        // (Falls die anderen Menübuttons nicht funktionieren: Wahrscheinlich deswegen)
-        this->switchTo = TESTSCENE;
-        // ^ Diese hier ^
-
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
