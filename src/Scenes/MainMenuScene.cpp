@@ -8,6 +8,8 @@
 #include <iostream>
 
 MainMenuScene::MainMenuScene() {
+    TraceLog(LOG_INFO, "Constructing main menu");
+
     //background texture
     Image mainMenuBackground = LoadImage("assets/graphics/ui/menu/mainMenuBackground.png");
     ImageResize(&mainMenuBackground, GetScreenWidth(), GetScreenHeight());
@@ -98,6 +100,11 @@ void MainMenuScene::CustomUpdate() {
         {
             this->switchTo = CREDITS;
         }
+        if (this->buttonNewGame->active == true)
+        {
+            this->switchTo = GAME;
+        }
+
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }

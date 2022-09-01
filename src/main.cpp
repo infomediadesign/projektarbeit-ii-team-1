@@ -32,7 +32,6 @@
 #include <memory>
 #include <vector>
 
-
 int main() {
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
@@ -120,7 +119,12 @@ int main() {
         // ========== UPDATE ==========
 
         // Scene transition
-        if (activeScene->switchScene) {
+
+
+        TraceLog(LOG_INFO, "Switch scene in main:");
+        TraceLog(LOG_INFO, std::to_string(activeScene->switchScene).c_str());
+        if (activeScene->switchScene == true) {
+            TraceLog(LOG_INFO, "Trying to switch scenes");
             activeScene->switchScene = false;
 
             switch (activeScene->switchTo) {
@@ -129,11 +133,10 @@ int main() {
                     break;
                 }
 
-                case MAINMENU: {
+                case MAINMENU:
                     TraceLog(LOG_INFO, "Initialising main menu");
                     activeScene = std::make_shared<MainMenuScene>();
                     break;
-                }
 
                 case MAINOPTIONS: {
                     if (IsKeyPressed(KEY_ESCAPE)) {

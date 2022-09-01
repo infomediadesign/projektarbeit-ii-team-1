@@ -10,7 +10,7 @@ TitleScreen::TitleScreen()
     //Logo Image
     Image titleScreen = LoadImage("assets/graphics/ui/Logo02.png");
     ImageResize(&titleScreen, 500, 500);
-    Texture2D logo = LoadTextureFromImage(titleScreen);
+    this->logo = LoadTextureFromImage(titleScreen);
     UnloadImage(titleScreen);
 
     //Text with font
@@ -27,7 +27,8 @@ TitleScreen::TitleScreen()
                      MeasureTextEx(font1, Message2.c_str(), (float)100, 1).x/2,
                      GetScreenHeight() - (float)100/2 - 250};
 
-    switchScene = false;
+    this->switchScene = false;
+    this->drawLevelBackground = false;
 }
 
 TitleScreen::~TitleScreen()
@@ -39,10 +40,14 @@ void TitleScreen::CustomUpdate()
 {
     if (IsKeyPressed(KEY_ENTER))
     {
-        TraceLog(LOG_INFO, "Switching to main menu...");
+        TraceLog(LOG_INFO, "Switching to main menu");
         this->switchTo = MAINMENU;
         this->switchScene = true;
+        TraceLog(LOG_INFO, "switchScene in class (Pressing Enter):");
+        TraceLog(LOG_INFO, std::to_string(this->switchScene).c_str());
     }
+    TraceLog(LOG_INFO, "switchScene in class:");
+    TraceLog(LOG_INFO, std::to_string(this->switchScene).c_str());
 }
 
 void TitleScreen::CustomDraw()

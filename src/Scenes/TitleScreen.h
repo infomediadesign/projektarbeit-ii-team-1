@@ -5,6 +5,7 @@
 #pragma once
 #include "raylib.h"
 #include "Scenes.h"
+#include "MenuScenes.h"
 
 #include <vector>
 #include <string>
@@ -27,7 +28,7 @@ class TitleScreen : public Scenes
             Vector2 fontPosition2;
 
         public:
-            bool switchScene; //temporary
+
 // Methods
         public:
             TitleScreen();
