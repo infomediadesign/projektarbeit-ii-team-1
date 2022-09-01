@@ -9,7 +9,7 @@ InventoryScene::InventoryScene(std::shared_ptr<Player> player)
     //this->items.push_back(test);
     this->player = player;
     font1 = LoadFont("../../assets/graphics/ui/Habbo.ttf");
-
+    items= {};
 
 }
 
@@ -20,7 +20,7 @@ void InventoryScene::CustomUpdate()
     // TEST
     if(IsKeyPressed(KEY_ESCAPE))
     {
-        switchTo = TESTSCENE;
+        switchTo = GAME;
         switchScene = true;
     }
     // TEST
@@ -54,17 +54,27 @@ void InventoryScene::DrawInventory()
 
     DrawTexture(inventoryImg,posInventoryImg.x,posInventoryImg.y, WHITE);
 
-
-    Texture2D testimg = LoadTexture("../../assets/graphics/items/weapons/Frisbee.png");
+    // TEST
+    /*Texture2D testimg = LoadTexture("../../assets/graphics/items/weapons/Frisbee.png");
     Texture2D testimg2 = LoadTexture("../../assets/graphics/items/weapons/Frisbee.png");
     DrawTextureEx(testimg, {posInventoryImg.x+20,posInventoryImg.y+20}, 0, 1, WHITE);
-    DrawTextureEx(testimg2, {posInventoryImg.x+80,posInventoryImg.y+20}, 0, 1, WHITE);
+    DrawTextureEx(testimg2, {posInventoryImg.x+80,posInventoryImg.y+20}, 0, 1, WHITE);*/
+    // TEST
+
+    for (int i = 0; i <player->inventory.size() ; ++i) {
+
+        DrawTextureEx(player->inventory[i]->texture, {posInventoryImg.x+20,posInventoryImg.y+20}, 0, 1, WHITE);
+        DrawTextEx( font1, std::to_string(player->inventory[i]->uses).c_str(), {20,20}, 30, 1, BLACK);
+    }
+
+
+
 
     // Draw item imgs
-    //for (int i = 0; i <=items.size() ; ++i) {
-        //DrawTextureEx(items[i].texture, slotPos[i].x, slotPos[i].y, 0, 50%);
-        // Draw count of "uses"
-    //}
+    for (int i = 1; i <=player->inventory.size() ; ++i) {
+        DrawTextureEx(player->inventory[i]->texture, {posInventoryImg.x+20,posInventoryImg.y+20}, 0, 1, WHITE);
+
+    }
 }
 
 void InventoryScene::AddItem(Item newItem)

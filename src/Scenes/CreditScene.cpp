@@ -8,33 +8,41 @@
 
 CreditScene::CreditScene()
 {
+    //background texture
+    Image mainMenuBackground = LoadImage("assets/graphics/ui/menu/mainMenuBackground.png");
+    ImageResize(&mainMenuBackground, GetScreenWidth(), GetScreenHeight());
+    this->background = LoadTextureFromImage(mainMenuBackground);
+    UnloadImage(mainMenuBackground);
+
     //CreditBox
-Image creditBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
-ImageResize(&creditBoxImage, creditBoxImage.width*2.5, creditBoxImage.height*2.5);
-this->creditBox = LoadTextureFromImage(creditBoxImage);
-UnloadImage(creditBoxImage);
+    Image creditBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
+    ImageResize(&creditBoxImage, creditBoxImage.width*3, creditBoxImage.height*3);
+    this->creditBox = LoadTextureFromImage(creditBoxImage);
+    UnloadImage(creditBoxImage);
 
 //Text with font
 this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
 Message1 = "Credits";
-Message2 = "Game Design: Marko Lapadatovic, Leah Berner\nLead Artist: Leah Berner\nArtist: Marko Lapadatovic\nLead Programmer: Maximilian Röck\nProgrammer: Lena White, Sefer Tokdilli\nSound Artist: Maximilian Röck";
+Message2 = "Game Design: Marko Lapadatovic, Leah Berner\nLead Artist: Leah Berner\nArtist: Marko Lapadatovic\nLead Programmer: Maximilian Roeck\nProgrammer: Lena White, Sefer Tokdilli\nSound Artist: Maximilian Roeck";
 
 fontPosition1 = {GetScreenWidth()/2 -
                  MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
-                 GetScreenHeight() - (float)100/2 - 750};
+                 GetScreenHeight() - (float)100/2 - 850};
 
-fontPosition2 = {GetScreenWidth()/2 -
+fontPosition2 = {(GetScreenWidth()/2 + 450) -
                  MeasureTextEx(font1, Message2.c_str(), (float)100, 1).x/2,
-                 GetScreenHeight() - (float)100/2 - 500};
+                 GetScreenHeight() - (float)100/2 - 700};
 
 //Buttons
     this->active_button = 0;
 
-    this->buttonReturnMainMenu = new game::Button("Return to Main Menu",
-                                              GetScreenWidth()/2,
-                                              GetScreenHeight()/2 - 100,
+    this->buttonReturnMainMenu = new game::Button("Return to Main Menu (Esc)",
+                                              GetScreenWidth()/2 - 300,
+                                              GetScreenHeight()/2 + 300,
                                               50, 1, YELLOW, WHITE);
+
+    this->buttonReturnMainMenu->active = true;
 
     this->buttons.push_back(buttonReturnMainMenu);
 
@@ -68,7 +76,10 @@ void CreditScene::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
-        this->switchTo = MAINMENU;
+        if(this->buttonReturnMainMenu->active == true)
+        {
+            this->switchTo = MAINMENU;
+        }
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << "was pushed..." << std::endl;
     }
@@ -77,11 +88,12 @@ void CreditScene::CustomUpdate() {
 void CreditScene::CustomDraw() {
 
     //Textures
+    DrawTexture(background, 0, 0, WHITE);
     DrawTexture(creditBox, (GetScreenWidth() - creditBox.width)/2, (GetScreenHeight() - creditBox.height)/2, WHITE);
 
     //Messages
     DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
-    DrawTextEx(font1, Message2.c_str(), fontPosition2, 100, 1, WHITE);
+    DrawTextEx(font1, Message2.c_str(), fontPosition2, 50, 1, WHITE);
 
     //Buttons
     for (auto& button : buttons)
@@ -92,5 +104,6 @@ void CreditScene::CustomDraw() {
 
 void CreditScene::Unload() {
     UnloadFont(font1);
+    UnloadTexture(background);
     UnloadTexture(creditBox);
 }

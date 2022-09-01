@@ -723,7 +723,7 @@ void BattleScene::menuNavigation() {
                     break;
                 case 2:
                     this->endBattle = true;
-                    this->switchTo = TESTSCENE; // HAS TO BE CHANGED TO GAME LATER!!!!!!
+                    this->switchTo = GAME;
                     this->switchScene = true;
                     break;
             }
