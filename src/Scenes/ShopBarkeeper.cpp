@@ -16,9 +16,19 @@ ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Bar
 
     this->panelTexture = LoadTexture("assets/graphics/ui/shopAndInv/shopBarkeeper.png");
 
-    //this->bombTexture = LoadImage("assets/graphics/items/weapons/bomb.png");
-    //this->frisbeeTexture = LoadImage("assets/graphics/items/weapons/frisbee.png");
-    //this->longdrinkTexture = LoadImage("assets/graphics/items/heal/longdrink.png");
+    Image bombImage = LoadImage("assets/graphics/items/weapons/bomb.png");
+    Image frisbeeImage = LoadImage("assets/graphics/items/weapons/frisbee.png");
+    Image longdrinkImage = LoadImage("assets/graphics/items/heal/longdrink.png");
+
+    ImageResize(&bombImage, 100, 100);
+    this->bombTexture = LoadTextureFromImage(bombImage);
+    UnloadImage(bombImage);
+    ImageResize(&frisbeeImage, 100, 100);
+    this->frisbeeTexture = LoadTextureFromImage(frisbeeImage);
+    UnloadImage(frisbeeImage);
+    ImageResize(&longdrinkImage, 100, 100);
+    this->longdrinkTexture = LoadTextureFromImage(longdrinkImage);
+    UnloadImage(longdrinkImage);
 
     this->activeButton = 0;
     this->updateButtons();
@@ -74,7 +84,7 @@ void ShopBarkeeper::CustomUpdate()
     }
     if (IsKeyPressed(KEY_ESCAPE))
     {
-        this->switchTo = TESTSCENE; // HAS TO BE CHANGED TO GAME WHEN IT WORKS!!!
+        this->switchTo = GAME;
         this->switchScene = true;
     }
 }

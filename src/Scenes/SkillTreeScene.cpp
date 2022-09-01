@@ -16,7 +16,7 @@ void SkillTreeScene::CustomUpdate()
     // TEST
     if(IsKeyPressed(KEY_ESCAPE))
     {
-        switchTo = TESTSCENE;
+        switchTo = GAME;
         switchScene = true;
     }
     // TEST

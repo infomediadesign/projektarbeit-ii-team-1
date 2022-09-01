@@ -3,6 +3,7 @@
 
 #include "Scenes.h"
 #include "../Actors/Enemies/Enemy.h"
+#include "../Actors/Player.h"
 
 
 #include <nlohmann/json.hpp>
@@ -22,6 +23,16 @@ class LevelScene : public Scenes {
 
     std::vector<Enemy> listOfNPCs;
     std::vector<int> tileAtlas;
+
+
+    // Level attributes
+    std::shared_ptr<Player> player;
+
+    std::vector<std::shared_ptr<Actor>> allActors;
+    std::vector<std::shared_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Actor>> actors;
+    std::vector<std::shared_ptr<Barkeeper>> barkeepers;
+    std::vector<std::shared_ptr<Dealer>> dealers;
 
     LevelScene();
 

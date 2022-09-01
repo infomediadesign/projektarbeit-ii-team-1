@@ -21,7 +21,7 @@ enum GameScreen
     SHOP_DEALER,
     TESTSCENE,
     INVENTORY,
-    SKILLTHREE
+    SKILLTREE
 };
 
 enum Direction
