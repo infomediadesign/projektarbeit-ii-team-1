@@ -21,7 +21,7 @@ LevelScene::LevelScene()
     levelTilesetJson.close();*/
 
     // tileset als json "assets/maps/Floor_1_in_Tiles.json"  / "assets/maps/tilset.json"
-    ifStreamFile.open("assets/maps/Floor_1_in_Tiles.json");
+    ifStreamFile.open("assets/maps/tilset.json");
     if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File tileset.json is not available");
     }
@@ -36,7 +36,7 @@ LevelScene::LevelScene()
     //levelMap = nlohmann::json::parse(levelMapFile);
     //levelMapFile.close();
 
-    ifStreamFile.open("./assets/maps/Floor_1.jSON");
+    ifStreamFile.open("./assets/maps/msp_als_json.json");
     if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File Level.json is not available");
     }
@@ -47,7 +47,7 @@ LevelScene::LevelScene()
     TraceLog(LOG_INFO, "Array durch3");
 
     // Level Tileset as PNG "./assets/maps/Tileset_Floor_1.PNG" /   "./assets/maps/tilset1.png"
-    tileAtlasTexture = LoadTexture("./assets/maps/Tileset_Floor_1.PNG");
+    tileAtlasTexture = LoadTexture("./assets/maps/tilset1.png");
 
     //2. die Json überprüfen ob die Datei geöffnet ist
     // Bei Fehler meldung -> Siehe tipp!!

@@ -24,7 +24,7 @@ private:
 public:
     const int slotMaxCount = 20;
     Font font1;
-    //std::vector<Item> items;
+    std::vector<Item> items;
     std::shared_ptr<Player> player;
 
     //= {Item01(type itemPunchGun, name "test02", price 100, damage 0.2, uses 1),

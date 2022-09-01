@@ -15,8 +15,8 @@ class SkillTreeScene : public MenuScenes {
 
 public:
     std::shared_ptr<Player> player;
-    std::vector<Vector2> skillPos ={Vector2 {10,11}, Vector2 {12,13},
-                                    Vector2{14,15}, Vector2 {16,17}};
+    std::vector<Vector2> skillPos ={Vector2 {75,Game::ScreenHeight/2-50}, Vector2 {405,Game::ScreenHeight/2-50},Vector2 {715,Game::ScreenHeight/2-50},
+                                    Vector2{1035,Game::ScreenHeight/2-50}, Vector2 {1355,Game::ScreenHeight/2-50},Vector2 {1665,Game::ScreenHeight/2-50}};
     Font font1;
 
 
