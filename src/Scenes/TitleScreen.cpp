@@ -39,6 +39,7 @@ void TitleScreen::CustomUpdate()
 {
     if (IsKeyPressed(KEY_ENTER))
     {
+        TraceLog(LOG_INFO, "Switching to main menu...");
         this->switchTo = MAINMENU;
         this->switchScene = true;
     }

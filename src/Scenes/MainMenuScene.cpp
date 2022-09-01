@@ -69,6 +69,9 @@ MainMenuScene::~MainMenuScene() {
 }
 
 void MainMenuScene::CustomUpdate() {
+
+    TraceLog(LOG_INFO, "Updating main");
+
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;

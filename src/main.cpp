@@ -59,34 +59,16 @@ int main() {
     LevelScene testL;
 
 
-    // Level initialisation goes here (use shared pointers!)
-    // Maybe you need to use pointers for rooms
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>();
-    std::shared_ptr<LevelScene> level01;
-    std::shared_ptr<LevelScene> levelRooftop;
-
-    // Scene management
-    std::shared_ptr<Scenes> activeScene = std::make_shared<TitleScreen>();
-    std::shared_ptr<LevelScene> activeLevel;
-
-    // ALL OF THIS IS FOR TEST PURPOSES
-
+    // ===== PLAYER INIT =====
     std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
 
-    Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
+    // ========== LEVEL INITIALISATION ==========
 
-    std::vector<std::shared_ptr<Prop>> props;
-    std::vector<std::shared_ptr<Actor>> actors;
-    std::vector<std::shared_ptr<Enemy>> enemies;
-    std::vector<std::shared_ptr<Barkeeper>> barkeepers;
-    std::vector<std::shared_ptr<Dealer>> dealers;
-    std::vector<std::shared_ptr<Actor>> allActors;
-    std::shared_ptr<Prop> pProp;
+    //  ----- Tutorial initialisation -----
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>();
+    levelTutorial->player = player;
     std::shared_ptr<Actor> pActor;
-    std::shared_ptr<Enemy> pEnemy;
-    std::shared_ptr<Barkeeper> pBarkeeper;
-    std::shared_ptr<Dealer> pDealer;
-
+    Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
     std::vector<std::string> testDialogue =
             {
                     "This is a test line!",
@@ -100,21 +82,27 @@ int main() {
             };
     pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
     pActor->setName("Test NPC");
-    actors.push_back(pActor);
-    allActors.push_back(pActor);
-    pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
-    enemies.push_back(pEnemy);
-    allActors.push_back(pEnemy);
-    pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
-    barkeepers.push_back(pBarkeeper);
-    allActors.push_back(pBarkeeper);
-    pDealer = std::make_shared<Dealer>(1200, 800, testDialogue);
-    dealers.push_back(pDealer);
-    allActors.push_back(pDealer);
+    levelTutorial->actors.push_back(pActor);
+    levelTutorial->allActors.push_back(pActor);
+    std::shared_ptr<Enemy> pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
+    levelTutorial->enemies.push_back(pEnemy);
+    levelTutorial->allActors.push_back(pEnemy);
+    std::shared_ptr<Barkeeper> pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
+    levelTutorial->barkeepers.push_back(pBarkeeper);
+    levelTutorial->allActors.push_back(pBarkeeper);
+    std::shared_ptr<Dealer> pDealer = std::make_shared<Dealer>(1200, 800, testDialogue);
+    levelTutorial->dealers.push_back(pDealer);
+    levelTutorial->allActors.push_back(pDealer);
 
 
+    std::shared_ptr<LevelScene> level01;
+    std::shared_ptr<LevelScene> levelRooftop;
 
+    // Scene management
+    std::shared_ptr<Scenes> activeScene = std::make_shared<TitleScreen>();
+    std::shared_ptr<LevelScene> activeLevel = levelTutorial;
 
+    // ALL OF THIS IS FOR TEST PURPOSES
 
     std::shared_ptr<Enemy> enemyPtr;
     std::shared_ptr<Barkeeper> barkeeperPtr;
@@ -136,13 +124,13 @@ int main() {
             activeScene->switchScene = false;
 
             switch (activeScene->switchTo) {
-                case TITLESCREEN:
-                {
+                case TITLESCREEN: {
                     activeScene = std::make_shared<TitleScreen>();
                     break;
                 }
 
                 case MAINMENU: {
+                    TraceLog(LOG_INFO, "Initialising main menu");
                     activeScene = std::make_shared<MainMenuScene>();
                     break;
                 }
@@ -162,30 +150,6 @@ int main() {
                 case GAME: {
                     activeScene = activeLevel;
 
-
-
-                    /* All of this has to go to LevelScene.Update()!!
-
-                    //Issue: only works once opening the pausemenu, and lets itself close out with enter
-                    if(IsKeyPressed(KEY_P))
-                    {
-                        this->switchScene = true;
-                        this->switchTo = PAUSEMENU;
-                    }
-
-                    // This is a test
-
-                    player.Update();
-
-                    player.checkActorCollision(actors);
-
-                    player.interact(actors); //This garbage can be solved when we implemented a level-class
-
-                    for (int i = 0; i < actors.size(); i++)
-                    {
-                        actors[i]->Update();
-                    }
-                    */
                     break;
                 }
                 case BATTLE:
@@ -208,7 +172,8 @@ int main() {
 
                     activeScene = std::make_shared<ShopDealer>(player);
                     break;
-                case PAUSEMENU: {
+                case PAUSEMENU:
+                {
                     activeScene = std::make_shared<PauseScene>();
 
                     /* All of this has to go to PauseScene.Update()!
@@ -228,23 +193,23 @@ int main() {
                     break;
                 }
 
-                case PAUSEOPTIONS: {
-                    if (IsKeyPressed(KEY_ESCAPE)) {
+                case PAUSEOPTIONS:
+                {
+                    if (IsKeyPressed(KEY_ESCAPE))
+                    {
                         //currentScreen = PAUSEMENU;
                     }
                     break;
                 }
-                case TESTSCENE: {
-                    // This is a test
 
-                    break;
-                }
-                case INVENTORY: {
+                case INVENTORY:
+                {
                     activeScene->switchScene = false;
                     activeScene = std::make_shared<InventoryScene>(player);
                     break;
                 }
-                case SKILLTHREE: {
+                case SKILLTREE:
+                {
                     activeScene->switchScene = false;
                     activeScene = std::make_shared<SkillTreeScene>(player);
                     break;
@@ -253,129 +218,22 @@ int main() {
         }
 
         // Scene update
-        if (activeScene->switchTo != TITLESCREEN)
-        {
-            // TEMPORARY?
-            if (activeScene->switchTo == TESTSCENE) {
 
-                // This is going to be moved to LevelScene::Update()
-                player->Update();
-
-                //TEST
-                if (IsKeyPressed(KEY_I)) {
-                    activeScene->switchTo = INVENTORY;
-                    activeScene->switchScene = true;
-                }
-                if (IsKeyPressed(KEY_C)) {
-                    activeScene->switchTo = SKILLTHREE;
-                    activeScene->switchScene = true;
-                }
-                //TEST
-
-                // Check if a shop has to be opened
-                if (player->openShopBarkeeper == true && player->dialogueManager.dialoguePlaying == false) {
-                    TraceLog(LOG_INFO, "Opening shop...");
-                    player->openShopBarkeeper = false;
-
-                    // This is hardcoded for now, because the level class isn't ready yet
-                    activeScene->switchTo = SHOP_BARKEEPER;
-                    activeScene->switchScene = true;
-                }
-                if (player->openShopDealer == true && player->dialogueManager.dialoguePlaying == false) {
-                    TraceLog(LOG_INFO, "Opening shop...");
-                    player->openShopDealer = false;
-
-
-                    // This is hardcoded for now, because the level class isn't ready yet (would be this->switchTo, etc.)
-                    activeScene->switchTo = SHOP_DEALER;
-                    activeScene->switchScene = true;
-                }
-                // Check if a fight has to be started
-                if (player->startCombat == true && player->dialogueManager.dialoguePlaying == false) {
-                    TraceLog(LOG_INFO, "Starting combat...");
-                    player->startCombat = false;
-                    // Start combat with player and player->enemyToFight
-                    // Has to remember the player's position in the level before battle!
-
-
-                    // This is hardcoded for now, because the level class isn't ready yet
-                    activeScene->switchTo = BATTLE;
-                    activeScene->switchScene = true;
-                }
-
-                player->checkActorCollision(allActors);
-
-                // Check enemy aggro radius collision (maybe move this into a method of the level-class
-                bool stopSearch = false;
-                for (int i = 0; i < enemies.size() && stopSearch == false &&
-                                player->dialogueManager.dialoguePlaying == false; i++) {
-                    if (CheckCollisionCircleRec({enemies[i]->position.x + enemies[i]->frameRec.width / 2,
-                                                 enemies[i]->position.y + enemies[i]->frameRec.height / 2},
-                                                enemies[i]->aggroRadius, player->collisionBox) &&
-                        enemies[i]->defeated == false) {
-                        player->interactionForced(enemies[i]);
-                        stopSearch = true;
-                    }
-                }
-
-                player->interact(actors);
-                player->interact(enemies);
-                player->interact(barkeepers);
-                player->interact(dealers);
-
-                for (int i = 0; i < actors.size(); i++) {
-                    actors[i]->Update();
-                }
-                for (int i = 0; i < enemies.size(); i++) {
-                    enemies[i]->Update();
-                }
-                for (int i = 0; i < barkeepers.size(); i++) {
-                    barkeepers[i]->Update();
-                }
-                for (int i = 0; i < dealers.size(); i++) {
-                    dealers[i]->Update();
-                }
-            }
-            else
-            {
-                activeScene->Update();
-            }
-    }
+        activeScene->Update();
 
 
         // ========== DRAW ==========
         BeginDrawing();
         ClearBackground(BLACK);
 
-        if (activeScene->switchTo != TITLESCREEN) {
-            // TEMPORARY
-            if (activeScene->switchTo == TESTSCENE) {
-                levelTutorial->Draw();
 
-                for (int i = 0; i < actors.size(); i++) {
-                    actors[i]->Draw();
-                }
-                for (int i = 0; i < enemies.size(); i++) {
-                    enemies[i]->Draw();
-                }
-                for (int i = 0; i < barkeepers.size(); i++) {
-                    barkeepers[i]->Draw();
-                }
-                for (int i = 0; i < dealers.size(); i++) {
-                    dealers[i]->Draw();
-                }
-                // Draw player after NPCs
-                player->Draw();
-            }
-            else
-            {
-                if (activeScene->drawLevelBackground == true)
-                {
-                    activeLevel->Draw();
-                }
-                activeScene->Draw();
-            }
+        if (activeScene->drawLevelBackground == true)
+        {
+            activeLevel->Draw();
         }
+        activeScene->Draw();
+
+
 
         /*
         switch (currentScreen)

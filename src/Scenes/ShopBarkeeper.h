@@ -26,9 +26,9 @@ public:
 
     std::vector<std::shared_ptr<game::Button>> buttons;
     int activeButton;
-    //Image bombTexture;
-    //Image frisbeeTexture;
-    //Image longdrinkTexture;
+    Texture2D bombTexture;
+    Texture2D frisbeeTexture;
+    Texture2D longdrinkTexture;
 
     // Demo Items
     Bomb bomb;
