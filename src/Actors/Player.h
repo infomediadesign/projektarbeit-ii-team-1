@@ -50,7 +50,7 @@ public:
 	int defense;
 
     // Placeholder?
-    std::vector<std::shared_ptr<Item>> inventory;
+    std::vector<std::shared_ptr<Item>> inventory ;
 
     bool inventoryOpened = false;
     bool skilltreeOpend = false;
