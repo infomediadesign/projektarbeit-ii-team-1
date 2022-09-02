@@ -75,6 +75,15 @@ public:
     int activeButton;
     std::vector<std::shared_ptr<game::Button>> buttons;
 
+    // SFX & Music
+    Sound soundUiBlip;
+    Sound soundUiBlip2;
+    Sound soundUiBlocked;
+    Sound soundTazer;
+    Sound soundWhip;
+    Sound soundBomb;
+    Sound soundLaser;
+    Sound soundPunch;
 
     // Methods
 public:
