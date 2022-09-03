@@ -9,6 +9,10 @@ ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Bar
     this->drawLevelBackground = false; // NOT FINAL, HAS TO BE CHANGED WHEN LEVELS WORK
     this->switchScene = false;
 
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    this->uiBlocked = LoadSound("assets/audio/sfx/uiBlocked.wav");
+
     this->panelPos = {static_cast<float>(GetScreenWidth() / 3.5), static_cast<float>(GetScreenHeight() / 10)};
 
     this->player = player;
@@ -45,6 +49,7 @@ void ShopBarkeeper::CustomUpdate()
         else activeButton = 0;
 
         buttons[activeButton]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
@@ -55,11 +60,13 @@ void ShopBarkeeper::CustomUpdate()
         else activeButton--;
 
         buttons[activeButton]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_E))
     {
         if (this->buttons[this->activeButton]->blocked == false) {
+            PlaySound(this->uiBlip2);
             switch (this->activeButton) {
                 case 0:
                     this->player->money = this->player->money - this->bomb.price;
@@ -78,7 +85,7 @@ void ShopBarkeeper::CustomUpdate()
     }
         else
         {
-            // Play blocked button sound
+            PlaySound(this->uiBlocked);
         }
         this->updateButtons();
     }
@@ -86,6 +93,7 @@ void ShopBarkeeper::CustomUpdate()
     {
         this->switchTo = GAME;
         this->switchScene = true;
+        PlaySound(this->uiBlip2);
     }
 }
 

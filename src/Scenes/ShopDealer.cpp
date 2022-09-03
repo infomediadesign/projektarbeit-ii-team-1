@@ -17,6 +17,10 @@ ShopDealer::ShopDealer(std::shared_ptr<Player> player)
 
     this->panelTexture = LoadTexture("assets/graphics/ui/shopAndInv/shopDealer.png");
 
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    this->uiBlocked = LoadSound("assets/audio/sfx/uiBlocked.wav");
+
     // Check for Items
     TraceLog(LOG_INFO, "Checking items");
     for (int i = 0; i < this->player->inventory.size(); i++)
@@ -49,6 +53,7 @@ void ShopDealer::CustomUpdate()
         else activeButton = 0;
 
         buttons[activeButton]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
@@ -59,11 +64,13 @@ void ShopDealer::CustomUpdate()
         else activeButton--;
 
         buttons[activeButton]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_E))
     {
         if (this->buttons[this->activeButton]->blocked == false) {
+            PlaySound(this->uiBlip2);
             std::string directoryString;
             std::string memoryString;
             std::string directorySecondary;
@@ -194,7 +201,7 @@ void ShopDealer::CustomUpdate()
         }
         else
         {
-            // Play blocked button sound
+            PlaySound(this->uiBlocked);
         }
         this->updateButtons();
     }
@@ -202,6 +209,7 @@ void ShopDealer::CustomUpdate()
     {
         this->switchTo = GAME;
         this->switchScene = true;
+        PlaySound(this->uiBlip2);
     }
 }
 

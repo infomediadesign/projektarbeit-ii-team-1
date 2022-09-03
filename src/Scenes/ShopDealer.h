@@ -40,6 +40,11 @@ public:
     bool hasLaserGun;
     std::shared_ptr<Item> laserGunPtr;
 
+    // SFX
+    Sound uiBlip;
+    Sound uiBlip2;
+    Sound uiBlocked;
+
     // Methods
 public:
     ShopDealer(std::shared_ptr<Player> player);
