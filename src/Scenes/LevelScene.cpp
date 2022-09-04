@@ -7,9 +7,30 @@
 #include <filesystem>
 
 
-LevelScene::LevelScene()
+LevelScene::LevelScene(LevelRooms levelRooms)
 {
     // ===== MAP GENERATION =====
+    this->levelRooms = levelRooms;
+
+    /*switch (levelRooms) {
+        case Wardrobe: ;
+            break;
+        case Floor:;
+            break;
+        case VIPRoom:;
+            break;
+        case Storage:;
+            break;
+        case Dancefloor:;
+            break;
+        case WCM:;
+            break;
+        case WCW:;
+            break;
+        default:;
+            break;
+
+    };*/
 
     TraceLog(LOG_INFO, "Array durch");
     // 1. Erstes die Json vom Ttleset laden
@@ -20,7 +41,7 @@ LevelScene::LevelScene()
     levelTilesetDescription = nlohmann::json::parse(levelTilesetJson);
     levelTilesetJson.close();*/
 
-    // tileset als json "assets/maps/Floor_1_in_Tiles.json"  / "assets/maps/tilset.json"
+    // tileset als json "assets/maps/Floor01/floor_1_in_tiles.json"  / "assets/maps/tilset.json"
     ifStreamFile.open("assets/maps/tilset.json");
     if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File tileset.json is not available");
@@ -36,7 +57,7 @@ LevelScene::LevelScene()
     //levelMap = nlohmann::json::parse(levelMapFile);
     //levelMapFile.close();
 
-    ifStreamFile.open("./assets/maps/msp_als_json.json");
+    ifStreamFile.open("./assets/maps/Floor01/Wardrobe.json");
     if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File Level.json is not available");
     }
@@ -218,6 +239,26 @@ void LevelScene::DrawMap()
     /*nlohmann::json levelMap = nlohmann::json::parse(levelMapFile);
     levelMapFile.close(); */
     //////////////
+
+    /*switch (levelRooms) {
+        case Wardrobe:;
+            break;
+        case Floor:;
+            break;
+        case VIPRoom:;
+            break;
+        case Storage:;
+            break;
+        case Dancefloor:;
+            break;
+        case WCM:;
+            break;
+        case WCW:;
+            break;
+        default:;
+            break;
+    }*/
+
 
     Vector2 vec = {0, 0};
     Rectangle rec = {0, 0, levelMap["width"], levelMap["height"]};

@@ -35,6 +35,8 @@ enum Direction
 enum GameState{Started, Paused, Stopped};
 enum Level{Tutorial, Level01, Rooftop, VIP};
 
+enum LevelRooms{Wardrobe, Floor, VIPRoom, Storage, Dancefloor, WCM, WCW};
+
 enum BattleState
 {
     Main,

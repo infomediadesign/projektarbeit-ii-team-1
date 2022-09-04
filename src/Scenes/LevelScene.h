@@ -4,6 +4,7 @@
 #include "Scenes.h"
 #include "../Actors/Enemies/Enemy.h"
 #include "../Actors/Player.h"
+#include "../Actors/enums.h"
 
 
 #include <nlohmann/json.hpp>
@@ -15,6 +16,8 @@ class LevelScene : public Scenes {
     private:
     ;
     public:
+    LevelRooms levelRooms;
+
     nlohmann::json levelTilesetDescription;
     nlohmann::json levelMap;
     Texture2D tileAtlasTexture;
@@ -34,7 +37,7 @@ class LevelScene : public Scenes {
     std::vector<std::shared_ptr<Barkeeper>> barkeepers;
     std::vector<std::shared_ptr<Dealer>> dealers;
 
-    LevelScene();
+    LevelScene(LevelRooms levelRooms);
 
     void DrawMap();
 

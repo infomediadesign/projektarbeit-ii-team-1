@@ -54,8 +54,10 @@ int main() {
     MainOptions testMainOps;
     CreditScene testCredit;
     PauseScene testPause;
+    // Enums
+    LevelRooms levelRooms;
 
-    LevelScene testL;
+    //LevelScene testL( );
 
 
     // ===== PLAYER INIT =====
@@ -64,7 +66,7 @@ int main() {
     // ========== LEVEL INITIALISATION ==========
 
     //  ----- Tutorial initialisation -----
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>();
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = Wardrobe);
     levelTutorial->player = player;
     std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");

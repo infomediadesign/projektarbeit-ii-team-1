@@ -51,7 +51,7 @@ void SkillTreeScene::DrawSkillTree()
     DrawText("Right Eye", 1700,Game::ScreenHeight/2-100, 25, BLACK);*/
 
     // Frame and arrow pictures
-    Texture2D arrowImg = LoadTexture("../../assets/graphics/UI/Skilltree/Arrpw.png");
+    Texture2D arrowImg = LoadTexture("../../assets/graphics/UI/Skilltree/Arrow.png");
     Texture2D skillUnlockecImg = LoadTexture("../../assets/graphics/UI/Skilltree/SkillUnlocked.png");
     Texture2D skillLockedImg = LoadTexture("../../assets/graphics/UI/Skilltree/SkillLocked.png");
 
@@ -76,24 +76,36 @@ void SkillTreeScene::DrawSkillTree()
     //DrawTextureEx(arrowImg, {150, Game::ScreenHeight/2}, 0, 0.5,WHITE);
 
     int skillDrawCount = 1;
+    int arrowDrawedCount = 1;
 
     for (int i = 0; i < 6; ++i) {
+
 
         // ... unlocked skills
         if (player->augmentationCount >0 && skillDrawCount <= player->augmentationCount)
         {
-            DrawTextEx(font1,skillTxts[i].c_str(), skillPos[i], 27, 0.2, BLACK);
+            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillUnlockecImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
             DrawTextureEx(skillImgs[i], {skillPos[i].x+20,skillPos[i].y+20}, 0, 0.5, WHITE);
-            DrawTextureEx(skillUnlockecImg, {skillPos[i].x,skillPos[i].y}, 0, 2.5, WHITE);
+            DrawTextureEx(skillUnlockecImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
+            if (arrowDrawedCount <=5)
+            {
+                DrawTextureEx(arrowImg, {skillPos[i].x+200,skillPos[i].y+150}, 0, 0.5, WHITE);
+                arrowDrawedCount++;
+            }
             skillDrawCount ++;
         }
 
         // ... locked skills
         if (player->augmentationCount == 0 || (player->augmentationCount >0 && skillDrawCount > player->augmentationCount))
         {
-            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillLockedImg.width*float(2.25)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
+            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillLockedImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
             DrawTextureEx(skillImgs[i], {skillPos[i].x+10,skillPos[i].y+10}, 0, 0.5, WHITE);
-            DrawTextureEx(skillLockedImg, {skillPos[i].x,skillPos[i].y}, 0, 2.5, WHITE);
+            DrawTextureEx(skillLockedImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
+            if (arrowDrawedCount <=5)
+            {
+                DrawTextureEx(arrowImg, {skillPos[i].x+180,(skillPos[i].y+((skillUnlockecImg.height)-arrowImg.height)/2)}, 0, 0.5, WHITE);
+                arrowDrawedCount++;
+            }
             skillDrawCount ++;
         }
 

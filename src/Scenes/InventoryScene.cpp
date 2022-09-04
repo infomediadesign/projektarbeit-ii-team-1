@@ -71,10 +71,10 @@ void InventoryScene::DrawInventory()
 
 
     // Draw item imgs
-    for (int i = 1; i <=player->inventory.size() ; ++i) {
-        DrawTextureEx(player->inventory[i]->texture, {posInventoryImg.x+20,posInventoryImg.y+20}, 0, 1, WHITE);
+    //for (int i = 1; i <=player->inventory.size() ; ++i) {
+    //    DrawTextureEx(player->inventory[i]->texture, {posInventoryImg.x+20,posInventoryImg.y+20}, 0, 1, WHITE);
 
-    }
+    //}
 }
 
 void InventoryScene::AddItem(Item newItem)
