@@ -11,7 +11,7 @@ ShopDealer::ShopDealer(std::shared_ptr<Player> player)
     this->drawLevelBackground = false; // NOT FINAL, HAS TO BE CHANGED WHEN LEVELS WORK
     this->switchScene = false;
 
-    this->panelPos = {static_cast<float>(GetScreenWidth() * 0.345), static_cast<float>(GetScreenHeight() / 20)};
+    this->panelPos = {static_cast<float>(GetScreenWidth() * 0.305), static_cast<float>(GetScreenHeight() * 0.25)};
 
     this->player = player;
 
@@ -126,6 +126,9 @@ void ShopDealer::CustomUpdate()
 
                     directoryString.append("walkcycle/aug");
                     directoryString.append(std::to_string(this->player->augmentationCount));
+                    directoryString.append(".png");
+
+                    player->spritesheet = LoadTexture(directoryString.c_str());
 
                     // Combat spritesheets
                     directoryString.clear();
@@ -232,7 +235,7 @@ void ShopDealer::updateButtons()
     TraceLog(LOG_INFO, "Updating buttons");
     this->buttons.clear();
     std::string workingString;
-    float posX = this->panelPos.x + GetScreenWidth() * 0.175; // Button posX
+    float posX = GetScreenWidth() * 0.5; // Button posX
 
     workingString = "Augmentation ";
     switch (this->player->augmentationCount)
@@ -264,9 +267,8 @@ void ShopDealer::updateButtons()
     }
     this->buttons.push_back(std::make_shared<game::Button>(workingString.c_str(),
                                                            posX,
-                                                           GetScreenHeight() * 0.2,
+                                                           GetScreenHeight() * 0.3,
                                                            50, 1, YELLOW, WHITE));
-    this->buttons[0]->active = true;
     TraceLog(LOG_INFO, "Button 1 finished");
 
     // Upgrades
@@ -286,7 +288,7 @@ void ShopDealer::updateButtons()
     TraceLog(LOG_INFO, "Pushing button 2");
     this->buttons.push_back(std::make_shared<game::Button>(workingString.c_str(),
                                                            posX,
-                                                           GetScreenHeight() * 0.3,
+                                                           GetScreenHeight() * 0.395,
                                                            50, 1, YELLOW, WHITE));
     TraceLog(LOG_INFO, "Button 2 finished");
     workingString.clear(); // Just in case
@@ -304,7 +306,7 @@ void ShopDealer::updateButtons()
     }
     this->buttons.push_back(std::make_shared<game::Button>(workingString.c_str(),
                                                            posX,
-                                                           GetScreenHeight() * 0.4,
+                                                           GetScreenHeight() * 0.485,
                                                            50, 1, YELLOW, WHITE));
     TraceLog(LOG_INFO, "Button 3 finished");
     workingString.clear(); // Just in case
@@ -321,7 +323,7 @@ void ShopDealer::updateButtons()
     }
     this->buttons.push_back(std::make_shared<game::Button>(workingString.c_str(),
                                                            posX,
-                                                           GetScreenHeight() * 0.5,
+                                                           GetScreenHeight() * 0.575,
                                                            50, 1, YELLOW, WHITE));
     TraceLog(LOG_INFO, "Button 4 finished");
     // Disable buttons
@@ -363,5 +365,6 @@ void ShopDealer::updateButtons()
     {
         this->buttons[3]->blocked = true;
     }
+    this->buttons[this->activeButton]->active = true;
     TraceLog(LOG_INFO, "Finished updating buttons");
 }

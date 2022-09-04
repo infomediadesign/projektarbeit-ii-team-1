@@ -24,13 +24,13 @@ ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Bar
     Image frisbeeImage = LoadImage("assets/graphics/items/weapons/frisbee.png");
     Image longdrinkImage = LoadImage("assets/graphics/items/heal/longdrink.png");
 
-    ImageResize(&bombImage, 100, 100);
+    ImageResize(&bombImage, 250, 250);
     this->bombTexture = LoadTextureFromImage(bombImage);
     UnloadImage(bombImage);
-    ImageResize(&frisbeeImage, 100, 100);
+    ImageResize(&frisbeeImage, 250, 250);
     this->frisbeeTexture = LoadTextureFromImage(frisbeeImage);
     UnloadImage(frisbeeImage);
-    ImageResize(&longdrinkImage, 100, 100);
+    ImageResize(&longdrinkImage, 250, 250);
     this->longdrinkTexture = LoadTextureFromImage(longdrinkImage);
     UnloadImage(longdrinkImage);
 
@@ -107,9 +107,9 @@ void ShopBarkeeper::CustomDraw()
         buttons[i]->Draw();
     }
 
-    //DrawTexture(this->bombTexture, panelPos.x + GetScreenWidth() * 0.01, panelPos.y + GetScreenHeight() * 0.01, WHITE);
-    //DrawTexture(this->frisbeeTexture, panelPos.x + GetScreenWidth() * 0.01, panelPos.y + GetScreenHeight() * 0.1, WHITE);
-    //DrawTexture(this->longdrinkTexture, panelPos.x + GetScreenWidth() * 0.01, panelPos.y + GetScreenHeight() * 0.05, WHITE);
+    DrawTexture(this->bombTexture, panelPos.x + GetScreenWidth() * 0.04, panelPos.y + GetScreenHeight() * 0.075, WHITE);
+    DrawTexture(this->frisbeeTexture, panelPos.x + GetScreenWidth() * 0.04, panelPos.y + GetScreenHeight() * 0.34, WHITE);
+    DrawTexture(this->longdrinkTexture, panelPos.x + GetScreenWidth() * 0.04, panelPos.y + GetScreenHeight() * 0.58,WHITE);
 }
 
 void ShopBarkeeper::updateButtons()
