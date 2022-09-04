@@ -45,13 +45,7 @@ int main() {
 
     // Set target FPS
     SetTargetFPS(60);
-    // Set icon for Window
-    Image gameIcon = LoadImage("./assets/graphics/CUIcon.png");
-    SetWindowIcon(gameIcon);
-    // Set titel for Window
-    const char gameTitel []= "Cyberpunk Undercover";
-    SetWindowTitle(gameTitel);
-    // Set Window exit key
+
     SetExitKey(KEY_BACKSPACE);
 
 #ifdef GAME_START_FULLSCREEN
