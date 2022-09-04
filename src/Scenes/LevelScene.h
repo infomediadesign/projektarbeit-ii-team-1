@@ -1,6 +1,8 @@
 #ifndef RAYLIBSTARTER_LEVELSCENE_H
 #define RAYLIBSTARTER_LEVELSCENE_H
 
+#pragma once
+#include "config.h"
 #include "Scenes.h"
 #include "../Actors/Enemies/Enemy.h"
 #include "../Actors/Player.h"
@@ -18,9 +20,12 @@ class LevelScene : public Scenes {
     public:
     LevelRooms levelRooms;
 
+    bool tutorailLeveLActive = false;
+
     nlohmann::json levelTilesetDescription;
     nlohmann::json levelMap;
     Texture2D tileAtlasTexture;
+    Texture2D tutorialLevelBackgroundIMG;
 
     std::ifstream ifStreamFile;
 
@@ -38,6 +43,7 @@ class LevelScene : public Scenes {
     std::vector<std::shared_ptr<Dealer>> dealers;
 
     LevelScene(LevelRooms levelRooms);
+    LevelScene(Level currentLevel);
 
     void DrawMap();
 
