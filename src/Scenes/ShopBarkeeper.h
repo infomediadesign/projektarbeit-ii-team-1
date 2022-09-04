@@ -35,6 +35,12 @@ public:
     Frisbee frisbee;
     Longdrink longdrink;
 
+    // SFX
+    Sound uiBlip;
+    Sound uiBlip2;
+    Sound uiBlocked;
+
+
     // Methods
 public:
     ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Barkeeper> barkeeper);

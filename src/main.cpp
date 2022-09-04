@@ -32,10 +32,17 @@
 #include <memory>
 #include <vector>
 
+// Sound / music volume
+float volSfx = 2;
+float volMusic = 2;
+
 int main() {
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
     InitWindow(Game::ScreenWidth, Game::ScreenHeight, Game::PROJECT_NAME);
+
+    InitAudioDevice();
+
     // Set target FPS
     SetTargetFPS(60);
 
@@ -108,6 +115,8 @@ int main() {
     std::shared_ptr<Enemy> enemyPtr;
     std::shared_ptr<Barkeeper> barkeeperPtr;
 
+    player->money = player->money + 2000;
+
     //std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
     //std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
     //BattleScene testBattle(testPlayer, testEnemy);
@@ -122,11 +131,8 @@ int main() {
 
         // Scene transition
 
-
-        TraceLog(LOG_INFO, "Switch scene in main:");
         TraceLog(LOG_INFO, std::to_string(activeScene->switchScene).c_str());
         if (activeScene->switchScene == true) {
-            TraceLog(LOG_INFO, "Trying to switch scenes");
             activeScene->switchScene = false;
 
             switch (activeScene->switchTo) {
@@ -136,7 +142,6 @@ int main() {
                 }
 
                 case MAINMENU:
-                    TraceLog(LOG_INFO, "Initialising main menu");
                     activeScene = std::make_shared<MainMenuScene>();
                     break;
 

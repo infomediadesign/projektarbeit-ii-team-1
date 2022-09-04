@@ -18,7 +18,7 @@ this->colorSelected = colorSelected;
 this->colorNotSelected = colorNotSelected;
 
 font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
-blocked = false;
+this->blocked = false;
 }
 
 game::Button::~Button()
@@ -37,7 +37,7 @@ void game::Button::Draw() {
     }
     Positioning.y = Position.y;
 
-    if (blocked == false)
+    if (this->blocked == false)
     {
         DrawTextEx(font1, Text.c_str(), Positioning, fontSize, fontSpacing, colorNotSelected);
     }

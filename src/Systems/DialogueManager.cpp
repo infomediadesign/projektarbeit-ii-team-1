@@ -13,6 +13,9 @@ DialogueManager::DialogueManager()
 {
 this->panelTexture = LoadTexture("assets/graphics/ui/dialogueWindow.png");
 this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+this->soundChatter = LoadSound("assets/audio/sfx/chatter.wav");
+
 }
 
 void DialogueManager::Update()
@@ -42,36 +45,50 @@ void DialogueManager::startDialogue(std::string name, std::vector<std::string> d
 void DialogueManager::playDialogue()
 {
 	if (this->dialoguePlaying == true)
-	{
+    {
+        // Stop sound when a line is completed
+        if (charCounter >= rawDialogue[lineCounter].size())
+        {
+            StopSound(this->soundChatter);
+        }
+
         std::string lineToLoad = this->rawDialogue[this->lineCounter];
 
-		// Closes dialogue when E is pressed while the final line is being displayed
-		if (IsKeyPressed(KEY_E) && lineCounter == this->rawDialogue.size() - 1)		// Possible source for game crashing bugs
-		{																			// (subscript out of range)
-			this->stopDialogue();
-		}
-		// Scrolls through dialogue when E is pressed and it's not the final line (failsafe for preventing crashes)
-		else if (IsKeyPressed(KEY_E) && lineCounter < this->rawDialogue.size() - 1)	// Possible source for game crashing bugs
-		{																			// (subscript out of range)
-			this->lineCounter++;
-			this->charCounter = 0;
-			this->lineToDraw.clear();
-		}
-		// Loads the next character of the currently active line if the line is not already fully loaded
-		else if (charCounter < rawDialogue[lineCounter].size())						// Possible source for game crashing bugs
-		{																			// (subscript out of range)
+        // Closes dialogue when E is pressed while the final line is being displayed
+        if (IsKeyPressed(KEY_E) && lineCounter == this->rawDialogue.size() - 1)        // Possible source for game crashing bugs
+        {                                                                            // (subscript out of range)
+            StopSound(this->soundChatter);
+            this->stopDialogue();
+        }
+            // Scrolls through dialogue when E is pressed and it's not the final line (failsafe for preventing crashes)
+        else if (IsKeyPressed(KEY_E) && lineCounter < this->rawDialogue.size() - 1)    // Possible source for game crashing bugs
+        {                                                                            // (subscript out of range)
+            StopSound(this->soundChatter);
+            this->lineCounter++;
+            this->charCounter = 0;
+            this->lineToDraw.clear();
+        }
+            // Loads the next character of the currently active line if the line is not already fully loaded
+        else if (charCounter < rawDialogue[lineCounter].size())                        // Possible source for game crashing bugs
+        {                                                                            // (subscript out of range)
+            // Play sound if no sound is playing
+            if (IsSoundPlaying(this->soundChatter) == false)
+            {
+                PlaySound(this->soundChatter);
+            }
 
-			this->lineToDraw.push_back(lineToLoad[this->charCounter]);
-			charCounter++;
-		}
-	}
 
-	// Quick implementation reminder: If ever implemented, automatic line breaks will work like this:
-	// this->lineToDraw.push_back('\');
-	// this->lineToDraw.push_back('n');
-	// Or if this works (which I doubt):
-	// this->lineToDraw.push_back("\n");
+            this->lineToDraw.push_back(lineToLoad[this->charCounter]);
+            charCounter++;
+        }
 
+
+        // Quick implementation reminder: If ever implemented, automatic line breaks will work like this:
+        // this->lineToDraw.push_back('\');
+        // this->lineToDraw.push_back('n');
+        // Or if this works (which I doubt):
+        // this->lineToDraw.push_back("\n");
+    }
 }
 
 void DialogueManager::stopDialogue()

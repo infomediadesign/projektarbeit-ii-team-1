@@ -7,6 +7,14 @@
 #include "../Items/Bomb.h"
 #include "../Items/Frisbee.h"
 #include "../Items/Longdrink.h"
+#include "../Items/PunchGun.h"
+#include "../Items/BottlecapGun.h"
+#include "../Items/LaserGun.h"
+#include "../Items/BottlecapAmmo.h"
+
+
+extern float volSfx;
+extern float volMusic;
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
@@ -62,6 +70,21 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 
+
+    // For test purposes uwu
+    Vector2 test = {1, 2};
+    this->player->inventory.push_back(std::make_shared<PunchGun>(test));
+    this->player->inventory.push_back(std::make_shared<BottlecapGun>(test));
+    this->player->inventory.push_back(std::make_shared<LaserGun>(test));
+    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
+    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
+    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
+    this->player->inventory.push_back(std::make_shared<Bomb>());
+    this->player->inventory.push_back(std::make_shared<Bomb>());
+    this->player->inventory.push_back(std::make_shared<Frisbee>());
+    this->player->inventory.push_back(std::make_shared<Frisbee>());
+    this->player->inventory.push_back(std::make_shared<Longdrink>());
+
     // Setup for items
     this->hasBottlecapGun = false;
     this->hasPunchGun = false;
@@ -100,6 +123,18 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
                 this->frisbeeUses = this->player->inventory[i]->uses;
         }
     }
+
+    // Sound init
+    this->soundTimer = 0;
+    this->soundUiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->soundUiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    this->soundUiBlocked = LoadSound("assets/audio/sfx/uiBlocked.wav");
+    this->soundTazer = LoadSound("assets/audio/sfx/tazer.wav");
+    this->soundWhip = LoadSound("assets/audio/sfx/whip.wav");
+    this->soundWhipCrack = LoadSound("assets/audio/sfx/whipCrack.wav");
+    this->soundBomb = LoadSound("assets/audio/sfx/bomb.wav");
+    this->soundLaser = LoadSound("assets/audio/sfx/laser.wav");
+    this->soundPunch = LoadSound("assets/audio/sfx/punch.wav");
 
     this->updateHpBars();
     this->endBattle = false;
@@ -272,11 +307,11 @@ void BattleScene::playAnimation() {
 
                 // Plays animation only when delay matches the frames waited
                 if (this->timerFramesWaited > this->playerAnimation.delay) {
-                    std::cout << "[DEBUG] End idle and start animation (enemy)" << std::endl;
+                    TraceLog(LOG_INFO, "End idle and start animation (enemy)");
                     this->playEnemyIdle = false;
                     this->currentFrameEnemy++;
                 } else {
-                    std::cout << "[DEBUG] Wait for animation and idle (enemy)" << std::endl;
+                    TraceLog(LOG_INFO,"Wait for animation and idle (enemy)");
                     this->playEnemyIdle = true;
                     this->timerFramesWaited++;
                     this->currentFrameEnemy = -1;
@@ -293,11 +328,11 @@ void BattleScene::playAnimation() {
 
                 // Plays animation only when delay matches the frames waited
                 if (this->timerFramesWaited > this->enemyAnimation.delay) {
-                    std::cout << "[DEBUG] End idle and start animation (player)" << std::endl;
+                    TraceLog(LOG_INFO, "End idle and start animation (player)");
                     this->playPlayerIdle = false;
                     this->currentFramePlayer++;
                 } else {
-                    std::cout << "[DEBUG] Wait for animation and idle (player)" << std::endl;
+                    TraceLog(LOG_INFO,"Wait for animation and idle (player)");
                     this->playPlayerIdle = true;
                     this->timerFramesWaited++;
                     this->currentFramePlayer = -1;
@@ -331,6 +366,8 @@ void BattleScene::playAnimation() {
                                  this->playerAnimation.spriteCount;
         this->frameRecEnemy.x = (float) this->currentFrameEnemy * (float) this->enemyAnimation.sheet.width /
                                 this->enemyAnimation.spriteCount;
+
+        this->playSfx();
     }
 }
 
@@ -379,7 +416,7 @@ void BattleScene::startAnimation()
             this->enemyAnimation = this->enemy->spritesheetAttackTazer;
             break;
         default:
-            std::cout << "[DEBUG] Error while selecting combat animations. Punch animations are being selected" << std::endl;
+            TraceLog(LOG_INFO, "Error while selecting combat animations. Punch animations are being selected");
             this->playerAnimation = this->player->spritesheetAttackPunch;
             this->enemyAnimation = this->enemy->spritesheetReactPunch;
     }
@@ -398,6 +435,7 @@ void BattleScene::startAnimation()
         this->currentFrameEnemy = 0;
         this->currentFramePlayer = 0;
     }
+    this->soundTimer = 0;
 }
 
 void BattleScene::playerAttack()
@@ -480,20 +518,27 @@ void BattleScene::enemyAttack()
         this->attackSource = sourceEnemy;
         this->attackType = this->enemyNextAttack;
 
+        float damageTotal = 0;
+
         switch (this->enemyNextAttack) {
             case punchEnemy:
-                this->player->currentHP = this->player->currentHP - this->enemy->damagePunch;
+                damageTotal = this->enemy->damagePunch - this->player->defense;
                 this->enemyNextAttack = necklace;
                 break;
             case necklace:
-                this->player->currentHP = this->player->currentHP - this->enemy->damageNecklace;
+                damageTotal = this->enemy->damageNecklace - this->player->defense;
                 this->enemyNextAttack = tazer;
                 break;
             case tazer:
-                this->player->currentHP = this->player->currentHP - this->enemy->damageTazer;
+                damageTotal = this->enemy->damageTazer - this->player->defense;
                 this->enemyNextAttack = punchEnemy;
                 break;
         }
+        if (damageTotal < 0)
+        {
+            damageTotal = 0;
+        }
+        this->player->currentHP = this->player->currentHP - damageTotal;
         this->startAnimation();
     }
     this->playerTurn = true;
@@ -561,6 +606,11 @@ void BattleScene::menuNavigation() {
     bool hasBomb = false;
     bool buttonUnlocked;
     if (this->state == Main) {
+
+        this->buttons[0]->blocked = false;
+        this->buttons[1]->blocked = false;
+        this->buttons[2]->blocked = false;
+
        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D)) {
             buttons[activeButton]->active = false;
             if (activeButton < buttons.size() - 1)
@@ -568,6 +618,7 @@ void BattleScene::menuNavigation() {
             else activeButton = 0;
 
             buttons[activeButton]->active = true;
+            PlaySound(this->soundUiBlip);
         }
 
         if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
@@ -577,8 +628,10 @@ void BattleScene::menuNavigation() {
             else activeButton--;
 
             buttons[activeButton]->active = true;
+            PlaySound(this->soundUiBlip);
         }
         if (IsKeyPressed(KEY_E)) {
+            PlaySound(this->soundUiBlip2);
             switch (activeButton) // 0 = Attack | 1 = Items | 2 = Flee
             {
                 case 0:
@@ -636,6 +689,10 @@ void BattleScene::menuNavigation() {
                     workingString = std::to_string((int) bottlecapAmmo);
                     for (int i = 0; i < workingString.size(); i++) {
                         this->buttons[2]->Text.push_back(workingString[i]);
+                    }
+                    if (bottlecapAmmo == 0)
+                    {
+                        this->buttons[2]->blocked = true;
                     }
                     this->buttons[3]->Text.push_back(' ');
                     this->buttons[3]->Text.push_back('x');
@@ -731,6 +788,7 @@ void BattleScene::menuNavigation() {
     }
         else if (this->state == Attack) {
         if (IsKeyPressed(KEY_ESCAPE)) {
+            PlaySound(this->soundUiBlip2);
             this->state = Main;
             this->initMainMenu();
         }
@@ -760,6 +818,7 @@ void BattleScene::menuNavigation() {
             else activeButton--;
 
             buttons[activeButton]->active = true;
+            PlaySound(this->soundUiBlip);
         }
         if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
             this->buttons[this->activeButton]->active = false;
@@ -768,6 +827,7 @@ void BattleScene::menuNavigation() {
             else activeButton++;
 
             buttons[activeButton]->active = true;
+            PlaySound(this->soundUiBlip);
         }
         if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S)) {
             this->buttons[this->activeButton]->active = false;
@@ -776,6 +836,7 @@ void BattleScene::menuNavigation() {
             else this->activeButton = this->activeButton - 2;
 
             buttons[activeButton]->active = true;
+            PlaySound(this->soundUiBlip);
         }
         if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W)) {
             this->buttons[this->activeButton]->active = false;
@@ -784,9 +845,11 @@ void BattleScene::menuNavigation() {
             else this->activeButton = this->activeButton + 2;
 
             buttons[activeButton]->active = true;
+            PlaySound(this->soundUiBlip);
         }
         if (IsKeyPressed(KEY_E)) {
             if (this->buttons[activeButton]->blocked == false) {
+                PlaySound(this->soundUiBlip2);
                 switch (this->activeButton) {
                     case 0:
                         this->attackType = punchPlayer;
@@ -810,7 +873,7 @@ void BattleScene::menuNavigation() {
             }
             else
             {
-                // Play "blocked" sound
+                PlaySound(this->soundUiBlocked);
             }
         }
 
@@ -820,6 +883,7 @@ void BattleScene::menuNavigation() {
         {
             if (IsKeyPressed(KEY_ESCAPE))
             {
+                PlaySound(this->soundUiBlip2);
                 this->state = Main;
                 this->initMainMenu();
             }
@@ -861,6 +925,7 @@ void BattleScene::menuNavigation() {
                 else activeButton = 0;
 
                 buttons[activeButton]->active = true;
+                PlaySound(this->soundUiBlip);
             }
 
             if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A)) {
@@ -870,10 +935,12 @@ void BattleScene::menuNavigation() {
                 else activeButton--;
 
                 buttons[activeButton]->active = true;
+                PlaySound(this->soundUiBlip);
             }
 
             if (IsKeyPressed(KEY_E)) {
                 if (this->buttons[activeButton]->blocked == false) {
+                    PlaySound(this->soundUiBlip2);
                     switch (this->activeButton) {
                         case 0:
                             this->attackType = frisbee;
@@ -894,7 +961,7 @@ void BattleScene::menuNavigation() {
                 }
                 else
                 {
-                    // Play "blocked" sound
+                    PlaySound(this->soundUiBlocked);
                 }
             }
     }
@@ -910,16 +977,99 @@ void BattleScene::initMainMenu()
                                                 GetScreenWidth() * 0.1,
                                                 GetScreenHeight() * 0.415,
                                                 50, 1, YELLOW, WHITE);
+    workingPtr->blocked = false;
     workingPtr->active = true;
     this->buttons.push_back(workingPtr);
     workingPtr = std::make_shared<game::Button>("Items",
                                                 GetScreenWidth() * 0.25,
                                                 GetScreenHeight() * 0.415,
                                                 50, 1, YELLOW, WHITE);
+    workingPtr->blocked = false;
     this->buttons.push_back(workingPtr);
     workingPtr = std::make_shared<game::Button>("Flee",
                                                 GetScreenWidth() * 0.35,
                                                 GetScreenHeight() * 0.415,
                                                 50, 1, YELLOW, WHITE);
+    workingPtr->blocked = false;
     this->buttons.push_back(workingPtr);
+}
+
+void BattleScene::playSfx()
+{
+    switch (this->attackType)
+    {
+        // Player attacks
+        case punchPlayer:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundWhip);
+            }
+            if (this->soundTimer == 26)
+            {
+                PlaySound(this->soundPunch);
+            }
+            break;
+        case punchGun:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundWhip);
+            }
+            if (this->soundTimer == 26)
+            {
+                PlaySound(this->soundPunch);
+            }
+            break;
+        case laser:
+            if (this->soundTimer == 20)
+            {
+                PlaySound(this->soundLaser);
+            }
+            break;
+        case bomb:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundWhip);
+            }
+            if (this->soundTimer == 75)
+            {
+                PlaySound(this->soundBomb);
+            }
+            break;
+        case frisbee:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundWhip);
+            }
+            if (this->soundTimer == 40)
+            {
+                PlaySound(this->soundPunch);
+            }
+            break;
+            // Enemy attacks
+        case punchEnemy:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundWhip);
+            }
+            if (this->soundTimer == 26)
+            {
+                PlaySound(this->soundPunch);
+            }
+            break;
+        case necklace:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundWhipCrack);
+            }
+
+            break;
+        case tazer:
+            if (this->soundTimer == 5)
+            {
+                PlaySound(this->soundTazer);
+            }
+
+            break;
+    }
+    this->soundTimer++;
 }

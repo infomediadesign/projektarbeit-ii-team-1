@@ -75,6 +75,19 @@ public:
     int activeButton;
     std::vector<std::shared_ptr<game::Button>> buttons;
 
+    // SFX & Music
+    int soundTimer;
+    int soundTimerTarget;
+
+    Sound soundUiBlip;
+    Sound soundUiBlip2;
+    Sound soundUiBlocked;
+    Sound soundTazer;
+    Sound soundWhip;
+    Sound soundWhipCrack;
+    Sound soundBomb;
+    Sound soundLaser;
+    Sound soundPunch;
 
     // Methods
 public:
@@ -94,4 +107,6 @@ void updateHpBars();
 
 void menuNavigation();
 void initMainMenu();
+
+void playSfx();
 };

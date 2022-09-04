@@ -9,6 +9,10 @@ ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Bar
     this->drawLevelBackground = false; // NOT FINAL, HAS TO BE CHANGED WHEN LEVELS WORK
     this->switchScene = false;
 
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    this->uiBlocked = LoadSound("assets/audio/sfx/uiBlocked.wav");
+
     this->panelPos = {static_cast<float>(GetScreenWidth() / 3.5), static_cast<float>(GetScreenHeight() / 10)};
 
     this->player = player;
@@ -20,13 +24,13 @@ ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Bar
     Image frisbeeImage = LoadImage("assets/graphics/items/weapons/frisbee.png");
     Image longdrinkImage = LoadImage("assets/graphics/items/heal/longdrink.png");
 
-    ImageResize(&bombImage, 100, 100);
+    ImageResize(&bombImage, 250, 250);
     this->bombTexture = LoadTextureFromImage(bombImage);
     UnloadImage(bombImage);
-    ImageResize(&frisbeeImage, 100, 100);
+    ImageResize(&frisbeeImage, 250, 250);
     this->frisbeeTexture = LoadTextureFromImage(frisbeeImage);
     UnloadImage(frisbeeImage);
-    ImageResize(&longdrinkImage, 100, 100);
+    ImageResize(&longdrinkImage, 250, 250);
     this->longdrinkTexture = LoadTextureFromImage(longdrinkImage);
     UnloadImage(longdrinkImage);
 
@@ -45,6 +49,7 @@ void ShopBarkeeper::CustomUpdate()
         else activeButton = 0;
 
         buttons[activeButton]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
@@ -55,11 +60,13 @@ void ShopBarkeeper::CustomUpdate()
         else activeButton--;
 
         buttons[activeButton]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_E))
     {
         if (this->buttons[this->activeButton]->blocked == false) {
+            PlaySound(this->uiBlip2);
             switch (this->activeButton) {
                 case 0:
                     this->player->money = this->player->money - this->bomb.price;
@@ -78,7 +85,7 @@ void ShopBarkeeper::CustomUpdate()
     }
         else
         {
-            // Play blocked button sound
+            PlaySound(this->uiBlocked);
         }
         this->updateButtons();
     }
@@ -86,6 +93,7 @@ void ShopBarkeeper::CustomUpdate()
     {
         this->switchTo = GAME;
         this->switchScene = true;
+        PlaySound(this->uiBlip2);
     }
 }
 
@@ -99,9 +107,9 @@ void ShopBarkeeper::CustomDraw()
         buttons[i]->Draw();
     }
 
-    //DrawTexture(this->bombTexture, panelPos.x + GetScreenWidth() * 0.01, panelPos.y + GetScreenHeight() * 0.01, WHITE);
-    //DrawTexture(this->frisbeeTexture, panelPos.x + GetScreenWidth() * 0.01, panelPos.y + GetScreenHeight() * 0.1, WHITE);
-    //DrawTexture(this->longdrinkTexture, panelPos.x + GetScreenWidth() * 0.01, panelPos.y + GetScreenHeight() * 0.05, WHITE);
+    DrawTexture(this->bombTexture, panelPos.x + GetScreenWidth() * 0.04, panelPos.y + GetScreenHeight() * 0.075, WHITE);
+    DrawTexture(this->frisbeeTexture, panelPos.x + GetScreenWidth() * 0.04, panelPos.y + GetScreenHeight() * 0.34, WHITE);
+    DrawTexture(this->longdrinkTexture, panelPos.x + GetScreenWidth() * 0.04, panelPos.y + GetScreenHeight() * 0.58,WHITE);
 }
 
 void ShopBarkeeper::updateButtons()

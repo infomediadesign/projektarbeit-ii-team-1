@@ -28,6 +28,9 @@ private:
     std::string lineToDraw;
     std::string name;
 
+    // Sfx related
+    Sound soundChatter;
+
 	int lineCounter = 0;
 	int charCounter = 0;
 
@@ -44,8 +47,6 @@ public:
 	void stopDialogue();
 
 	void drawDialogue(); // Belongs in a Draw() method
-
-
 private:
 
 
