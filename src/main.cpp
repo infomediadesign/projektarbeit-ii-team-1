@@ -113,6 +113,8 @@ int main() {
     std::shared_ptr<Enemy> enemyPtr;
     std::shared_ptr<Barkeeper> barkeeperPtr;
 
+    player->money = player->money + 2000;
+
     //std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
     //std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
     //BattleScene testBattle(testPlayer, testEnemy);

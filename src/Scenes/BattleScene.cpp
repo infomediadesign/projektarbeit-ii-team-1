@@ -518,20 +518,27 @@ void BattleScene::enemyAttack()
         this->attackSource = sourceEnemy;
         this->attackType = this->enemyNextAttack;
 
+        float damageTotal = 0;
+
         switch (this->enemyNextAttack) {
             case punchEnemy:
-                this->player->currentHP = this->player->currentHP - this->enemy->damagePunch;
+                damageTotal = this->enemy->damagePunch - this->player->defense;
                 this->enemyNextAttack = necklace;
                 break;
             case necklace:
-                this->player->currentHP = this->player->currentHP - this->enemy->damageNecklace;
+                damageTotal = this->enemy->damageNecklace - this->player->defense;
                 this->enemyNextAttack = tazer;
                 break;
             case tazer:
-                this->player->currentHP = this->player->currentHP - this->enemy->damageTazer;
+                damageTotal = this->enemy->damageTazer - this->player->defense;
                 this->enemyNextAttack = punchEnemy;
                 break;
         }
+        if (damageTotal < 0)
+        {
+            damageTotal = 0;
+        }
+        this->player->currentHP = this->player->currentHP - damageTotal;
         this->startAnimation();
     }
     this->playerTurn = true;
@@ -682,6 +689,10 @@ void BattleScene::menuNavigation() {
                     workingString = std::to_string((int) bottlecapAmmo);
                     for (int i = 0; i < workingString.size(); i++) {
                         this->buttons[2]->Text.push_back(workingString[i]);
+                    }
+                    if (bottlecapAmmo == 0)
+                    {
+                        this->buttons[2]->blocked = true;
                     }
                     this->buttons[3]->Text.push_back(' ');
                     this->buttons[3]->Text.push_back('x');
