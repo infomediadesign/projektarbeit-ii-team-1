@@ -104,6 +104,11 @@ void MainMenuScene::CustomUpdate() {
         {
             this->switchTo = GAME;
         }
+        if (this->buttonExit->active == true)
+        {
+            CloseWindow();
+        }
+
 
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;

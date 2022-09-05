@@ -9,7 +9,7 @@ class Scenes {
 
     // Attributes
 public:
-    bool switchScene;
+    bool switchScene = false;
     GameScreen switchTo;
     bool drawLevelBackground = false;
 

@@ -164,6 +164,10 @@ void LevelScene::CustomUpdate()
         this->switchTo = SKILLTREE;
         this->switchScene = true;
     }
+    if (IsKeyPressed(KEY_P)) {
+        this->switchTo = PAUSEMENU;
+        this->switchScene = true;
+    }
 
     // Check if a shop has to be opened
     if (player->openShopBarkeeper == true && player->dialogueManager.dialoguePlaying == false) {
