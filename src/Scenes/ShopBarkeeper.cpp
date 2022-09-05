@@ -4,14 +4,21 @@
 
 #include "ShopBarkeeper.h"
 
+extern float volSfx;
+
 ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Barkeeper> barkeeper)
 {
     this->drawLevelBackground = false; // NOT FINAL, HAS TO BE CHANGED WHEN LEVELS WORK
     this->switchScene = false;
 
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    SetSoundVolume(this->uiBlip, volSfx);
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    SetSoundVolume(this->uiBlip2, volSfx);
     this->uiBlocked = LoadSound("assets/audio/sfx/uiBlocked.wav");
+    SetSoundVolume(this->uiBlocked, volSfx);
+    this->soundBuy = LoadSound("assets/audio/sfx/kaching.wav");
+    SetSoundVolume(this->soundBuy, volSfx);
 
     this->panelPos = {static_cast<float>(GetScreenWidth() / 3.5), static_cast<float>(GetScreenHeight() / 10)};
 
@@ -66,7 +73,7 @@ void ShopBarkeeper::CustomUpdate()
     if (IsKeyPressed(KEY_E))
     {
         if (this->buttons[this->activeButton]->blocked == false) {
-            PlaySound(this->uiBlip2);
+            PlaySound(this->soundBuy);
             switch (this->activeButton) {
                 case 0:
                     this->player->money = this->player->money - this->bomb.price;

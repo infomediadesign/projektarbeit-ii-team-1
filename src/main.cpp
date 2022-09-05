@@ -33,8 +33,8 @@
 #include <vector>
 
 // Sound / music volume
-float volSfx = 2;
-float volMusic = 2;
+float volSfx = 1;
+float volMusic = 1;
 
 int main() {
     // Raylib initialization

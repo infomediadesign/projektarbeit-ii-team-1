@@ -39,7 +39,7 @@ public:
     Sound uiBlip;
     Sound uiBlip2;
     Sound uiBlocked;
-
+    Sound soundBuy;
 
     // Methods
 public:

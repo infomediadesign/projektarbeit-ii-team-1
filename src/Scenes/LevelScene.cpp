@@ -191,6 +191,12 @@ void LevelScene::CustomDraw()
     for (int i = 0; i < dealers.size(); i++) {
         dealers[i]->Draw();
     }
+    for (int i = 0; i < this->items.size(); i++) {
+        if (this->items[i]->showInLevel == true)
+        {
+            DrawTexture(this->items[i]->texture, this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, WHITE);
+        }
+    }
     // Draw player after NPCs
     player->Draw();
 

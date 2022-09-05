@@ -36,6 +36,7 @@ class LevelScene : public Scenes {
     std::vector<std::shared_ptr<Actor>> actors;
     std::vector<std::shared_ptr<Barkeeper>> barkeepers;
     std::vector<std::shared_ptr<Dealer>> dealers;
+    std::vector<std::shared_ptr<Item>> items;
 
     LevelScene(LevelRooms levelRooms);
 

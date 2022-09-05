@@ -88,6 +88,7 @@ Player::Player(int posX, int posY, bool genderMale)
     this->maxHP = 50;
     this->currentHP = this->maxHP;
     this->defense = 0;
+    this->money = 0;
 
     this->startCombat = false;
     this->openShopBarkeeper = false;

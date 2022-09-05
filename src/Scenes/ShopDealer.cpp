@@ -4,6 +4,7 @@
 
 #include "ShopDealer.h"
 
+extern float volSfx;
 
 ShopDealer::ShopDealer(std::shared_ptr<Player> player)
 {
@@ -18,8 +19,13 @@ ShopDealer::ShopDealer(std::shared_ptr<Player> player)
     this->panelTexture = LoadTexture("assets/graphics/ui/shopAndInv/shopDealer.png");
 
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    SetSoundVolume(this->uiBlip, volSfx);
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    SetSoundVolume(this->uiBlip2, volSfx);
     this->uiBlocked = LoadSound("assets/audio/sfx/uiBlocked.wav");
+    SetSoundVolume(this->uiBlocked, volSfx);
+    this->soundBuy = LoadSound("assets/audio/sfx/kaching.wav");
+    SetSoundVolume(this->soundBuy, volSfx);
 
     // Check for Items
     TraceLog(LOG_INFO, "Checking items");
@@ -70,7 +76,7 @@ void ShopDealer::CustomUpdate()
     if (IsKeyPressed(KEY_E))
     {
         if (this->buttons[this->activeButton]->blocked == false) {
-            PlaySound(this->uiBlip2);
+            PlaySound(this->soundBuy);
             std::string directoryString;
             std::string memoryString;
             std::string directorySecondary;

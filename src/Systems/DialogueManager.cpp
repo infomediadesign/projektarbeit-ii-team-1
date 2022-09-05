@@ -9,13 +9,15 @@
 #include "DialogueManager.h"
 #include <memory>
 
+extern float volSfx;
+
 DialogueManager::DialogueManager()
 {
 this->panelTexture = LoadTexture("assets/graphics/ui/dialogueWindow.png");
 this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 
 this->soundChatter = LoadSound("assets/audio/sfx/chatter.wav");
-
+SetSoundVolume(this->soundChatter, volSfx);
 }
 
 void DialogueManager::Update()
