@@ -45,7 +45,13 @@ int main() {
 
     // Set target FPS
     SetTargetFPS(60);
-
+    //Set Window titel
+    const char gameTitel[] = "CyberPunk Undercover";
+    SetWindowTitle(gameTitel);
+    //Set Window icon
+    Image gameIcon = LoadImage("./assets/graphics/UI/Logo02.png");
+    SetWindowIcon(gameIcon);
+    //Set window exit key
     SetExitKey(KEY_BACKSPACE);
 
 #ifdef GAME_START_FULLSCREEN
@@ -73,7 +79,7 @@ int main() {
     // ========== LEVEL INITIALISATION ==========
 
     //  ----- Tutorial initialisation -----
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = Wardrobe);
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = TutorialLevel);
     levelTutorial->player = player;
     std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");

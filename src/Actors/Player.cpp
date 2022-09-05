@@ -20,6 +20,7 @@ Player::Player(int posX, int posY, bool genderMale)
     this->position.y = posY;
 
     this->prevPosition = this->position;
+    
 
     this->augmentationCount = 0;
 

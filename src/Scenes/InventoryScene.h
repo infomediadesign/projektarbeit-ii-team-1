@@ -22,24 +22,24 @@ class InventoryScene : public MenuScenes {
 private:
     ;
 public:
-    const int slotMaxCount = 20;
     Font font1;
-    std::vector<Item> items;
+    // Items in the inventory
+    std::vector<Item> items = {PunchGun({0.0})};
+    // item count
+    std::vector< unsigned int> itemCount = {1};
     std::shared_ptr<Player> player;
 
-    //= {Item01(type itemPunchGun, name "test02", price 100, damage 0.2, uses 1),
-      //                          Item02(type itemBomb, name "test02", price 50, damage 0.2, uses 2);
 
 
-
-    //};
 
     // Slot positions
-    std::vector<Vector2> slotPos ={Vector2 {20,20}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17},
-                                   Vector2 {18,19}, Vector2 {20,21}, Vector2{22,23}, Vector2 {23,24},
-                                   Vector2 {25,26}, Vector2 {27,28}, Vector2{29,30}, Vector2 {31,32},
-                                   Vector2 {10,11}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17},
-                                   Vector2 {10,11}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17}
+    std::vector<Vector2> slotPos ={Vector2 {20,20}, Vector2 {86,20}, Vector2 {152,20}, Vector2 {218,20}, Vector2 {284,20}, Vector2 {350,21}, Vector2{416,23},
+                                   Vector2 {20,86}, Vector2 {86,86}, Vector2 {152,68}, Vector2 {218,86}, Vector2 {284,86}, Vector2 {350,86}, Vector2 {416,86},
+                                   Vector2 {20,152}, Vector2 {86,152}, Vector2 {152,152}, Vector2 {218,152}, Vector2 {284,152}, Vector2 {350,152}, Vector2 {416,152},
+                                   Vector2 {20,218}, Vector2 {86,218}, Vector2 {152,218}, Vector2 {218,218}, Vector2 {284,218}, Vector2 {350,218}, Vector2 {416,218},
+                                   Vector2 {20,284}, Vector2 {86,284}, Vector2 {152,284}, Vector2 {218,284}, Vector2 {284,284}, Vector2 {350,284}, Vector2 {416,284},
+                                   Vector2 {20,350}, Vector2 {86,350}, Vector2 {152,350}, Vector2 {218,350}, Vector2 {284,350}, Vector2 {350,350}, Vector2 {416,350},
+                                   Vector2 {20,416}, Vector2 {86,416}, Vector2 {152,416}, Vector2 {218,416}, Vector2 {284,416}, Vector2 {350,416}, Vector2 {416,416}
     };
 
     InventoryScene(std::shared_ptr<Player> player);

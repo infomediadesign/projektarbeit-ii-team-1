@@ -11,6 +11,7 @@ class PunchGun : public Item {
 
 public:
     PunchGun(Vector2 position);
+    PunchGun();
 
 };
 

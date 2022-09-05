@@ -21,12 +21,14 @@ class LevelScene : public Scenes {
     nlohmann::json levelTilesetDescription;
     nlohmann::json levelMap;
     Texture2D tileAtlasTexture;
+    bool tutorialLevelActiv = true;
 
     std::ifstream ifStreamFile;
 
     std::vector<Enemy> listOfNPCs;
     std::vector<int> tileAtlas;
 
+    Texture2D tutorialLevelBackgroundImg;
 
     // Level attributes
     std::shared_ptr<Player> player;
