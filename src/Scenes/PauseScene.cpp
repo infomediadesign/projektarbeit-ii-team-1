@@ -78,6 +78,25 @@ void PauseScene::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ENTER))
     {
+        if (this->buttonPauseOptions->active == true)
+        {
+            this->switchTo = PAUSEOPTIONS;
+        }
+        if (this->buttonReturnGame->active == true)
+        {
+            this->switchTo = GAME;
+        }
+        if (this->buttonReturnMainMenu->active == true)
+        {
+            this->switchTo = MAINMENU; //confirmation before leaving game?
+        }
+
+        this->switchScene = true;
+        std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
+    }
+
+    if (IsKeyPressed(KEY_ENTER))
+    {
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << "was pushed..." << std::endl;
     }

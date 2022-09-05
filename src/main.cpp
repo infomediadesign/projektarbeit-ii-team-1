@@ -21,6 +21,7 @@
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
+#include "Scenes/PauseOptions.h"
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
 #include "Scenes/InventoryScene.h"
@@ -61,6 +62,7 @@ int main() {
     MainOptions testMainOps;
     CreditScene testCredit;
     PauseScene testPause;
+    PauseOptions testPauseOps;
     // Enums
     LevelRooms levelRooms;
 
@@ -139,14 +141,17 @@ int main() {
             activeScene->switchScene = false;
 
             switch (activeScene->switchTo) {
-                case TITLESCREEN: {
+                case TITLESCREEN:
+                {
                     activeScene = std::make_shared<TitleScreen>();
                     break;
                 }
 
                 case MAINMENU:
+                {
                     activeScene = std::make_shared<MainMenuScene>();
                     break;
+                }
 
                 case MAINOPTIONS: {
                     if (IsKeyPressed(KEY_ESCAPE)) {
@@ -185,30 +190,16 @@ int main() {
 
                     activeScene = std::make_shared<ShopDealer>(player);
                     break;
-                case PAUSEMENU: {
+
+                case PAUSEMENU:
+                {
                     activeScene = std::make_shared<PauseScene>();
-
-                    /* All of this has to go to PauseScene.Update()!
-                    if(testPause.switchScene == true)
-                    {
-                        currentScreen = GAME;
-                    }
-
-                    //how do i integrate condition to open options in pausemenu?
-                    //maybe something like this?
-
-                    if(buttonPauseoptions == active_button)
-                    {
-                        currentScreen = PAUSEOPTIONS;
-                    }*/
-
                     break;
                 }
 
-                case PAUSEOPTIONS: {
-                    if (IsKeyPressed(KEY_ESCAPE)) {
-                        //currentScreen = PAUSEMENU;
-                    }
+                case PAUSEOPTIONS:
+                {
+                    activeScene = std::make_shared<PauseOptions>();
                     break;
                 }
 
@@ -321,6 +312,7 @@ int main() {
     testMainOps.Unload();
     testCredit.Unload();
     testPause.Unload();
+    testPauseOps.Unload();
 
     // Close window and OpenGL context
     CloseWindow();
