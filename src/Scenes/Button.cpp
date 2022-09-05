@@ -43,7 +43,7 @@ void game::Button::Draw() {
     }
     else
     {
-        DrawTextEx(font1, Text.c_str(),Positioning , fontSize, fontSpacing, RED);
+        DrawTextEx(font1, Text.c_str(),Positioning , fontSize, fontSpacing, ORANGE);
     }
     if (active == true)
     {

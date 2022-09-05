@@ -20,11 +20,11 @@ TitleScreen::TitleScreen()
     Message2 = "Please press Enter to continue.";
 
     fontPosition1 = {GetScreenWidth()/2 -
-                     MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
+                     MeasureTextEx(font1, Message1.c_str(), (float)50, 1).x/2,
                      GetScreenHeight() - (float)100/2 - 300};
 
-    fontPosition2 = {(GetScreenWidth()/2 + 450) -
-                     MeasureTextEx(font1, Message2.c_str(), (float)100, 1).x/2,
+    fontPosition2 = {GetScreenWidth()/2 -
+                     MeasureTextEx(font1, Message2.c_str(), (float)50, 1).x/2,
                      GetScreenHeight() - (float)100/2 - 250};
 
     this->switchScene = false;
@@ -53,10 +53,10 @@ void TitleScreen::CustomUpdate()
 void TitleScreen::CustomDraw()
 {
     //Textures
-    DrawTexture(logo, (GetScreenWidth() - logo.width)/2, (GetScreenHeight() - logo.height)/4, WHITE); //2 ursprünglich
+    DrawTexture(logo, (GetScreenWidth() - logo.width)/2, (GetScreenHeight() - logo.height)/4, WHITE);
 
     //Messages
-    DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
+    DrawTextEx(font1, Message1.c_str(), fontPosition1, 50, 1, WHITE);
     DrawTextEx(font1, Message2.c_str(), fontPosition2, 50, 1, WHITE);
 }
 

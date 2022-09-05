@@ -132,7 +132,10 @@ int main() {
         // Scene transition
 
         TraceLog(LOG_INFO, std::to_string(activeScene->switchScene).c_str());
-        if (activeScene->switchScene == true) {
+        if (activeScene->switchScene == true)
+        {
+        if (activeScene->switchScene) {
+            TraceLog(LOG_INFO, "scene switch request");
             activeScene->switchScene = false;
 
             switch (activeScene->switchTo) {
@@ -182,8 +185,7 @@ int main() {
 
                     activeScene = std::make_shared<ShopDealer>(player);
                     break;
-                case PAUSEMENU:
-                {
+                case PAUSEMENU: {
                     activeScene = std::make_shared<PauseScene>();
 
                     /* All of this has to go to PauseScene.Update()!
@@ -203,28 +205,25 @@ int main() {
                     break;
                 }
 
-                case PAUSEOPTIONS:
-                {
-                    if (IsKeyPressed(KEY_ESCAPE))
-                    {
+                case PAUSEOPTIONS: {
+                    if (IsKeyPressed(KEY_ESCAPE)) {
                         //currentScreen = PAUSEMENU;
                     }
                     break;
                 }
 
-                case INVENTORY:
-                {
+                case INVENTORY: {
                     activeScene->switchScene = false;
                     activeScene = std::make_shared<InventoryScene>(player);
                     break;
                 }
-                case SKILLTREE:
-                {
+                case SKILLTREE: {
                     activeScene->switchScene = false;
                     activeScene = std::make_shared<SkillTreeScene>(player);
                     break;
                 }
             }
+        }
         }
 
         // Scene update
