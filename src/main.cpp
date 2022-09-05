@@ -21,6 +21,7 @@
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
+#include "Scenes/PauseOptions.h"
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
 #include "Scenes/InventoryScene.h"
@@ -45,7 +46,13 @@ int main() {
 
     // Set target FPS
     SetTargetFPS(60);
-
+    //Set Window titel
+    const char gameTitel[] = "CyberPunk Undercover";
+    SetWindowTitle(gameTitel);
+    //Set Window icon
+    Image gameIcon = LoadImage("./assets/graphics/UI/Logo02.png");
+    SetWindowIcon(gameIcon);
+    //Set window exit key
     SetExitKey(KEY_BACKSPACE);
 
 #ifdef GAME_START_FULLSCREEN
@@ -61,6 +68,7 @@ int main() {
     MainOptions testMainOps;
     CreditScene testCredit;
     PauseScene testPause;
+    PauseOptions testPauseOps;
     // Enums
     LevelRooms levelRooms;
 
@@ -73,7 +81,7 @@ int main() {
     // ========== LEVEL INITIALISATION ==========
 
     //  ----- Tutorial initialisation -----
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = Wardrobe);
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = TutorialLevel);
     levelTutorial->player = player;
     std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
@@ -139,14 +147,17 @@ int main() {
             activeScene->switchScene = false;
 
             switch (activeScene->switchTo) {
-                case TITLESCREEN: {
+                case TITLESCREEN:
+                {
                     activeScene = std::make_shared<TitleScreen>();
                     break;
                 }
 
                 case MAINMENU:
+                {
                     activeScene = std::make_shared<MainMenuScene>();
                     break;
+                }
 
                 case MAINOPTIONS: {
                     if (IsKeyPressed(KEY_ESCAPE)) {
@@ -185,30 +196,16 @@ int main() {
 
                     activeScene = std::make_shared<ShopDealer>(player);
                     break;
-                case PAUSEMENU: {
+
+                case PAUSEMENU:
+                {
                     activeScene = std::make_shared<PauseScene>();
-
-                    /* All of this has to go to PauseScene.Update()!
-                    if(testPause.switchScene == true)
-                    {
-                        currentScreen = GAME;
-                    }
-
-                    //how do i integrate condition to open options in pausemenu?
-                    //maybe something like this?
-
-                    if(buttonPauseoptions == active_button)
-                    {
-                        currentScreen = PAUSEOPTIONS;
-                    }*/
-
                     break;
                 }
 
-                case PAUSEOPTIONS: {
-                    if (IsKeyPressed(KEY_ESCAPE)) {
-                        //currentScreen = PAUSEMENU;
-                    }
+                case PAUSEOPTIONS:
+                {
+                    activeScene = std::make_shared<PauseOptions>();
                     break;
                 }
 
@@ -321,6 +318,7 @@ int main() {
     testMainOps.Unload();
     testCredit.Unload();
     testPause.Unload();
+    testPauseOps.Unload();
 
     // Close window and OpenGL context
     CloseWindow();

@@ -8,7 +8,7 @@ Longdrink::Longdrink()
 {
     this->type = itemHeal;
     this->name = "Longdrink";
-    this->texture = LoadTexture("assets/graphics/items/bomb.png"); // No texture yet
+    this->texture = LoadTexture("assets/graphics/items/heal/longdrink.png"); // No texture yet
     this->price = 30;
     this->upgraded = false; // Not upgradable
     this->damage = 0;

@@ -9,7 +9,7 @@ Frisbee::Frisbee()
 {
     this->type = itemFrisbee;
     this->name = "Frisbee";
-    this->texture = LoadTexture("assets/graphics/items/frisbee.png");
+    this->texture = LoadTexture("assets/graphics/items/weapons/frisbee.png");
     this->price = 30;
     this->upgraded = false; // Not upgradable
     this->damage = 20;

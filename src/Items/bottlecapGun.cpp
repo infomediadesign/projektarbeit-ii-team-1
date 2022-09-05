@@ -9,7 +9,7 @@ BottlecapGun::BottlecapGun(Vector2 position)
     this->levelPosition = position;
     this->type = itemBottlecapGun;
     this->name = "Bottle cap-Gun";
-    this->texture = LoadTexture("assets/graphics/items/bottlecapGun.png");
+    this->texture = LoadTexture("assets/graphics/items/weapons/bottlecapGun.png");
     this->price = 0; // Cannot be bought
     this->upgraded = false;
     this->damage = 16;

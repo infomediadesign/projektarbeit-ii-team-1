@@ -38,7 +38,7 @@ fontPosition2 = {(GetScreenWidth()/2 + 450) -
     this->active_button = 0;
 
     this->buttonReturnMainMenu = new game::Button("Return to Main Menu (Esc)",
-                                              GetScreenWidth()/2 - 300,
+                                              GetScreenWidth()/2 - 250,
                                               GetScreenHeight()/2 + 300,
                                               50, 1, YELLOW, WHITE);
 

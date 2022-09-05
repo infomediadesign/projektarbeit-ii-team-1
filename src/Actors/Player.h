@@ -52,8 +52,6 @@ public:
     // Placeholder?
     std::vector<std::shared_ptr<Item>> inventory ;
 
-    bool inventoryOpened = false;
-    bool skilltreeOpend = false;
 
 	bool moveLockAbsolute = false;
 

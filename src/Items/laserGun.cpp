@@ -8,7 +8,7 @@ LaserGun::LaserGun(Vector2 position) {
     this->levelPosition = position;
     this->type = itemLaserGun;
     this->name = "Laser-Gun";
-    this->texture = LoadTexture("assets/graphics/items/lasergun.png");
+    this->texture = LoadTexture("assets/graphics/items/weapons/Lasergun.png");
     this->price = 0; // Cannot be bought
     this->upgraded = false;
     this->damage = 20;

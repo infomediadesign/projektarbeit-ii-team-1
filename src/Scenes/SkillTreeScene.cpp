@@ -42,14 +42,6 @@ void SkillTreeScene::DrawSkillTree()
     //const Vector2 escapeTxtSize =  MeasureTextEx(font1, escapeInventoryTxt.c_str(), 2, 30);
     DrawTextEx( font1, escapeInventoryTxt.c_str(), {20,20}, 30, 1, BLACK);
 
-    //Skill Images and text
-    /*DrawText("Left arm", 100,Game::ScreenHeight/2-100, 25, BLACK);
-    DrawText("Right arm", 420,Game::ScreenHeight/2-100, 25, BLACK);
-    DrawText("Left leg", 740,Game::ScreenHeight/2-100, 25, BLACK);
-    DrawText("Right leg", 1060,Game::ScreenHeight/2-100, 25, BLACK);
-    DrawText("Left Eye", 1380,Game::ScreenHeight/2-100, 25, BLACK);
-    DrawText("Right Eye", 1700,Game::ScreenHeight/2-100, 25, BLACK);*/
-
     // Frame and arrow pictures
     Texture2D arrowImg = LoadTexture("../../assets/graphics/UI/Skilltree/Arrow.png");
     Texture2D skillUnlockecImg = LoadTexture("../../assets/graphics/UI/Skilltree/SkillUnlocked.png");
@@ -65,15 +57,8 @@ void SkillTreeScene::DrawSkillTree()
 
     std::vector<Texture2D> skillImgs = {skillLeftArmImg, skillRightArmImg, skillLeftLegImg, skillRightLegImg, skillLeftEyeImg,skillRightEyeImg};
     std::vector<std::string> skillTxts = {"Left arm", "Right arm", "Left leg", "Right leg", "Left Eye", "Right Eye"};
+    std::vector<std::string> skillInfoTxts ={"Defence: 2", "Defence: 4", "Defence: 8", "Defence: 12", "Defence: 16", "Defence: 22"};
 
-    //DrawTextureEx(skillLeftArmImg, {75,Game::ScreenHeight/2}, 0, 0.5, WHITE);
-    //DrawTextureEx(skillRightArmImg, {395,Game::ScreenHeight/2}, 0, 0.5, WHITE);
-    //DrawTextureEx(skillLeftLegImg, {740,Game::ScreenHeight/2}, 0, 0.5, WHITE);
-    //DrawTextureEx(skillRightLegImg, {1060,Game::ScreenHeight/2}, 0, 0.5, WHITE);
-    //DrawTextureEx(skillLeftEyeImg, {1380,Game::ScreenHeight/2}, 0, 0.5, WHITE);
-    //DrawTextureEx(skillRightEyeImg, {1700,Game::ScreenHeight/2}, 0, 0.5, WHITE);
-
-    //DrawTextureEx(arrowImg, {150, Game::ScreenHeight/2}, 0, 0.5,WHITE);
 
     int skillDrawCount = 1;
     int arrowDrawedCount = 1;
@@ -87,6 +72,7 @@ void SkillTreeScene::DrawSkillTree()
             DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillUnlockecImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
             DrawTextureEx(skillImgs[i], {skillPos[i].x+20,skillPos[i].y+20}, 0, 0.5, WHITE);
             DrawTextureEx(skillUnlockecImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
+            DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureText(skillInfoTxts[i].c_str(),25))/2,skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, BLACK);
             if (arrowDrawedCount <=5)
             {
                 DrawTextureEx(arrowImg, {skillPos[i].x+200,skillPos[i].y+150}, 0, 0.5, WHITE);
@@ -101,6 +87,7 @@ void SkillTreeScene::DrawSkillTree()
             DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillLockedImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
             DrawTextureEx(skillImgs[i], {skillPos[i].x+10,skillPos[i].y+10}, 0, 0.5, WHITE);
             DrawTextureEx(skillLockedImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
+            DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureText(skillInfoTxts[i].c_str(),25))/2,skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, BLACK);
             if (arrowDrawedCount <=5)
             {
                 DrawTextureEx(arrowImg, {skillPos[i].x+180,(skillPos[i].y+((skillUnlockecImg.height)-arrowImg.height)/2)}, 0, 0.5, WHITE);

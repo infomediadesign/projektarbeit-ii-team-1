@@ -33,8 +33,6 @@ public:
 
     std::vector<game::Button*> buttons;
 
-    bool switchScene; // temporary
-
     // Methods
 public:
 
