@@ -8,7 +8,7 @@ extern float volSfx;
 
 ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Barkeeper> barkeeper)
 {
-    this->drawLevelBackground = false; // NOT FINAL, HAS TO BE CHANGED WHEN LEVELS WORK
+    this->drawLevelBackground = true;
     this->switchScene = false;
 
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");

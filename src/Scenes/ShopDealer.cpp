@@ -9,7 +9,7 @@ extern float volSfx;
 ShopDealer::ShopDealer(std::shared_ptr<Player> player)
 {
     TraceLog(LOG_INFO, "Shop constructor called");
-    this->drawLevelBackground = false; // NOT FINAL, HAS TO BE CHANGED WHEN LEVELS WORK
+    this->drawLevelBackground = true;
     this->switchScene = false;
 
     this->panelPos = {static_cast<float>(GetScreenWidth() * 0.305), static_cast<float>(GetScreenHeight() * 0.25)};
