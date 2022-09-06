@@ -21,6 +21,10 @@ public:
     Texture2D creditBox;
     Font font1;
 
+    //SFX
+    Sound uiBlip; //navigate
+    Sound uiBlip2; //confirm
+
     std::string Message1;
     std::string Message2;
     Vector2 fontPosition1;

@@ -5,6 +5,8 @@
 #include "TitleScreen.h"
 #include <vector>
 
+extern float volSfx;
+
 TitleScreen::TitleScreen()
 {
     //Logo Image
@@ -15,6 +17,10 @@ TitleScreen::TitleScreen()
 
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
     Message1 = "Welcome to the Game!";
     Message2 = "Please press Enter to continue.";
@@ -41,6 +47,7 @@ void TitleScreen::CustomUpdate()
     if (IsKeyPressed(KEY_ENTER))
     {
         TraceLog(LOG_INFO, "Switching to main menu");
+        PlaySound(this->uiBlip2);
         this->switchTo = MAINMENU;
         this->switchScene = true;
         TraceLog(LOG_INFO, "switchScene in class (Pressing Enter):");
@@ -63,5 +70,7 @@ void TitleScreen::CustomDraw()
 void TitleScreen::Unload()
 {
     UnloadFont(font1);
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
     UnloadTexture(logo);
 }

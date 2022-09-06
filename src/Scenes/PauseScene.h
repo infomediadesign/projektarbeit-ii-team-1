@@ -21,6 +21,10 @@ class PauseScene : public MenuScenes
     Texture2D pauseMenuBox;
     Font font1;
 
+    //SFX
+    Sound uiBlip; //navigate
+    Sound uiBlip2; //confirm
+
     std::string Message1;
     Vector2 fontPosition1;
 

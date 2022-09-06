@@ -7,6 +7,8 @@
 
 #include <iostream>
 
+extern float volSfx;
+
 MainMenuScene::MainMenuScene() {
     TraceLog(LOG_INFO, "Constructing main menu");
 
@@ -24,6 +26,10 @@ MainMenuScene::MainMenuScene() {
 
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
     Message1 = "Main Menu";
 
@@ -82,6 +88,7 @@ void MainMenuScene::CustomUpdate() {
         else active_button = 0;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP))
@@ -92,24 +99,29 @@ void MainMenuScene::CustomUpdate() {
         else active_button--;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_ENTER))
     {
         if (this->buttonNewGame->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = GAME;
         }
         if(this->buttonOptions->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = MAINOPTIONS;
         }
         if (this->buttonCredits->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = CREDITS;
         }
         if (this->buttonExit->active == true)
         {
+            PlaySound(this->uiBlip2);
             CloseWindow();
         }
 
@@ -134,8 +146,11 @@ void MainMenuScene::CustomDraw() {
     }
 }
 
-void MainMenuScene::Unload() {
+void MainMenuScene::Unload()
+{
     UnloadFont(font1);
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
     UnloadTexture(background);
     UnloadTexture(mainMenuBox);
 }

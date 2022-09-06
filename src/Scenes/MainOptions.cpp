@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+extern float volSfx;
+
 MainOptions::MainOptions()
 {
     //background texture
@@ -29,6 +31,10 @@ MainOptions::MainOptions()
 
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
     Message1 = "Options";
 
@@ -105,6 +111,7 @@ void MainOptions::CustomUpdate() {
         else active_button = 0;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP))
@@ -115,12 +122,14 @@ void MainOptions::CustomUpdate() {
         else active_button--;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_ENTER))
     {
         if (this->buttonReturnMainMenu->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = MAINMENU;
         }
         this->switchScene = true;
@@ -157,6 +166,8 @@ void MainOptions::CustomDraw() {
 
 void MainOptions::Unload() {
     UnloadFont(font1);
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
     UnloadTexture(background);
     UnloadTexture(mainOptionsBox);
     UnloadTexture(optionBar1);

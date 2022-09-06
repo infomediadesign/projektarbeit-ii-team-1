@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+extern float volSfx;
+
 PauseScene::PauseScene()
 {
     //PauseMenuBox
@@ -16,6 +18,10 @@ PauseScene::PauseScene()
 
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
     Message1 = "Pause Menu";
 
@@ -64,6 +70,7 @@ void PauseScene::CustomUpdate() {
         else active_button = 0;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP))
@@ -74,20 +81,24 @@ void PauseScene::CustomUpdate() {
         else active_button--;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_ENTER))
     {
         if (this->buttonPauseOptions->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = PAUSEOPTIONS;
         }
         if (this->buttonReturnGame->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = GAME;
         }
         if (this->buttonReturnMainMenu->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = MAINMENU; //confirmation before leaving game?
         }
 
@@ -119,5 +130,7 @@ void PauseScene::CustomDraw() {
 
 void PauseScene::Unload() {
     UnloadFont(font1);
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
     UnloadTexture(pauseMenuBox);
 }

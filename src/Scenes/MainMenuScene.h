@@ -25,6 +25,10 @@
                 std::string Message1;
                 Vector2 fontPosition1;
 
+                //SFX
+                Sound uiBlip; //navigate
+                Sound uiBlip2; //confirm
+
     public:
         game::Button* buttonNewGame;
         game::Button* buttonOptions;

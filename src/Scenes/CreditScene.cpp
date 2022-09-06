@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+extern float volSfx;
+
 CreditScene::CreditScene()
 {
     //background texture
@@ -22,6 +24,10 @@ CreditScene::CreditScene()
 
 //Text with font
 this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+//Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
 Message1 = "Credits";
 Message2 = "Game Design: Marko Lapadatovic, Leah Berner\nLead Artist: Leah Berner\nArtist: Marko Lapadatovic\nLead Programmer: Maximilian Roeck\nProgrammer: Lena White, Sefer Tokdilli\nSound Artist: Maximilian Roeck";
@@ -62,6 +68,7 @@ void CreditScene::CustomUpdate() {
         else active_button = 0;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP))
@@ -72,12 +79,14 @@ void CreditScene::CustomUpdate() {
         else active_button--;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
         if(this->buttonReturnMainMenu->active == true)
         {
+            PlaySound(this->uiBlip2);
             this->switchTo = MAINMENU;
         }
         this->switchScene = true;
@@ -104,6 +113,8 @@ void CreditScene::CustomDraw() {
 
 void CreditScene::Unload() {
     UnloadFont(font1);
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
     UnloadTexture(background);
     UnloadTexture(creditBox);
 }

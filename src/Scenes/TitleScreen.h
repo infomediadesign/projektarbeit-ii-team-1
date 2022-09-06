@@ -22,6 +22,10 @@ class TitleScreen : public Scenes
             Texture2D logo;
             Font font1;
 
+    //SFX
+    Sound uiBlip; //navigate
+    Sound uiBlip2; //confirm
+
             std::string Message1;
             std::string Message2;
             Vector2 fontPosition1;
