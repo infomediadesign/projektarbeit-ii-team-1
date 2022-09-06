@@ -70,6 +70,7 @@ int main() {
     CreditScene testCredit;
     PauseScene testPause;
     PauseOptions testPauseOps;
+
     // Enums
     LevelRooms levelRooms;
 
@@ -144,11 +145,13 @@ int main() {
         TraceLog(LOG_INFO, std::to_string(activeScene->switchScene).c_str());
         if (activeScene->switchScene == true)
         {
-        if (activeScene->switchScene) {
+        if (activeScene->switchScene)
+        {
             TraceLog(LOG_INFO, "scene switch request");
             activeScene->switchScene = false;
 
-            switch (activeScene->switchTo) {
+            switch (activeScene->switchTo)
+            {
                 case TITLESCREEN:
                 {
                     activeScene = std::make_shared<TitleScreen>();
@@ -161,23 +164,24 @@ int main() {
                     break;
                 }
 
-                case MAINOPTIONS: {
-                    if (IsKeyPressed(KEY_ESCAPE)) {
-                        activeScene->switchTo = MAINMENU;
-                    }
+                case MAINOPTIONS:
+                {
+                    activeScene = std::make_shared<MainOptions>();
                     break;
                 }
 
-                case CREDITS: {
+                case CREDITS:
+                {
                     activeScene = std::make_shared<CreditScene>();
                     break;
                 }
 
-                case GAME: {
+                case GAME:
+                {
                     activeScene = activeLevel;
-
                     break;
                 }
+
                 case BATTLE:
                     // Extract player and enemy from active level
                     // Then make a new shared pointer with the extracted actors
@@ -211,12 +215,15 @@ int main() {
                     break;
                 }
 
-                case INVENTORY: {
+                case INVENTORY:
+                {
                     activeScene->switchScene = false;
                     activeScene = std::make_shared<InventoryScene>(player);
                     break;
                 }
-                case SKILLTREE: {
+
+                case SKILLTREE:
+                {
                     activeScene->switchScene = false;
                     activeScene = std::make_shared<SkillTreeScene>(player);
                     break;
@@ -226,7 +233,6 @@ int main() {
         }
 
         // Scene update
-
         activeScene->Update();
 
 
@@ -241,75 +247,6 @@ int main() {
         }
         activeScene->Draw();
 
-
-
-        /*
-        switch (currentScreen)
-        {
-            case TITLESCREEN:
-            {
-                DrawTexture(logo, Game::ScreenWidth/2 - logo.width/2, Game::ScreenHeight/4 - logo.height/4, WHITE);
-
-                DrawTextEx(font1, msg1,fontPosition1, font1.baseSize, 1,WHITE);
-                DrawTextEx(font1, msg2,fontPosition2, font1.baseSize, 1,WHITE);
-
-                break;
-            }
-
-            case MAINMENU:
-            {
-                testMain.Draw();
-                break;
-            }
-
-            case MAINOPTIONS:
-            {
-                DrawTextEx(font1, msg4,fontPosition4, font1.baseSize, 1,LIGHTGRAY);
-
-                DrawText("Music\n"
-                         "SFX\n"
-                         "Brightness\n"
-                         "Fullscreen\n", Game::ScreenWidth/2, Game::ScreenHeight/4, 50, WHITE);
-                //Back (Esc)
-
-                break;
-            }
-
-            case CREDITS:
-            {
-                testCredit.Draw();
-                //Back (Esc)
-
-                break;
-            }
-
-            case GAME:
-            {
-                //testBattle.Draw();
-                testL.DrawMap();
-
-                DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
-                         10, 10, 30, LIGHTGRAY);
-
-                for (int i = 0; i < actors.size(); i++)
-                {
-                    actors[i]->Draw();
-                }
-
-                // This is a test (Implementing player)
-
-                player.Draw();
-
-                break;
-            }
-
-            case PAUSEMENU:
-            {
-                testPause.Draw();
-                break;
-            }
-        }
-        */
         EndDrawing();
     } // Main game loop end
 

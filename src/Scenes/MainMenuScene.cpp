@@ -96,19 +96,22 @@ void MainMenuScene::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ENTER))
     {
-        if (this->buttonCredits->active == true)
-        {
-            this->switchTo = CREDITS;
-        }
         if (this->buttonNewGame->active == true)
         {
             this->switchTo = GAME;
+        }
+        if(this->buttonOptions->active == true)
+        {
+            this->switchTo = MAINOPTIONS;
+        }
+        if (this->buttonCredits->active == true)
+        {
+            this->switchTo = CREDITS;
         }
         if (this->buttonExit->active == true)
         {
             CloseWindow();
         }
-
 
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;

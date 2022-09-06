@@ -20,6 +20,9 @@ class MainOptions : public MenuScenes {
 public:
     Texture2D background;
     Texture2D mainOptionsBox;
+    Texture2D optionBar1;
+    Texture2D optionBar100;
+    Texture2D optionButton;
     Font font1;
 
     std::string Message1;
@@ -30,6 +33,8 @@ public:
     game::Button* buttonSFX;
     game::Button* buttonBrightness;
     game::Button* buttonFullscreen;
+    game::Button* buttonOn;
+    game::Button* buttonOff;
     game::Button* buttonReturnMainMenu;
 
     int active_button;
