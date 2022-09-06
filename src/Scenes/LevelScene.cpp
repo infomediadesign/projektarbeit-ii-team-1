@@ -219,6 +219,7 @@ void LevelScene::CustomUpdate()
     player->interact(enemies);
     player->interact(barkeepers);
     player->interact(dealers);
+    player->interact(items);
 
     for (int i = 0; i < actors.size(); i++) {
         actors[i]->Update();
@@ -256,6 +257,7 @@ void LevelScene::CustomDraw()
             DrawTexture(this->items[i]->texture, this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, WHITE);
         }
     }
+
     // Draw player after NPCs
     player->Draw();
 

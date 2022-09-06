@@ -134,6 +134,7 @@ void Player::move()
     this->playIdle = true;
     if (this->moveLockAbsolute == false)
     {
+        this->prevPosition = this->position;
         if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
         {
             this->playIdle = false;
@@ -141,7 +142,7 @@ void Player::move()
                 this->turn(up);
             if (this->moveLockUp == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.y = position.y - this->speed;
             }
             //Adjusting interaction box
@@ -158,7 +159,7 @@ void Player::move()
 
             if (this->moveLockDown == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.y = position.y + this->speed;
             }
             //Adjusting interaction box
@@ -174,7 +175,7 @@ void Player::move()
                 this->turn(left);
             if (this->moveLockLeft == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.x = position.x - this->speed;
             }
             //Adjusting interaction box
@@ -190,7 +191,7 @@ void Player::move()
                 this->turn(right);
             if (this->moveLockRight == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.x = position.x + this->speed;
             }
             //Adjusting interaction box    
@@ -331,6 +332,37 @@ void Player::interact(std::vector<std::shared_ptr<Enemy>> actors_) {
     }
 }
 
+
+void Player::interact(std::vector<std::shared_ptr<Item>> items) {
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items[i]->showInLevel == true) {
+                if (CheckCollisionPointRec(items[i]->levelPosition,
+                                           this->interactionBox)) { // has to be adjusted when items have hitboxes
+                    TraceLog(LOG_INFO, "Interaction successful!");
+
+                    items[i]->showInLevel = false;
+                    this->inventory.push_back(items[i]);
+                    this->moveLockAbsolute = true;
+                    this->interactionDisabled = true;
+
+                    std::string line = "Oh look, a ";
+                    line.append(items[i]->name);
+                    line.append("!");
+
+                    std::vector<std::string> dialogue = {
+                            line,
+                            "This should come in handy..."
+                    };
+
+                    this->dialogueManager.startDialogue(this->getName(), dialogue,
+                                                        this->spritesheet);
+                }
+            }
+        }
+    }
+}
+
 void Player::interactionForced(std::shared_ptr<Enemy> enemy)
 {
     TraceLog(LOG_INFO, "Interaction successful!");
@@ -397,7 +429,8 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
     {
         if (CheckCollisionRecs(this->collisionBox, actor->collisionBox))
         {
-
+            this->position = this->prevPosition;
+            /* Obsolete but could be useful later on
             Rectangle leftEdge;
             leftEdge.x = actor->collisionBox.x;
             leftEdge.width = 1;
@@ -447,7 +480,7 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
             {
                 this->moveLockDown = false;
                 this->moveLockUp = true;
-            }
+            } */
         }
         else
         {
@@ -465,7 +498,8 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
     {
         if (CheckCollisionRecs(this->collisionBox, actor->collisionBox))
         {
-
+            this->position = this->prevPosition;
+            /*  Obsolete but could be useful later on?
             Rectangle leftEdge;
             leftEdge.x = actor->collisionBox.x;
             leftEdge.width = 1;
@@ -516,6 +550,7 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
                 this->moveLockDown = false;
                 this->moveLockUp = true;
             }
+             */
         }
         else
         {

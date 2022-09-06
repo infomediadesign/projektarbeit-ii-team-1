@@ -86,11 +86,13 @@ public:
 
 	void move();
 
+    // This could use some templates, but templates suck big black balls
 	void interact(std::vector<std::shared_ptr<Prop>> actors_);
     void interact(std::vector<std::shared_ptr<Actor>> actors_);
     void interact(std::vector<std::shared_ptr<Barkeeper>> actors_);
     void interact(std::vector<std::shared_ptr<Dealer>> actors_);
     void interact(std::vector<std::shared_ptr<Enemy>> actors_);
+    void interact(std::vector<std::shared_ptr<Item>> items);
     void interactionForced(std::shared_ptr<Enemy> enemy);
 
 	void checkActorCollision(std::vector<std::shared_ptr<Prop>> actors);

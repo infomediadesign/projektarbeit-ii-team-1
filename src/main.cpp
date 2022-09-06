@@ -28,6 +28,7 @@
 #include "Scenes/ShopBarkeeper.h"
 #include "Scenes/ShopDealer.h"
 #include "Scenes/SkillTreeScene.h"
+#include "Items/PunchGun.h"
 
 #include <iostream>
 #include <memory>
@@ -109,7 +110,8 @@ int main() {
     std::shared_ptr<Dealer> pDealer = std::make_shared<Dealer>(1200, 800, testDialogue);
     levelTutorial->dealers.push_back(pDealer);
     levelTutorial->allActors.push_back(pDealer);
-
+    Vector2 posi = {400, 400};
+    levelTutorial->items.push_back(std::make_shared<PunchGun>(posi));
 
     std::shared_ptr<LevelScene> level01;
     std::shared_ptr<LevelScene> levelRooftop;
