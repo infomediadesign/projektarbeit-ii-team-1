@@ -21,6 +21,8 @@ public:
 
     Rectangle collisionBox;
 
+    float collisionOffset;
+
 protected:
 
     std::string name;

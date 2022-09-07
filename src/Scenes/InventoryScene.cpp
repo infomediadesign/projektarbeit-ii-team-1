@@ -11,7 +11,7 @@ InventoryScene::InventoryScene(std::shared_ptr<Player> player)
     this->player = player;
     font1 = LoadFont("../../assets/graphics/ui/Habbo.ttf");
     items= {};
-
+    this->drawLevelBackground = true;
 }
 
 void InventoryScene::CustomUpdate()
@@ -37,7 +37,7 @@ void InventoryScene::DrawInventory()
     // Draw basics, Background, Text,
     Color lightGray = {210,210,210,255};
     Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
-    DrawRectangleRec(recBackground, Fade(lightGray,1));
+    DrawRectangleRec(recBackground, Fade(lightGray,0.5));
 
     ColorAlpha(LIGHTGRAY,  0.7);
     // Header text

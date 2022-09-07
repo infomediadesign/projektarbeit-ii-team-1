@@ -9,6 +9,7 @@ SkillTreeScene::SkillTreeScene(std::shared_ptr<Player> player)
 {
     this->player = player;
     font1 = LoadFont("../../assets/graphics/ui/Habbo.ttf");
+    this->drawLevelBackground = true;
 }
 
 void SkillTreeScene::CustomUpdate()
@@ -30,7 +31,7 @@ void SkillTreeScene::CustomDraw()
 void SkillTreeScene::DrawSkillTree()
 {
     // Draw basics, Background, Text
-    ClearBackground(GRAY);
+    //ClearBackground(GRAY);
 
     // Header text
     const std::string skilltreeHeaderTxt = "SkillTree";

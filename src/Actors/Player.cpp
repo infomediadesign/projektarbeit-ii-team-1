@@ -7,8 +7,6 @@
 #include <raylib.h>
 #include <vector>
 
-#define COLLISION_OFFSET 0.4
-
 Player::Player()
 {
     std::cout << "[DEBUG] This function should not be called (Player-Standardconstructor)" << std::endl;
@@ -20,7 +18,8 @@ Player::Player(int posX, int posY, bool genderMale)
     this->position.y = posY;
 
     this->prevPosition = this->position;
-    
+    this->savedPos = this->position;
+    this->savedPosTimer = 0;
 
     this->augmentationCount = 0;
 
@@ -81,10 +80,11 @@ Player::Player(int posX, int posY, bool genderMale)
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
 
-    this->collisionBox.x = posX + frameRec.width * (COLLISION_OFFSET / 2);
+    this->collisionOffset = 0.4;
+    this->collisionBox.x = posX + frameRec.width * (this->collisionOffset / 2);
     this->collisionBox.y = posY;
     this->collisionBox.height = frameRec.height;
-    this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
+    this->collisionBox.width = frameRec.width - frameRec.width * this->collisionOffset;
 
     this->maxHP = 50;
     this->currentHP = this->maxHP;
@@ -135,6 +135,18 @@ void Player::move()
     if (this->moveLockAbsolute == false)
     {
         this->prevPosition = this->position;
+
+        // If movement keys are pressed
+        if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN) ||
+            IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
+        {
+            this->savedPosTimer++;
+            if (this->savedPosTimer == 60)
+            {
+                this->savedPos = this->prevPosition;
+            }
+        }
+
         if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
         {
             this->playIdle = false;
@@ -181,7 +193,7 @@ void Player::move()
             //Adjusting interaction box
             this->interactionBox.width = this->frameRec.width / 2;
             this->interactionBox.height = this->frameRec.height / 4;
-            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (COLLISION_OFFSET / 2));
+            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (this->collisionOffset / 2));
             this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
@@ -197,7 +209,7 @@ void Player::move()
             //Adjusting interaction box    
             this->interactionBox.width = this->frameRec.width / 2;
             this->interactionBox.height = this->frameRec.height / 4;
-            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (COLLISION_OFFSET / 2));
+            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (this->collisionOffset / 2));
             this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         this->collisionBox.x = this->position.x + this->frameRec.width * 0.2;
@@ -323,7 +335,6 @@ void Player::interact(std::vector<std::shared_ptr<Enemy>> actors_) {
     {
         for (int i = 0; i < actors_.size(); i++)
         {
-
             if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
             {
                 this->interactionForced(actors_[i]);
@@ -386,8 +397,12 @@ void Player::interactionForced(std::shared_ptr<Enemy> enemy)
     // Make positive
     if (distance.x < 0)
         workingX = distance.x * -1;
+    else
+        workingX = distance.x;
     if (distance.y < 0)
         workingY = distance.y * -1;
+    else
+        workingY = distance.y;
 
     if (workingX >= workingY)
     {

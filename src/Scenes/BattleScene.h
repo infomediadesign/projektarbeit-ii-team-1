@@ -20,6 +20,10 @@ public:
     std::shared_ptr<Player> player;
     std::shared_ptr<Enemy> enemy;
 
+    Vector2 playerPrevPos;
+    Direction playerFacing;
+    Vector2 enemyPrevPos;
+
     bool controlsLocked;
     bool animationPlaying;
 

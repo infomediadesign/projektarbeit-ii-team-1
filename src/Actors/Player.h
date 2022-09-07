@@ -22,9 +22,6 @@ class Player : public Actor {
 	// Attributes
 public:
 
-
-
-
     bool genderMale;
 
 	// Regarding idle animation
@@ -42,6 +39,9 @@ public:
     CombatSheet spritesheetReactTazer;
 
 	Vector2 prevPosition;
+
+    Vector2 savedPos; // Stupid workaround
+    int savedPosTimer;
 
 	// Character attributes. Better implemented using vectors?
     int augmentationCount; // 0 = No augmentations, 6 = Fully augmented

@@ -36,6 +36,10 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->enemy->turn(down);
     this->player->moveLockAbsolute = true;
 
+    this->playerPrevPos = this->player->prevPosition;
+    this->playerFacing = this->player->facing;
+    this->enemyPrevPos = this->enemy->position;
+
     this->background = LoadTexture("assets/graphics/ui/combat/background.png");
 
     Vector2 camTarget = {0, 0};
@@ -780,6 +784,12 @@ void BattleScene::menuNavigation() {
                     break;
                 case 2:
                     this->endBattle = true;
+                    this->player->position = this->playerPrevPos;
+                    this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
+                            (this->player->collisionOffset / 2);
+                    this->player->collisionBox.y = this->player->position.y;
+                    this->player->turn(this->playerFacing);
+                    this->enemy->position = this->enemyPrevPos;
                     this->switchTo = GAME;
                     this->switchScene = true;
                     break;
