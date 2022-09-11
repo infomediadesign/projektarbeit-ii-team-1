@@ -48,7 +48,7 @@ int main() {
     // Set target FPS
     SetTargetFPS(60);
     //Set Window titel
-    const char gameTitel[] = "CyberPunk Undercover";
+    const char gameTitel[] = "Disco Undercover";
     SetWindowTitle(gameTitel);
     //Set Window icon
     Image gameIcon = LoadImage("./assets/graphics/UI/Logo02.png");
