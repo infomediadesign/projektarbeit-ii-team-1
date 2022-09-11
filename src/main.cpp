@@ -36,7 +36,7 @@
 
 // Sound / music volume
 float volSfx = 1;
-float volMusic = 1;
+float volMusic = 0.75;
 
 int main() {
     // Raylib initialization

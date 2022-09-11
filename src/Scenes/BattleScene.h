@@ -83,6 +83,8 @@ public:
     int soundTimer;
     int soundTimerTarget;
 
+    Music music;
+
     Sound soundUiBlip;
     Sound soundUiBlip2;
     Sound soundUiBlocked;
@@ -96,6 +98,7 @@ public:
     // Methods
 public:
 BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy);
+~BattleScene();
 
 void CustomUpdate() override;
 void CustomDraw() override;

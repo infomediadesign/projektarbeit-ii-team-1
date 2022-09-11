@@ -129,16 +129,28 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     }
 
     // Sound init
+    this->music = LoadMusicStream("assets/audio/tracks/throwing_down.wav");
+    SetMusicVolume(this->music, volMusic);
+
     this->soundTimer = 0;
     this->soundUiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    SetSoundVolume(this->soundUiBlip, volSfx);
     this->soundUiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    SetSoundVolume(this->soundUiBlip2, volSfx);
     this->soundUiBlocked = LoadSound("assets/audio/sfx/uiBlocked.wav");
+    SetSoundVolume(this->soundUiBlocked, volSfx);
     this->soundTazer = LoadSound("assets/audio/sfx/tazer.wav");
+    SetSoundVolume(this->soundTazer, volSfx);
     this->soundWhip = LoadSound("assets/audio/sfx/whip.wav");
+    SetSoundVolume(this->soundWhip, volSfx);
     this->soundWhipCrack = LoadSound("assets/audio/sfx/whipCrack.wav");
+    SetSoundVolume(this->soundWhipCrack, volSfx);
     this->soundBomb = LoadSound("assets/audio/sfx/bomb.wav");
+    SetSoundVolume(this->soundBomb, volSfx);
     this->soundLaser = LoadSound("assets/audio/sfx/laser.wav");
+    SetSoundVolume(this->soundLaser, volSfx);
     this->soundPunch = LoadSound("assets/audio/sfx/punch.wav");
+    SetSoundVolume(this->soundPunch, volSfx);
 
     this->updateHpBars();
     this->endBattle = false;
@@ -149,6 +161,13 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
 void BattleScene::CustomUpdate() {
     this->framesCounter++;
+
+    // Plays music loop
+    if (IsMusicStreamPlaying(this->music) == false)
+    {
+        PlayMusicStream(this->music);
+    }
+    UpdateMusicStream(this->music);
 
     if (this->player->currentHP <= 0)
     {
@@ -784,6 +803,7 @@ void BattleScene::menuNavigation() {
                     break;
                 case 2:
                     this->endBattle = true;
+                    StopMusicStream(this->music);
                     this->player->position = this->playerPrevPos;
                     this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
                             (this->player->collisionOffset / 2);
@@ -1082,4 +1102,19 @@ void BattleScene::playSfx()
             break;
     }
     this->soundTimer++;
+}
+
+BattleScene::~BattleScene()
+{
+    UnloadMusicStream(this->music);
+    UnloadSound(this->soundUiBlip);
+    UnloadSound(this->soundUiBlip2);
+    UnloadSound(this->soundWhip);
+    UnloadSound(this->soundPunch);
+    UnloadSound(this->soundUiBlocked);
+    UnloadSound(this->soundLaser);
+    UnloadSound(this->soundBomb);
+    UnloadSound(this->soundWhipCrack);
+    UnloadSound(this->soundTazer);
+
 }

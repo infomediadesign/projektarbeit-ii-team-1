@@ -75,7 +75,8 @@ void ShopDealer::CustomUpdate()
 
     if (IsKeyPressed(KEY_E))
     {
-        if (this->buttons[this->activeButton]->blocked == false) {
+        if (this->buttons[this->activeButton]->blocked == false)
+        {
             PlaySound(this->soundBuy);
             std::string directoryString;
             std::string memoryString;
