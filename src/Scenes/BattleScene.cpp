@@ -74,6 +74,14 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 
+    this->playBattleStart = true;
+    this->counterBattleStart = 0;
+    this->battleStartCurrentFrame = 0;
+    this->battleStartTex = LoadTexture("assets/graphics/ui/combat/fightStart.png");
+    this->battleStartRec.x = 0;
+    this->battleStartRec.y = 0;
+    this->battleStartRec.width = this->battleStartTex.width / 8;
+    this->battleStartRec.height = this->battleStartTex.height;
 
     // For test purposes uwu
     Vector2 test = {1, 2};
@@ -161,6 +169,23 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
 void BattleScene::CustomUpdate() {
     this->framesCounter++;
+
+    // Play battle start animation
+    if (this->playBattleStart)
+    {
+        if (this->battleStartCurrentFrame >= 7 && this->counterBattleStart >= 6)
+        {
+         this->playBattleStart = false;
+        }
+        this->counterBattleStart++;
+        if (this->counterBattleStart >= 7)
+        {
+            this->battleStartCurrentFrame++;
+            this->counterBattleStart = 0;
+            this->battleStartRec.x = battleStartTex.width / 8 * this->battleStartCurrentFrame;
+        }
+    }
+
 
     // Plays music loop
     if (IsMusicStreamPlaying(this->music) == false)
@@ -267,6 +292,11 @@ void BattleScene::CustomDraw()
     }
 
     EndMode2D();
+
+    if (this->playBattleStart)
+    {
+        DrawTextureRec(this->battleStartTex, this->battleStartRec, {0, 0}, WHITE);
+    }
 }
 
 void BattleScene::animateIdle() {
