@@ -9,11 +9,12 @@
 
 #include "MenuScenes.h"
 #include "raylib.h"
+#include "../Actors/enums.h"
 
 #include "Button.h"
 #include <vector>
 
-    class MainMenuScene : MenuScenes
+    class MainMenuScene : public MenuScenes
             {
         // Attributes
             public:
@@ -23,6 +24,10 @@
 
                 std::string Message1;
                 Vector2 fontPosition1;
+
+                //SFX
+                Sound uiBlip; //navigate
+                Sound uiBlip2; //confirm
 
     public:
         game::Button* buttonNewGame;
@@ -34,16 +39,14 @@
 
         std::vector<game::Button*> buttons;
 
-        bool switchScene; // temporary
-
         // Methods
     public:
 
         MainMenuScene();
         ~MainMenuScene();
 
-        void Update();
-        void Draw();
+        void CustomUpdate() override;
+        void CustomDraw() override;
         void Unload();
 };
 

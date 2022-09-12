@@ -6,22 +6,21 @@
 
 #include "Prop.h"
 #include "Actor.h"
+#include "Barkeeper.h"
+#include "Dealer.h"
 #include "../Systems/DialogueManager.h"
 #include "Enemies/CombatStructs.h"
+#include "Enemies/Enemy.h"
 #include "../Items/Item.h"
 #include <vector>
 #include <memory>
-#include "../Scenes/InventoryScene.h"
-#include "../Scenes/SkillTreeScene.h"
+
 
 
 class Player : public Actor {
 
 	// Attributes
 public:
-    //InventoryScene inventory;
-    SkillTreeScene skillree;
-
 
     bool genderMale;
 
@@ -41,16 +40,18 @@ public:
 
 	Vector2 prevPosition;
 
-	// Character attributes. Better implemented using vectors?
+    Vector2 savedPos; // Stupid workaround
+    int savedPosTimer;
+
+	// Character attributes
+    int augmentationCount; // 0 = No augmentations, 6 = Fully augmented
     float maxHP;
     float currentHP;
 	int defense;
 
     // Placeholder?
-    std::vector<std::shared_ptr<Item>> inventory;
+    std::vector<std::shared_ptr<Item>> inventory ;
 
-    bool inventoryOpened = false;
-    bool skilltreeOpend = false;
 
 	bool moveLockAbsolute = false;
 
@@ -64,6 +65,15 @@ public:
 
     DialogueManager dialogueManager;
 
+    // Combat
+    std::shared_ptr<Enemy> enemyToFight;
+    bool startCombat;
+
+    // Shop
+    std::shared_ptr<Barkeeper> barkeeperPtr;
+    bool openShopBarkeeper;
+    bool openShopDealer;
+
 	// Methods
 public:
 	Player();
@@ -76,8 +86,14 @@ public:
 
 	void move();
 
+    // This could use some templates, but templates suck big black balls
 	void interact(std::vector<std::shared_ptr<Prop>> actors_);
     void interact(std::vector<std::shared_ptr<Actor>> actors_);
+    void interact(std::vector<std::shared_ptr<Barkeeper>> actors_);
+    void interact(std::vector<std::shared_ptr<Dealer>> actors_);
+    void interact(std::vector<std::shared_ptr<Enemy>> actors_);
+    void interact(std::vector<std::shared_ptr<Item>> items);
+    void interactionForced(std::shared_ptr<Enemy> enemy);
 
 	void checkActorCollision(std::vector<std::shared_ptr<Prop>> actors);
     void checkActorCollision(std::vector<std::shared_ptr<Actor>> actors);

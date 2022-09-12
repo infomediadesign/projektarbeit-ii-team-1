@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+extern float volSfx;
+
 PauseScene::PauseScene()
 {
     //PauseMenuBox
@@ -16,6 +18,10 @@ PauseScene::PauseScene()
 
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
     Message1 = "Pause Menu";
 
@@ -55,7 +61,7 @@ PauseScene::~PauseScene() {
     delete buttonReturnMainMenu;
 }
 
-void PauseScene::Update() {
+void PauseScene::CustomUpdate() {
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;
@@ -64,6 +70,7 @@ void PauseScene::Update() {
         else active_button = 0;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP))
@@ -74,6 +81,29 @@ void PauseScene::Update() {
         else active_button--;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
+    }
+
+    if (IsKeyPressed(KEY_ENTER))
+    {
+        if (this->buttonPauseOptions->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = PAUSEOPTIONS;
+        }
+        if (this->buttonReturnGame->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = GAME;
+        }
+        if (this->buttonReturnMainMenu->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = MAINMENU; //confirmation before leaving game?
+        }
+
+        this->switchScene = true;
+        std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
 
     if (IsKeyPressed(KEY_ENTER))
@@ -83,7 +113,7 @@ void PauseScene::Update() {
     }
 }
 
-void PauseScene::Draw() {
+void PauseScene::CustomDraw() {
 
     //Textures
     DrawTexture(pauseMenuBox, (GetScreenWidth() - pauseMenuBox.width)/2, (GetScreenHeight() - pauseMenuBox.height)/2, WHITE);
@@ -100,5 +130,7 @@ void PauseScene::Draw() {
 
 void PauseScene::Unload() {
     UnloadFont(font1);
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
     UnloadTexture(pauseMenuBox);
 }

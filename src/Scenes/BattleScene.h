@@ -13,12 +13,16 @@
 #include <memory>
 
 
-class BattleScene : MenuScenes {
+class BattleScene : public MenuScenes {
 
     // Attributes
 public:
     std::shared_ptr<Player> player;
     std::shared_ptr<Enemy> enemy;
+
+    Vector2 playerPrevPos;
+    Direction playerFacing;
+    Vector2 enemyPrevPos;
 
     bool controlsLocked;
     bool animationPlaying;
@@ -51,15 +55,19 @@ public:
     AttackType enemyNextAttack;
     bool playerTurn;
     bool attackSelected;
-    bool enemyStunned;
+    int enemyStunnedFor;
     bool endBattle;
+    bool gameOver;
 
     // Core-System Items
     bool hasPunchGun;
     int punchGunUses;
+    float punchGunDmg;
     bool hasLaserGun;
     int laserGunUses;
+    float laserGunDmg;
     bool hasBottlecapGun;
+    float bottlecapGunDmg;
     int bombUses;
     int frisbeeUses;
 
@@ -71,13 +79,29 @@ public:
     int activeButton;
     std::vector<std::shared_ptr<game::Button>> buttons;
 
+    // SFX & Music
+    int soundTimer;
+    int soundTimerTarget;
+
+    Music music;
+
+    Sound soundUiBlip;
+    Sound soundUiBlip2;
+    Sound soundUiBlocked;
+    Sound soundTazer;
+    Sound soundWhip;
+    Sound soundWhipCrack;
+    Sound soundBomb;
+    Sound soundLaser;
+    Sound soundPunch;
 
     // Methods
 public:
 BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy);
+~BattleScene();
 
-void Update();
-void Draw();
+void CustomUpdate() override;
+void CustomDraw() override;
 
 void animateIdle();
 void playAnimation();
@@ -90,4 +114,6 @@ void updateHpBars();
 
 void menuNavigation();
 void initMainMenu();
+
+void playSfx();
 };

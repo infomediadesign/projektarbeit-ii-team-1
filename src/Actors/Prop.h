@@ -21,11 +21,14 @@ public:
 
     Rectangle collisionBox;
 
+    float collisionOffset;
+
 protected:
 
     std::string name;
 
     std::vector<std::string> dialogue;
+    std::vector<int> diaSwitches; // This is a crutch for the upgraded dialogue system
 
     bool isActive = true;
 
@@ -43,6 +46,8 @@ public:
     void setName(std::string name_); //For test purposes only
 
     std::vector<std::string> getDialogue() {return this->dialogue;};
+    std::vector<int> getDiaSwitches() {return this->diaSwitches;};
+    void setDiaSwitches(std::vector<int> switches) {this->diaSwitches = switches;};
 
     // onInteraction()?
 

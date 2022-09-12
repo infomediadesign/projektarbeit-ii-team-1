@@ -1,90 +1,92 @@
 ﻿#include <cstdlib>
 
 #include "raylib.h"
-
 #include "config.h"
 
 //This is a test
 #include "Actors/enums.h"
 #include "Actors/Prop.h"
 #include "Actors/Enemies/Enemy.h"
-
 #include "Actors/Enemies/GangsterFemale.h"
 #include "Actors/Enemies/Bouncer2.h"
 #include "Actors/Enemies/GangsterMale.h"
 #include "Actors/Enemies/Bouncer1.h"
-
-#include "Actors/enums.h"
 #include "Actors/Player.h"
+#include "Actors/Dealer.h"
+
 #include "Systems/DialogueManager.h"
+
+#include "Scenes/TitleScreen.h"
+#include "Scenes/MainOptions.h"
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
+#include "Scenes/PauseOptions.h"
+#include "Scenes/CreditScene.h"
+#include "Scenes/LevelScene.h"
+#include "Scenes/InventoryScene.h"
+#include "Scenes/ShopBarkeeper.h"
+#include "Scenes/ShopDealer.h"
+#include "Scenes/SkillTreeScene.h"
+#include "Items/PunchGun.h"
+
 #include <iostream>
 #include <memory>
 #include <vector>
 
-typedef enum GameScreen {TITLESCREEN, MAINMENU, MAINOPTIONS, CREDITS, GAME, PAUSEMENU, PAUSEOPTIONS} GameScreen;
+// Sound / music volume
+float volSfx = 1;
+float volMusic = 0.75;
 
 int main() {
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
     InitWindow(Game::ScreenWidth, Game::ScreenHeight, Game::PROJECT_NAME);
+
+    InitAudioDevice();
+
     // Set target FPS
     SetTargetFPS(60);
-
-    GameScreen currentScreen = TITLESCREEN;
-
+    //Set Window titel
+    const char gameTitel[] = "Disco Undercover";
+    SetWindowTitle(gameTitel);
+    //Set Window icon
+    Image gameIcon = LoadImage("./assets/graphics/UI/Logo02.png");
+    SetWindowIcon(gameIcon);
+    //Set window exit key
+    SetExitKey(KEY_BACKSPACE);
 
 #ifdef GAME_START_FULLSCREEN
     ToggleFullscreen();
 #endif
 
-    // Your own initialization code here
-    // ...
-
-    //Implementing Logo for Titlescreen
-    Image titleScreen = LoadImage("assets/graphics/ui/Logo02.png");
-    ImageResize(&titleScreen, 500, 500);
-    Texture2D logo = LoadTextureFromImage(titleScreen);
-    UnloadImage(titleScreen);
-
-    //Messages
-    //for Titlescreen
-    const char msg1[100] = "Welcome to the Game!";
-    const char msg2[100] = "Please press Enter to continue.";
-
-    //for Options
-    const char msg4[100] = "Options";
-
-    //for Credits
-
     //Font
     Font font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
-    //Messages TitleScreen
-    Vector2 fontPosition1 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg1,
-                                                                 (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 300};
-    Vector2 fontPosition2 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg2,
-                                                                 (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
-
-    //Messages OptionScreen
-    Vector2 fontPosition4 = {Game::ScreenWidth/2 - MeasureTextEx(font1, msg4,
-                                                                 (float)font1.baseSize, 1).x/2, Game::ScreenHeight - (float)font1.baseSize/2 - 250};
-
-    //Implementing menu
+    //Implementing scenes
+    TitleScreen testTitle;
     MainMenuScene testMain;
+    MainOptions testMainOps;
+    CreditScene testCredit;
     PauseScene testPause;
+    PauseOptions testPauseOps;
 
-    // ALL OF THIS IS FOR TEST PURPOSES (implementing and testing player)
+    // Enums
+    LevelRooms levelRooms;
 
-    Player player(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
+    //LevelScene testL( );
 
-    Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
 
-    std::vector<std::shared_ptr<Actor>> actors;
+    // ===== PLAYER INIT =====
+    std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
+
+    // ========== LEVEL INITIALISATION ==========
+
+    //  ----- Tutorial initialisation -----
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = TutorialLevel);
+    levelTutorial->player = player;
     std::shared_ptr<Actor> pActor;
-
+    Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
     std::vector<std::string> testDialogue =
             {
                     "This is a test line!",
@@ -96,16 +98,45 @@ int main() {
                     "It's not like the game will crash or anything...",
                     "... I hope."
             };
-    pActor = std::make_shared<Actor>(GetScreenWidth() / 4, GetScreenHeight() / 3, actorTest, testDialogue);
+    pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
     pActor->setName("Test NPC");
-    actors.push_back(pActor);
-    pActor = std::make_shared<GangsterFemale>(1, 1, Level01, testDialogue);
+    std::vector<int> switches = {0, 2, 3};
+    pActor->setDiaSwitches(switches);
 
-    actors.push_back(pActor);
 
-    std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
-    std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
-    BattleScene testBattle(testPlayer, testEnemy);
+
+
+    levelTutorial->actors.push_back(pActor);
+    levelTutorial->allActors.push_back(pActor);
+    std::shared_ptr<Enemy> pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
+    levelTutorial->enemies.push_back(pEnemy);
+    levelTutorial->allActors.push_back(pEnemy);
+    std::shared_ptr<Barkeeper> pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
+    levelTutorial->barkeepers.push_back(pBarkeeper);
+    levelTutorial->allActors.push_back(pBarkeeper);
+    std::shared_ptr<Dealer> pDealer = std::make_shared<Dealer>(1200, 800, testDialogue);
+    levelTutorial->dealers.push_back(pDealer);
+    levelTutorial->allActors.push_back(pDealer);
+    Vector2 posi = {400, 400};
+    levelTutorial->items.push_back(std::make_shared<PunchGun>(posi));
+
+    std::shared_ptr<LevelScene> level01;
+    std::shared_ptr<LevelScene> levelRooftop;
+
+    // Scene management
+    std::shared_ptr<Scenes> activeScene = std::make_shared<TitleScreen>();
+    std::shared_ptr<LevelScene> activeLevel = levelTutorial;
+
+    // ALL OF THIS IS FOR TEST PURPOSES
+
+    std::shared_ptr<Enemy> enemyPtr;
+    std::shared_ptr<Barkeeper> barkeeperPtr;
+
+    player->money = player->money + 2000;
+
+    //std::shared_ptr<Player> testPlayer = std::make_shared<Player>(1, 1, true);
+    //std::shared_ptr<Enemy> testEnemy = std::make_shared<Bouncer1>(1, 1, Level01, testDialogue);
+    //BattleScene testBattle(testPlayer, testEnemy);
 
     // END OF TEST
 
@@ -113,183 +144,125 @@ int main() {
     // Main game loop
     while (!WindowShouldClose()) // Detect window close button or ESC key
     {
-        // Updates that are made by frame are coded here
+        // ========== UPDATE ==========
 
-        switch (currentScreen)
+        // Scene transition
+
+        if (activeScene->switchScene == true)
         {
-            case TITLESCREEN:
-            {
-                if(IsKeyPressed(KEY_ENTER))
-                {
-                    currentScreen = MAINMENU;
-                }
-                break;
-            }
+        if (activeScene->switchScene)
+        {
+            TraceLog(LOG_INFO, "scene switch request");
+            activeScene->switchScene = false;
 
-            case MAINMENU:
+            switch (activeScene->switchTo)
             {
-                testMain.Update();
-                if(testMain.switchScene == true)
-                    currentScreen = GAME;
-                break;
-            }
-
-            case MAINOPTIONS:
-            {
-                if(IsKeyPressed(KEY_ESCAPE))
+                case TITLESCREEN:
                 {
-                    currentScreen = MAINMENU;
-                }
-                break;
-            }
-
-            case CREDITS:
-            {
-                if(IsKeyPressed(KEY_ESCAPE))
-                {
-                    currentScreen = MAINMENU;
-                }
-                break;
-            }
-
-            case GAME:
-            {
-                //Issue: only works once opening the pausemenu, and lets itself close out with enter
-                if(IsKeyPressed(KEY_P))
-                {
-                    currentScreen = PAUSEMENU;
+                    activeScene = std::make_shared<TitleScreen>();
+                    break;
                 }
 
-                // This is a test
-
-                player.Update();
-
-                player.checkActorCollision(actors);
-
-                player.interact(actors); //This garbage can be solved when we implemented a level-class
-
-                for (int i = 0; i < actors.size(); i++)
+                case MAINMENU:
                 {
-                    actors[i]->Update();
+                    activeScene = std::make_shared<MainMenuScene>();
+                    break;
                 }
 
-                testBattle.Update();
-
-                break;
-            }
-
-            case PAUSEMENU:
-            {
-                testPause.Update();
-
-                if(testPause.switchScene == true)
+                case MAINOPTIONS:
                 {
-                    currentScreen = GAME;
+                    activeScene = std::make_shared<MainOptions>();
+                    break;
                 }
 
-                //how do i integrate condition to open options in pausemenu?
-                //maybe something like this?
-
-                /*if(buttonPauseoptions = active_button)
+                case CREDITS:
                 {
-                    currentScreen = PAUSEOPTIONS;
-                }*/
-
-                break;
-            }
-
-            case PAUSEOPTIONS:
-            {
-                if(IsKeyPressed(KEY_ESCAPE))
-                {
-                    currentScreen = PAUSEMENU;
+                    activeScene = std::make_shared<CreditScene>();
+                    break;
                 }
-                break;
+
+                case GAME:
+                {
+                    activeScene = activeLevel;
+                    break;
+                }
+
+                case BATTLE:
+                    // Extract player and enemy from active level
+                    // Then make a new shared pointer with the extracted actors
+
+                    // Hardcoded for now
+                    enemyPtr = player->enemyToFight;
+                    activeScene = std::make_shared<BattleScene>(player, enemyPtr);
+                    break;
+                case SHOP_BARKEEPER:
+                    // Extract player and barkeeper from active level
+                    // Then make a new shared pointer with the extracted actors
+
+                    activeScene = std::make_shared<ShopBarkeeper>(player, player->barkeeperPtr);
+                    break;
+                case SHOP_DEALER:
+                    // Extract player from active level
+                    // Then make a new shared pointer with the extracted actor
+
+                    activeScene = std::make_shared<ShopDealer>(player);
+                    break;
+
+                case PAUSEMENU:
+                {
+                    activeScene = std::make_shared<PauseScene>();
+                    break;
+                }
+
+                case PAUSEOPTIONS:
+                {
+                    activeScene = std::make_shared<PauseOptions>();
+                    break;
+                }
+
+                case INVENTORY:
+                {
+                    activeScene->switchScene = false;
+                    activeScene = std::make_shared<InventoryScene>(player);
+                    break;
+                }
+
+                case SKILLTREE:
+                {
+                    activeScene->switchScene = false;
+                    activeScene = std::make_shared<SkillTreeScene>(player);
+                    break;
+                }
             }
         }
+        }
+
+        // Scene update
+        activeScene->Update();
+
 
         // ========== DRAW ==========
         BeginDrawing();
         ClearBackground(BLACK);
 
-        switch (currentScreen)
+
+        if (activeScene->drawLevelBackground == true)
         {
-            case TITLESCREEN:
-            {
-                DrawTexture(logo, Game::ScreenWidth/2 - logo.width/2, Game::ScreenHeight/4 - logo.height/4, WHITE);
-
-                DrawTextEx(font1, msg1,fontPosition1, font1.baseSize, 1,WHITE);
-                DrawTextEx(font1, msg2,fontPosition2, font1.baseSize, 1,WHITE);
-
-                break;
-            }
-
-            case MAINMENU:
-            {
-                testMain.Draw();
-                break;
-            }
-
-            case MAINOPTIONS:
-            {
-                DrawTextEx(font1, msg4,fontPosition4, font1.baseSize, 1,LIGHTGRAY);
-
-                DrawText("Music\n"
-                         "SFX\n"
-                         "Brightness\n"
-                         "Fullscreen\n", Game::ScreenWidth/2, Game::ScreenHeight/4, 50, WHITE);
-                //Back (Esc)
-
-                break;
-            }
-
-            case CREDITS:
-            {
-                DrawText("Game Design: Marko Lapadatovic, Leah Berner\n"
-                         "Lead Artist: Leah Berner\n"
-                         "Artist: Marko Lapadatovic\n"
-                         "Lead Programmer: Maximilian Röck\n"
-                         "Programmer: Lena White, Sefer Tokdilli\n"
-                         "Sound Artist: Maximilian Röck", Game::ScreenWidth/2, Game::ScreenHeight/4, 50, WHITE);
-                //Back (Esc)
-
-                break;
-            }
-
-            case GAME:
-            {
-                testBattle.Draw();
-                DrawText("Try using WASD or the arrow keys!\nPress E to interact\nPress E to scroll through dialogue",
-                         10, 10, 30, LIGHTGRAY);
-
-                for (int i = 0; i < actors.size(); i++)
-                {
-                    actors[i]->Draw();
-                }
-
-                // This is a test (Implementing player)
-
-                player.Draw();
-
-                break;
-            }
-
-            case PAUSEMENU:
-            {
-                testPause.Draw();
-                break;
-            }
+            activeLevel->Draw();
         }
+        activeScene->Draw();
 
         EndDrawing();
     } // Main game loop end
 
     // De-initialization here
-
-    UnloadTexture(logo);
     UnloadFont(font1);
+    testTitle.Unload();
     testMain.Unload();
+    testMainOps.Unload();
+    testCredit.Unload();
     testPause.Unload();
+    testPauseOps.Unload();
 
     // Close window and OpenGL context
     CloseWindow();

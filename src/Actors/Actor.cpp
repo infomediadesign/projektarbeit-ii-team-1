@@ -90,7 +90,7 @@ void Actor::turn(Direction turningDirection)
 		this->frameRec.y = spritesheet.height / 2;
 		break;
 	default:
-		std::cout << "[DEBUG] Error while turning actor" << std::endl;
+        TraceLog(LOG_INFO, "Error while turning actor");
 	}
 
 }

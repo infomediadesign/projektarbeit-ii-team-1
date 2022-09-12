@@ -13,13 +13,17 @@
 #include "Button.h"
 #include <vector>
 
-class PauseScene : MenuScenes
+class PauseScene : public MenuScenes
         {
         //Attributes
         public:
 
     Texture2D pauseMenuBox;
     Font font1;
+
+    //SFX
+    Sound uiBlip; //navigate
+    Sound uiBlip2; //confirm
 
     std::string Message1;
     Vector2 fontPosition1;
@@ -33,16 +37,14 @@ public:
 
     std::vector<game::Button*> buttons;
 
-    bool switchScene; // temporary
-
     // Methods
 public:
 
     PauseScene();
     ~PauseScene();
 
-    void Update();
-    void Draw();
+    void CustomUpdate() override;
+    void CustomDraw() override;
     void Unload();
         };
 

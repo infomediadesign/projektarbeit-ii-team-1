@@ -3,6 +3,8 @@
 
 #include "Scenes.h"
 #include "../Actors/Enemies/Enemy.h"
+#include "../Actors/Player.h"
+#include "../Actors/enums.h"
 
 
 #include <nlohmann/json.hpp>
@@ -10,17 +12,44 @@
 #include "vector"
 
 
-class LevelScene : Scenes {
+class LevelScene : public Scenes {
     private:
     ;
     public:
-    std::vector<Enemy> listOfNPCs();
+    LevelRooms levelRooms;
 
-    LevelScene();
+    nlohmann::json levelTilesetDescription;
+    nlohmann::json levelMap;
+    Texture2D tileAtlasTexture;
+    bool tutorialLevelActiv = true;
+
+    std::ifstream ifStreamFile;
+
+    std::vector<Enemy> listOfNPCs;
+    std::vector<int> tileAtlas;
+
+    Texture2D tutorialLevelBackgroundImg;
+
+    // Level attributes
+    std::shared_ptr<Player> player;
+
+    std::vector<std::shared_ptr<Actor>> allActors;
+    std::vector<std::shared_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Actor>> actors;
+    std::vector<std::shared_ptr<Barkeeper>> barkeepers;
+    std::vector<std::shared_ptr<Dealer>> dealers;
+    std::vector<std::shared_ptr<Item>> items;
+
+    LevelScene(LevelRooms levelRooms);
 
     void DrawMap();
-    void Update();
-    void Draw();
+
+    void Test();
+
+
+    void CustomUpdate() override;
+    void CustomDraw() override;
+
     protected:
     ;
 

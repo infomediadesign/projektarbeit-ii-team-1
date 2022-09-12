@@ -3,16 +3,23 @@
 //
 
 #pragma once
-
+#include "../Actors/enums.h"
 
 class Scenes {
 
     // Attributes
 public:
+    bool switchScene = false;
+    GameScreen switchTo;
+    bool drawLevelBackground = false;
 
     // Methods
 public:
-    //virtual void Update();
-    //virtual void Draw();
+    virtual void Update();
+    virtual void Draw();
+
+protected:
+    virtual void CustomUpdate() = 0;
+    virtual void CustomDraw() = 0;
 
 };

@@ -7,7 +7,11 @@
 
 #include <iostream>
 
+extern float volSfx;
+
 MainMenuScene::MainMenuScene() {
+    TraceLog(LOG_INFO, "Constructing main menu");
+
     //background texture
     Image mainMenuBackground = LoadImage("assets/graphics/ui/menu/mainMenuBackground.png");
     ImageResize(&mainMenuBackground, GetScreenWidth(), GetScreenHeight());
@@ -22,6 +26,10 @@ MainMenuScene::MainMenuScene() {
 
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
     Message1 = "Main Menu";
 
@@ -68,7 +76,8 @@ MainMenuScene::~MainMenuScene() {
     delete buttonExit;
 }
 
-void MainMenuScene::Update() {
+void MainMenuScene::CustomUpdate() {
+
     if (IsKeyPressed(KEY_DOWN))
     {
         buttons[active_button]->active = false;
@@ -77,6 +86,7 @@ void MainMenuScene::Update() {
         else active_button = 0;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_UP))
@@ -87,23 +97,38 @@ void MainMenuScene::Update() {
         else active_button--;
 
         buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
     }
 
     if (IsKeyPressed(KEY_ENTER))
     {
+        if (this->buttonNewGame->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = GAME;
+        }
+        if(this->buttonOptions->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = MAINOPTIONS;
+        }
+        if (this->buttonCredits->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = CREDITS;
+        }
+        if (this->buttonExit->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            CloseWindow();
+        }
+
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
-
-    //Skips right ahead, basically skips main menu but why??
-    /*if (this->buttonNewGame->active == true)
-    {
-        this->switchScene = true;
-    }*/
-
 }
 
-void MainMenuScene::Draw() {
+void MainMenuScene::CustomDraw() {
 
     //Textures
     DrawTexture(background, 0, 0, WHITE);
@@ -119,8 +144,11 @@ void MainMenuScene::Draw() {
     }
 }
 
-void MainMenuScene::Unload() {
+void MainMenuScene::Unload()
+{
     UnloadFont(font1);
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
     UnloadTexture(background);
     UnloadTexture(mainMenuBox);
 }

@@ -1,46 +1,121 @@
 #include "InventoryScene.h"
 #include "raylib.h"
 #include "config.h"
+#include "../Items/PunchGun.h"
+#include "iostream"
 
-
-InventoryScene::InventoryScene()
+InventoryScene::InventoryScene(std::shared_ptr<Player> player)
 {
-    std::vector<Slot> slots;
-    std::vector<Vector2> slotPos ={Vector2 {10,11}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17},
-                                   Vector2 {18,19}, Vector2 {20,21}, Vector2{22,23}, Vector2 {23,24},
-                                   Vector2 {25,26}, Vector2 {27,28}, Vector2{29,30}, Vector2 {31,32},
-                                   Vector2 {10,11}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17},
-                                   Vector2 {10,11}, Vector2 {12,13}, Vector2{14,15}, Vector2 {16,17}};
+    PunchGun test({1, 1});
+    //this->items.push_back(test);
+    this->player = player;
+    font1 = LoadFont("../../assets/graphics/ui/Habbo.ttf");
+    items= {};
+    this->drawLevelBackground = true;
 }
 
-void Update()
+void InventoryScene::CustomUpdate()
 {
-    // Check Changes
+    // Check Change
 
-}
-
-void DrawInventory()
-{
-    /*Rectangle rectOut = {100, 100, Game::ScreenWidth-200, Game::ScreenHeight-200 };
-    DrawRectangle(100, 100, Game::ScreenWidth-200, Game::ScreenHeight-200, LIGHTGRAY);
-    DrawRectangleLinesEx(rectOut, 5,BLACK);
-    */
-    Texture2D inventoryImg = LoadTexture("../../assets/graphics/UI/Shop&Inventory/inventory.png");
-    DrawTexture(inventoryImg,100,100, WHITE);
-    DrawText("Inventory", Game::ScreenWidth/2-100,110, 30, RED);
-
-    /*Rectangle rectIn = {120, 150, Game::ScreenWidth-240, Game::ScreenHeight-270 };
-    DrawRectangle(rectIn.width/2, 150, rectIn.width/2, rectIn.height, RED);
-    DrawRectangleLinesEx(rectIn, 5,BLACK);
-     */
-}
-
-void AddItem()
-{
+    // TEST
+    if(IsKeyPressed(KEY_ESCAPE))
+    {
+        switchTo = GAME;
+        switchScene = true;
+    }
+    // TEST
 
 }
 
-void RemoveItem()
+void InventoryScene::CustomDraw()
 {
+    this->DrawInventory();
+}
+void InventoryScene::DrawInventory()
+{
+    // Draw basics, Background, Text,
+    Color lightGray = {210,210,210,255};
+    Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
+    DrawRectangleRec(recBackground, Fade(lightGray,0.5));
+
+    ColorAlpha(LIGHTGRAY,  0.7);
+    // Header text
+    const std::string inventoryHeaderTxt = "Inventory";
+    const Vector2 inventoryTxtSize =  MeasureTextEx(font1, inventoryHeaderTxt.c_str(), 2, 60);
+    DrawTextEx( font1, inventoryHeaderTxt.c_str(), {Game::ScreenWidth/2 - (inventoryTxtSize.x/4),110}, 60, 2, BLACK);
+
+    // Close Inventory text
+    const std::string escapeInventoryTxt = "Escape to close Inventory";
+    //const Vector2 escapeTxtSize =  MeasureTextEx(font1, escapeInventoryTxt.c_str(), 2, 30);
+    DrawTextEx( font1, escapeInventoryTxt.c_str(), {20,20}, 30, 1, BLACK);
+
+    //Inventory Image
+    Texture2D inventoryImg = LoadTexture("../../assets/graphics/UI/Shop&Inventory/InventoryNew.png");
+    Vector2 posInventoryImg = {float (Game::ScreenWidth/2 - (inventoryImg.width/2)),float(Game::ScreenHeight/2 - (inventoryImg.height/2))};
+    DrawTexture(inventoryImg,posInventoryImg.x,posInventoryImg.y, WHITE);
+
+    // Draw all items from the inventory
+    int size = items.size();
+    for (int i = 0; i <itemCount.size(); i++) {
+        DrawTextureEx(items[i].texture, {posInventoryImg.x + slotPos[i].x,posInventoryImg.y + slotPos[i].y}, 0, 1, WHITE);
+        DrawTextEx( font1, std::to_string(itemCount[i]).c_str(), {posInventoryImg.x + slotPos[i].x + 40,posInventoryImg.y + slotPos[i].y + 40}, 26, 1, VIOLET);
+        TraceLog(LOG_INFO,"Inventory-Items gezeichnet: ");
+        std::cout <<"was soll das "<< items[i].name << std::endl;
+    }
 
 }
+
+// Add item to the inventory
+void InventoryScene::AddItem(Item newItem)
+{
+    int itemPresent = 0;
+    int slotPosPresentItem = 0;
+    for (int i = 0; i <=items.size() ; i++) {
+        if (items[i].type == newItem.type)
+        {
+            itemPresent++;
+            slotPosPresentItem = i;
+        }
+    }
+
+    if (itemPresent >0)
+    {
+        itemCount[slotPosPresentItem]++;
+    }else if (itemPresent ==0)
+    {
+        items.push_back(newItem);
+        itemCount.push_back(1);
+    }
+
+}
+
+// Remove item from inventory
+void InventoryScene::RemoveItem(Item delItem)
+{
+    int itemPresent = 0;
+    int slotPosPresentItem = 0;
+
+    // Check if item is present
+    for (int i = 0; i <=items.size() ; ++i) {
+        if (items[i].type = delItem.type)
+        {
+            itemPresent ++;
+            slotPosPresentItem = i;
+        }
+    }
+
+    if (itemPresent >0)
+    {
+        items.erase(items.begin()+slotPosPresentItem);
+        if (slotPosPresentItem >0)
+        {
+            itemCount[slotPosPresentItem]--;
+        }else{
+            itemCount[slotPosPresentItem] = 0;
+        }
+
+    }
+}
+
+

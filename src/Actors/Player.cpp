@@ -7,8 +7,6 @@
 #include <raylib.h>
 #include <vector>
 
-#define COLLISION_OFFSET 0.4
-
 Player::Player()
 {
     std::cout << "[DEBUG] This function should not be called (Player-Standardconstructor)" << std::endl;
@@ -20,6 +18,10 @@ Player::Player(int posX, int posY, bool genderMale)
     this->position.y = posY;
 
     this->prevPosition = this->position;
+    this->savedPos = this->position;
+    this->savedPosTimer = 0;
+
+    this->augmentationCount = 0;
 
     this->name = "Dt. Carver";
 
@@ -78,14 +80,20 @@ Player::Player(int posX, int posY, bool genderMale)
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
 
-    this->collisionBox.x = posX + frameRec.width * (COLLISION_OFFSET / 2);
+    this->collisionOffset = 0.4;
+    this->collisionBox.x = posX + frameRec.width * (this->collisionOffset / 2);
     this->collisionBox.y = posY;
     this->collisionBox.height = frameRec.height;
-    this->collisionBox.width = frameRec.width - frameRec.width * COLLISION_OFFSET;
+    this->collisionBox.width = frameRec.width - frameRec.width * this->collisionOffset;
 
     this->maxHP = 50;
     this->currentHP = this->maxHP;
     this->defense = 0;
+    this->money = 0;
+
+    this->startCombat = false;
+    this->openShopBarkeeper = false;
+    this->openShopDealer = false;
 }
 
 
@@ -126,6 +134,19 @@ void Player::move()
     this->playIdle = true;
     if (this->moveLockAbsolute == false)
     {
+        this->prevPosition = this->position;
+
+        // If movement keys are pressed
+        if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP) || IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN) ||
+            IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
+        {
+            this->savedPosTimer++;
+            if (this->savedPosTimer == 60)
+            {
+                this->savedPos = this->prevPosition;
+            }
+        }
+
         if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
         {
             this->playIdle = false;
@@ -133,7 +154,7 @@ void Player::move()
                 this->turn(up);
             if (this->moveLockUp == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.y = position.y - this->speed;
             }
             //Adjusting interaction box
@@ -150,7 +171,7 @@ void Player::move()
 
             if (this->moveLockDown == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.y = position.y + this->speed;
             }
             //Adjusting interaction box
@@ -166,13 +187,13 @@ void Player::move()
                 this->turn(left);
             if (this->moveLockLeft == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.x = position.x - this->speed;
             }
             //Adjusting interaction box
             this->interactionBox.width = this->frameRec.width / 2;
             this->interactionBox.height = this->frameRec.height / 4;
-            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (COLLISION_OFFSET / 2));
+            this->interactionBox.x = this->position.x - frameRec.width / 2 + (frameRec.width * (this->collisionOffset / 2));
             this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
@@ -182,13 +203,13 @@ void Player::move()
                 this->turn(right);
             if (this->moveLockRight == false)
             {
-                this->prevPosition = this->position;
+                //this->prevPosition = this->position;
                 this->position.x = position.x + this->speed;
             }
             //Adjusting interaction box    
             this->interactionBox.width = this->frameRec.width / 2;
             this->interactionBox.height = this->frameRec.height / 4;
-            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (COLLISION_OFFSET / 2));
+            this->interactionBox.x = this->position.x + frameRec.width - (frameRec.width * (this->collisionOffset / 2));
             this->interactionBox.y = this->position.y + this->frameRec.height / 2 - this->interactionBox.height / 2;
         }
         this->collisionBox.x = this->position.x + this->frameRec.width * 0.2;
@@ -206,8 +227,7 @@ void Player::interact(std::vector<std::shared_ptr<Prop>> actors_) {
 
             if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
             {
-                std::cout << "[DEBUG] Interaction successful!" << std::endl;
-                std::cout << "[DEBUG] Starting dialogue with " << actors_[i]->getName() << std::endl;
+                TraceLog(LOG_INFO, "Interaction successful!");
                 this->moveLockAbsolute = true;
                 this->interactionDisabled = true;
                 this->dialogueManager.startDialogue(this->getName(), actors_[i]->getDialogue(), this->spritesheet);
@@ -225,8 +245,7 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
 
             if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
             {
-                std::cout << "[DEBUG] Interaction successful!" << std::endl;
-                std::cout << "[DEBUG] Starting dialogue with " << actors_[i]->getName() << std::endl;
+                TraceLog(LOG_INFO, "Interaction successful!");
                 switch (this->facing)
                 {
                     case down: actors_[i]->turn(up);
@@ -236,17 +255,230 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
                     case left: actors_[i]->turn(right);
                     break;
                     case right: actors_[i]->turn(left);
-                    std::cout << "[DEBUG] Error while checking player facing during interaction" << std::endl;
                 }
-
 
                 this->moveLockAbsolute = true;
                 this->interactionDisabled = true;
-                this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(), actors_[i]->spritesheet);
+
+                // For upgraded dialogue system
+                if (actors_[i]->getDiaSwitches().size() == 0)
+                {
+                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                        actors_[i]->spritesheet);
+                }
+                else
+                {
+                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->spritesheet, this->name,
+                                                        this->spritesheetIdle, actors_[i]->getDialogue(),
+                                                        actors_[i]->getDiaSwitches());
+                }
             }
         }
     }
 }
+// Interaction for barkeepers
+void Player::interact(std::vector<std::shared_ptr<Barkeeper>> actors_) {
+
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false)
+    {
+        for (int i = 0; i < actors_.size(); i++)
+        {
+
+            if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
+            {
+                TraceLog(LOG_INFO, "Interaction successful!");
+
+
+                float workingHeightBarkeeper = actors_[i]->position.y + actors_[i]->frameRec.height / 2;
+
+                float workingHeightPlayer = this->position.y + this->frameRec.height / 2;
+
+                if (workingHeightPlayer < workingHeightBarkeeper)
+                    actors_[i]->turn(up);
+                else
+                    actors_[i]->turn(down);
+
+
+                this->moveLockAbsolute = true;
+                this->interactionDisabled = true;
+                if (actors_[i]->firstInteraction == true)
+                {
+                    // For upgraded dialogue system
+                    if (actors_[i]->getDiaSwitches().size() == 0)
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                            actors_[i]->spritesheet);
+                    }
+                    else
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->spritesheet, this->name,
+                                                            this->spritesheetIdle, actors_[i]->getDialogue(),
+                                                            actors_[i]->getDiaSwitches());
+                    }
+                    actors_[i]->firstInteraction = false;
+                }
+                this->barkeeperPtr = actors_[i];
+                this->openShopBarkeeper = true;
+            }
+        }
+    }
+}
+
+void Player::interact(std::vector<std::shared_ptr<Dealer>> actors_)
+{
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false)
+    {
+        for (int i = 0; i < actors_.size(); i++)
+        {
+
+            if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
+            {
+                TraceLog(LOG_INFO, "Interaction successful!");
+
+                this->moveLockAbsolute = true;
+                this->interactionDisabled = true;
+                if (actors_[i]->firstInteraction == true)
+                {
+                    // For upgraded dialogue system
+                    if (actors_[i]->getDiaSwitches().size() == 0)
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                            actors_[i]->spritesheet);
+                    }
+                    else
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->spritesheet, this->name,
+                                                            this->spritesheetIdle, actors_[i]->getDialogue(),
+                                                            actors_[i]->getDiaSwitches());
+                    }
+                    actors_[i]->firstInteraction = false;
+                }
+                this->openShopDealer = true;
+            }
+        }
+    }
+}
+
+// Interaction for enemies
+void Player::interact(std::vector<std::shared_ptr<Enemy>> actors_) {
+
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false)
+    {
+        for (int i = 0; i < actors_.size(); i++)
+        {
+            if (CheckCollisionRecs(actors_[i]->collisionBox, this->interactionBox))
+            {
+                this->interactionForced(actors_[i]);
+            }
+        }
+    }
+}
+
+
+void Player::interact(std::vector<std::shared_ptr<Item>> items) {
+    if (IsKeyPressed(KEY_E) && interactionDisabled == false) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items[i]->showInLevel == true) {
+                if (CheckCollisionPointRec(items[i]->levelPosition,
+                                           this->interactionBox)) { // has to be adjusted when items have hitboxes
+                    TraceLog(LOG_INFO, "Interaction successful!");
+
+                    items[i]->showInLevel = false;
+                    this->inventory.push_back(items[i]);
+                    this->moveLockAbsolute = true;
+                    this->interactionDisabled = true;
+
+                    std::string line = "Oh look, a ";
+                    line.append(items[i]->name);
+                    line.append("!");
+
+                    std::vector<std::string> dialogue = {
+                            line,
+                            "This should come in handy..."
+                    };
+
+                    this->dialogueManager.startDialogue(this->getName(), dialogue,
+                                                        this->spritesheetIdle);
+                }
+            }
+        }
+    }
+}
+
+void Player::interactionForced(std::shared_ptr<Enemy> enemy)
+{
+    TraceLog(LOG_INFO, "Interaction successful!");
+
+    Vector2 workingPosPlayer;
+    workingPosPlayer.x = this->position.x + this->frameRec.width / 2;
+    workingPosPlayer.y = this->position.y + this->frameRec.height / 2;
+
+    Vector2 workingPosEnemy;
+    workingPosEnemy.x = enemy->position.x + enemy->frameRec.width / 2;
+    workingPosEnemy.y = enemy->position.y + enemy->frameRec.height / 2;
+
+
+    Vector2 distance;
+    distance.x = workingPosPlayer.x - workingPosEnemy.x; // Positive: Enemy is on the left, Negative: enemy is on the right
+    distance.y = workingPosPlayer.y - workingPosEnemy.y; // Positive: Enemy is above, Negative: enemy is below
+
+    int workingX;
+    int workingY;
+
+    // Make positive
+    if (distance.x < 0)
+        workingX = distance.x * -1;
+    else
+        workingX = distance.x;
+    if (distance.y < 0)
+        workingY = distance.y * -1;
+    else
+        workingY = distance.y;
+
+    if (workingX >= workingY)
+    {
+        if (distance.x > 0)
+        {
+            this->turn(left);
+            enemy->turn(right);
+        }
+        else
+        {
+            this->turn(right);
+            enemy->turn(left);
+        }
+    }
+    else if (distance.y > 0)
+    {
+        this->turn(up);
+        enemy->turn(down);
+    }
+    else
+    {
+        this->turn(down);
+        enemy->turn(up);
+    }
+
+    this->moveLockAbsolute = true;
+    this->interactionDisabled = true;
+    // For upgraded dialogue system
+    if (enemy->getDiaSwitches().size() == 0)
+    {
+        this->dialogueManager.startDialogue(enemy->getName(), enemy->getDialogue(),
+                                            enemy->spritesheet);
+    }
+    else
+    {
+        this->dialogueManager.startDialogue(enemy->getName(), enemy->spritesheet, this->name,
+                                            this->spritesheetIdle, enemy->getDialogue(),
+                                            enemy->getDiaSwitches());
+    }
+    if (enemy->defeated == false) {
+        this->enemyToFight = enemy;
+        this->startCombat = true;
+    }
+}
+
 
 void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
 {
@@ -254,7 +486,8 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
     {
         if (CheckCollisionRecs(this->collisionBox, actor->collisionBox))
         {
-
+            this->position = this->prevPosition;
+            /* Obsolete but could be useful later on
             Rectangle leftEdge;
             leftEdge.x = actor->collisionBox.x;
             leftEdge.width = 1;
@@ -304,7 +537,7 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Prop>> actors)
             {
                 this->moveLockDown = false;
                 this->moveLockUp = true;
-            }
+            } */
         }
         else
         {
@@ -322,7 +555,8 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
     {
         if (CheckCollisionRecs(this->collisionBox, actor->collisionBox))
         {
-
+            this->position = this->prevPosition;
+            /*  Obsolete but could be useful later on?
             Rectangle leftEdge;
             leftEdge.x = actor->collisionBox.x;
             leftEdge.width = 1;
@@ -373,6 +607,7 @@ void Player::checkActorCollision(std::vector<std::shared_ptr<Actor>> actors)
                 this->moveLockDown = false;
                 this->moveLockUp = true;
             }
+             */
         }
         else
         {

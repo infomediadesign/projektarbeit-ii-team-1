@@ -7,6 +7,23 @@
 
 #pragma once
 
+enum GameScreen
+{
+    TITLESCREEN,
+    MAINMENU,
+    MAINOPTIONS,
+    CREDITS,
+    GAME,
+    BATTLE,
+    PAUSEMENU,
+    PAUSEOPTIONS,
+    SHOP_BARKEEPER,
+    SHOP_DEALER,
+    TESTSCENE,
+    INVENTORY,
+    SKILLTREE
+};
+
 enum Direction
 {
     up,
@@ -17,6 +34,8 @@ enum Direction
 
 enum GameState{Started, Paused, Stopped};
 enum Level{Tutorial, Level01, Rooftop, VIP};
+
+enum LevelRooms{TutorialLevel, Wardrobe, Floor, VIPRoom, Storage, Dancefloor, WCM, WCW};
 
 enum BattleState
 {
@@ -41,6 +60,8 @@ enum AttackType
     bomb,
     frisbee,
 
+    heal,
+
     // Enemy attack types
     punchEnemy,
     necklace,
@@ -50,11 +71,10 @@ enum AttackType
 enum ItemType
 {
     itemPunchGun,
-    itembottlecapGun,
+    itemBottlecapGun,
     itemLaserGun,
     itemBomb,
     itemFrisbee,
     itemHeal,
     itemBottlecapAmmo
 };
-
