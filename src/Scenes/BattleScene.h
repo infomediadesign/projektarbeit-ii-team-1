@@ -45,7 +45,7 @@ public:
     Rectangle frameRecPlayer;
     Rectangle frameRecEnemy;
 
-    // Timer
+    // Animation timer
     int timerFramesWaited;
 
     CombatSheet playerAnimation;
@@ -78,6 +78,13 @@ public:
     BattleState state;
     int activeButton;
     std::vector<std::shared_ptr<game::Button>> buttons;
+
+    // For battle start animation
+    int counterBattleStart;
+    int battleStartCurrentFrame;
+    Texture2D battleStartTex;
+    Rectangle battleStartRec;
+    bool playBattleStart;
 
     // SFX & Music
     int soundTimer;

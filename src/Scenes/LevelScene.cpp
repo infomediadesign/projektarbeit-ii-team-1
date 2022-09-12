@@ -146,10 +146,6 @@ LevelScene::LevelScene(LevelRooms levelRooms)
 
         tileAtlas.push_back(layer["id"]);
     };
-
-
-
-
 }
 
 void LevelScene::CustomUpdate()
@@ -195,7 +191,8 @@ void LevelScene::CustomUpdate()
         // Has to remember the player's position in the level before battle!
 
 
-        // This is hardcoded for now, because the level class isn't ready yet
+
+
         this->switchTo = BATTLE;
         this->switchScene = true;
     }
