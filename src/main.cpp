@@ -100,6 +100,12 @@ int main() {
             };
     pActor = std::make_shared<Actor>(GetScreenWidth() / 3, GetScreenHeight() / 3, actorTest, testDialogue);
     pActor->setName("Test NPC");
+    std::vector<int> switches = {0, 2, 3};
+    pActor->setDiaSwitches(switches);
+
+
+
+
     levelTutorial->actors.push_back(pActor);
     levelTutorial->allActors.push_back(pActor);
     std::shared_ptr<Enemy> pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
@@ -142,7 +148,6 @@ int main() {
 
         // Scene transition
 
-        TraceLog(LOG_INFO, std::to_string(activeScene->switchScene).c_str());
         if (activeScene->switchScene == true)
         {
         if (activeScene->switchScene)

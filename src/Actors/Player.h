@@ -43,7 +43,7 @@ public:
     Vector2 savedPos; // Stupid workaround
     int savedPosTimer;
 
-	// Character attributes. Better implemented using vectors?
+	// Character attributes
     int augmentationCount; // 0 = No augmentations, 6 = Fully augmented
     float maxHP;
     float currentHP;

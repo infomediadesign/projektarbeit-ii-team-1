@@ -17,7 +17,7 @@ public: // Attributes
 
 	int hp;
 	int money;
-	int speed = 5; //Do we need this?
+	int speed = 5;
 
 	// Everything regarding textures
 

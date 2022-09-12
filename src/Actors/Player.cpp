@@ -257,10 +257,21 @@ void Player::interact(std::vector<std::shared_ptr<Actor>> actors_) {
                     case right: actors_[i]->turn(left);
                 }
 
-
                 this->moveLockAbsolute = true;
                 this->interactionDisabled = true;
-                this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(), actors_[i]->spritesheet);
+
+                // For upgraded dialogue system
+                if (actors_[i]->getDiaSwitches().size() == 0)
+                {
+                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                        actors_[i]->spritesheet);
+                }
+                else
+                {
+                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->spritesheet, this->name,
+                                                        this->spritesheetIdle, actors_[i]->getDialogue(),
+                                                        actors_[i]->getDiaSwitches());
+                }
             }
         }
     }
@@ -292,8 +303,18 @@ void Player::interact(std::vector<std::shared_ptr<Barkeeper>> actors_) {
                 this->interactionDisabled = true;
                 if (actors_[i]->firstInteraction == true)
                 {
-                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
-                                                        actors_[i]->spritesheet);
+                    // For upgraded dialogue system
+                    if (actors_[i]->getDiaSwitches().size() == 0)
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                            actors_[i]->spritesheet);
+                    }
+                    else
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->spritesheet, this->name,
+                                                            this->spritesheetIdle, actors_[i]->getDialogue(),
+                                                            actors_[i]->getDiaSwitches());
+                    }
                     actors_[i]->firstInteraction = false;
                 }
                 this->barkeeperPtr = actors_[i];
@@ -318,8 +339,18 @@ void Player::interact(std::vector<std::shared_ptr<Dealer>> actors_)
                 this->interactionDisabled = true;
                 if (actors_[i]->firstInteraction == true)
                 {
-                    this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
-                                                        actors_[i]->spritesheet);
+                    // For upgraded dialogue system
+                    if (actors_[i]->getDiaSwitches().size() == 0)
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->getDialogue(),
+                                                            actors_[i]->spritesheet);
+                    }
+                    else
+                    {
+                        this->dialogueManager.startDialogue(actors_[i]->getName(), actors_[i]->spritesheet, this->name,
+                                                            this->spritesheetIdle, actors_[i]->getDialogue(),
+                                                            actors_[i]->getDiaSwitches());
+                    }
                     actors_[i]->firstInteraction = false;
                 }
                 this->openShopDealer = true;
@@ -367,7 +398,7 @@ void Player::interact(std::vector<std::shared_ptr<Item>> items) {
                     };
 
                     this->dialogueManager.startDialogue(this->getName(), dialogue,
-                                                        this->spritesheet);
+                                                        this->spritesheetIdle);
                 }
             }
         }
@@ -430,7 +461,18 @@ void Player::interactionForced(std::shared_ptr<Enemy> enemy)
 
     this->moveLockAbsolute = true;
     this->interactionDisabled = true;
-    this->dialogueManager.startDialogue(enemy->getName(), enemy->getDialogue(), enemy->spritesheet);
+    // For upgraded dialogue system
+    if (enemy->getDiaSwitches().size() == 0)
+    {
+        this->dialogueManager.startDialogue(enemy->getName(), enemy->getDialogue(),
+                                            enemy->spritesheet);
+    }
+    else
+    {
+        this->dialogueManager.startDialogue(enemy->getName(), enemy->spritesheet, this->name,
+                                            this->spritesheetIdle, enemy->getDialogue(),
+                                            enemy->getDiaSwitches());
+    }
     if (enemy->defeated == false) {
         this->enemyToFight = enemy;
         this->startCombat = true;
