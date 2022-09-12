@@ -1,0 +1,14 @@
+{ "columns":58,
+ "image":"D:\/OneDrive\/OneDrive - SRH IT\/Uni\/Projekte\/Projektarbeit 2 - Top-Down Pixel Dungeon Crawler\/Dev\/TileSet_Floor_1.png",
+ "imageheight":1355,
+ "imagewidth":1865,
+ "margin":1,
+ "name":"TileSet_Floor_1",
+ "spacing":1,
+ "tilecount":2436,
+ "tiledversion":"1.9.1",
+ "tileheight":31,
+ "tilewidth":31,
+ "type":"tileset",
+ "version":"1.8"
+}
