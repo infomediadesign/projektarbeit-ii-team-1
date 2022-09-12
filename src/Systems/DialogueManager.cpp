@@ -9,6 +9,9 @@
 #include "DialogueManager.h"
 #include <memory>
 
+// For tests
+#include <iostream>
+
 extern float volSfx;
 
 DialogueManager::DialogueManager()
@@ -27,10 +30,11 @@ void DialogueManager::Update()
 
 void DialogueManager::startDialogue(std::string name, std::vector<std::string> dialogue, Texture2D spritesheet)
 {
-    TraceLog(LOG_INFO, "Dialogue started...");
+    TraceLog(LOG_INFO, "Dialogue started (Mono)...");
 	this->lineCounter = 0;
 	this->charCounter = 0;
 
+    this->monologue = true;
     this->name = name;
 	this->rawDialogue = dialogue;
 	this->lineToDraw.clear();
@@ -42,6 +46,40 @@ void DialogueManager::startDialogue(std::string name, std::vector<std::string> d
     this->portraitRec.y = 0;
     this->portraitRec.width = this->loadedSpritesheet.width / 4;
     this->portraitRec.height = this->portraitRec.width;
+}
+
+void
+DialogueManager::startDialogue(std::string name1, Texture2D spritesheet1, std::string name2, Texture2D spritesheet2,
+                               std::vector<std::string> dialogue, std::vector<int> diaSwitches) {
+
+    TraceLog(LOG_INFO, "Dialogue started (Dia)...");
+    this->lineCounter = 0;
+    this->charCounter = 0;
+
+    this->monologue = false;
+    this->diaSwitches = diaSwitches;
+    this->name = name1;
+    this->name2 = name2;
+    this->rawDialogue = dialogue;
+    this->lineToDraw.clear();
+
+    this->dialoguePlaying = true;
+
+    this->loadedSpritesheet = spritesheet1;
+    this->loadedSpritesheet2 = spritesheet2;
+    this->portraitRec.x = 0;
+    this->portraitRec.y = 0;
+    this->portraitRec.width = this->loadedSpritesheet.width / 4;
+    this->portraitRec.height = this->portraitRec.width;
+
+    for (int i = 0; i < this->diaSwitches.size(); i++)
+    {
+        if (this->lineCounter == diaSwitches[i])
+        {
+            this->switchActors();
+        }
+    }
+
 }
 
 void DialogueManager::playDialogue()
@@ -69,6 +107,18 @@ void DialogueManager::playDialogue()
             this->lineCounter++;
             this->charCounter = 0;
             this->lineToDraw.clear();
+
+            // For upgraded dialogue system
+            if (this->monologue == false)
+            {
+                for (int i = 0; i < this->diaSwitches.size(); i++)
+                {
+                    if (this->lineCounter == diaSwitches[i])
+                    {
+                        this->switchActors();
+                    }
+                }
+            }
         }
             // Loads the next character of the currently active line if the line is not already fully loaded
         else if (charCounter < rawDialogue[lineCounter].size())                        // Possible source for game crashing bugs
@@ -83,13 +133,6 @@ void DialogueManager::playDialogue()
             this->lineToDraw.push_back(lineToLoad[this->charCounter]);
             charCounter++;
         }
-
-
-        // Quick implementation reminder: If ever implemented, automatic line breaks will work like this:
-        // this->lineToDraw.push_back('\');
-        // this->lineToDraw.push_back('n');
-        // Or if this works (which I doubt):
-        // this->lineToDraw.push_back("\n");
     }
 }
 
@@ -129,3 +172,15 @@ void DialogueManager::drawDialogue()
         DrawTextEx(this->font, this->lineToDraw.c_str(), diaPos, 70, 5, BLACK);
 	}
 }
+
+void DialogueManager::switchActors()
+{
+    std::string workingName = this->name;
+    Texture2D workingSheet = this->loadedSpritesheet;
+
+    this->name = this->name2;
+    this->loadedSpritesheet = this->loadedSpritesheet2;
+    this->name2 = workingName;
+    this->loadedSpritesheet2 = workingSheet;
+}
+

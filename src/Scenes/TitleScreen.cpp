@@ -50,11 +50,7 @@ void TitleScreen::CustomUpdate()
         PlaySound(this->uiBlip2);
         this->switchTo = MAINMENU;
         this->switchScene = true;
-        TraceLog(LOG_INFO, "switchScene in class (Pressing Enter):");
-        TraceLog(LOG_INFO, std::to_string(this->switchScene).c_str());
     }
-    TraceLog(LOG_INFO, "switchScene in class:");
-    TraceLog(LOG_INFO, std::to_string(this->switchScene).c_str());
 }
 
 void TitleScreen::CustomDraw()
