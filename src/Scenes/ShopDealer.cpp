@@ -4,6 +4,8 @@
 
 #include "ShopDealer.h"
 
+#include <iostream> // For tests only
+
 extern float volSfx;
 
 ShopDealer::ShopDealer(std::shared_ptr<Player> player)
@@ -36,12 +38,15 @@ ShopDealer::ShopDealer(std::shared_ptr<Player> player)
             case itemPunchGun:
                 this->hasPunchGun = true;
                 this->punchGunPtr = this->player->inventory[i];
+                break;
             case itemBottlecapGun:
                 this->hasBottlecapGun = true;
                 this->bottlecapGunPtr = this->player->inventory[i];
+                break;
             case itemLaserGun:
                 this->hasLaserGun = true;
                 this->laserGunPtr = this->player->inventory[i];
+                break;
         }
     }
 
@@ -198,14 +203,17 @@ void ShopDealer::CustomUpdate()
                 case 1:
                     this->punchGunPtr->damage = 16;
                     this->player->money = this->player->money - 50;
+                    this->punchGunPtr->upgraded = true;
                     break;
                 case 2:
                     this->bottlecapGunPtr->damage = 20;
                     this->player->money = this->player->money - 50;
+                    this->bottlecapGunPtr->upgraded = true;
                     break;
                 case 3:
                     this->laserGunPtr->damage = 24;
                     this->player->money = this->player->money - 50;
+                    this->laserGunPtr->upgraded = true;
                     break;
             }
         }
@@ -318,7 +326,8 @@ void ShopDealer::updateButtons()
     TraceLog(LOG_INFO, "Button 3 finished");
     workingString.clear(); // Just in case
     workingString = "Upgrade Laser-Gun";
-    if (this->hasLaserGun == true) {
+    if (this->hasLaserGun == true)
+    {
         if (this->laserGunPtr->upgraded == false)
         {
             workingString.append(" (50$)");
