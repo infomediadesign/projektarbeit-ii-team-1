@@ -106,7 +106,7 @@ void ShopBarkeeper::CustomUpdate()
 
 void ShopBarkeeper::CustomDraw()
 {
-
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(BLACK, 0.7));
     DrawTexture(this->panelTexture, this->panelPos.x, this->panelPos.y, WHITE);
 
     for (int i = 0; i < this->buttons.size(); i++)
