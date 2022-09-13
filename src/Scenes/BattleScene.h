@@ -123,4 +123,6 @@ void menuNavigation();
 void initMainMenu();
 
 void playSfx();
+
+void stopBattle();
 };

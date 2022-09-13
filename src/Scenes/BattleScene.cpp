@@ -194,9 +194,15 @@ void BattleScene::CustomUpdate() {
     }
     UpdateMusicStream(this->music);
 
+    // Check if battle has to be ended
     if (this->player->currentHP <= 0)
     {
         this->gameOver = true;
+    }
+    if (this->enemy->currentHP <= 0 && this->animationPlaying == false)
+    {
+        this->enemy->defeated = true;
+        this->stopBattle();
     }
 
     if (this->playerTurn == true && this->animationPlaying == false)
@@ -832,16 +838,7 @@ void BattleScene::menuNavigation() {
                     }
                     break;
                 case 2:
-                    this->endBattle = true;
-                    StopMusicStream(this->music);
-                    this->player->position = this->playerPrevPos;
-                    this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
-                            (this->player->collisionOffset / 2);
-                    this->player->collisionBox.y = this->player->position.y;
-                    this->player->turn(this->playerFacing);
-                    this->enemy->position = this->enemyPrevPos;
-                    this->switchTo = GAME;
-                    this->switchScene = true;
+                    this->stopBattle();
                     break;
             }
         }
@@ -1147,4 +1144,18 @@ BattleScene::~BattleScene()
     UnloadSound(this->soundWhipCrack);
     UnloadSound(this->soundTazer);
 
+}
+
+void BattleScene::stopBattle()
+{
+    this->endBattle = true;
+    StopMusicStream(this->music);
+    this->player->position = this->playerPrevPos;
+    this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
+                                                              (this->player->collisionOffset / 2);
+    this->player->collisionBox.y = this->player->position.y;
+    this->player->turn(this->playerFacing);
+    this->enemy->position = this->enemyPrevPos;
+    this->switchTo = GAME;
+    this->switchScene = true;
 }

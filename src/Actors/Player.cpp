@@ -23,7 +23,7 @@ Player::Player(int posX, int posY, bool genderMale)
 
     this->augmentationCount = 0;
 
-    this->name = "Dt. Carver";
+    this->name = "Reese Carver";
 
     this->genderMale = genderMale;
     if (this->genderMale == true)
