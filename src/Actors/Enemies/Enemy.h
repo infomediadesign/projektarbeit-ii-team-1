@@ -21,6 +21,8 @@ public:
     float aggroRadius;
     bool detectedPlayer = false;
     bool defeated = false;
+    std::vector<std::string> dialogueDefeated;
+    std::vector<int> diaDefeatedSwitches;
 
     float damagePunch;
     float damageNecklace;

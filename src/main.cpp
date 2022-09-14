@@ -110,6 +110,8 @@ int main() {
     levelTutorial->allActors.push_back(pActor);
     std::shared_ptr<Enemy> pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
     levelTutorial->enemies.push_back(pEnemy);
+    pEnemy->dialogueDefeated = {"I bims, ded", "Zweite Zeile"};
+
     levelTutorial->allActors.push_back(pEnemy);
     std::shared_ptr<Barkeeper> pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
     levelTutorial->barkeepers.push_back(pBarkeeper);
@@ -198,6 +200,7 @@ int main() {
                     if (activeScene->battleWon == true)
                     {
                         playVictoryAnim = true;
+                        player->interactionForced(player->enemyToFight);
                     }
                     activeScene = activeLevel;
                     break;
