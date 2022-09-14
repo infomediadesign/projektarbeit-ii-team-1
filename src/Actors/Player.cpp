@@ -14,6 +14,7 @@ Player::Player()
 
 Player::Player(int posX, int posY, bool genderMale)
 {
+    this->gameOver = false;
     this->position.x = posX;
     this->position.y = posY;
 
@@ -462,7 +463,21 @@ void Player::interactionForced(std::shared_ptr<Enemy> enemy)
     this->moveLockAbsolute = true;
     this->interactionDisabled = true;
     // For upgraded dialogue system
-    if (enemy->getDiaSwitches().size() == 0)
+    if (enemy->defeated)
+    {
+        if (enemy->diaDefeatedSwitches.size() == 0)
+        {
+            this->dialogueManager.startDialogue(enemy->getName(), enemy->dialogueDefeated,
+                                                enemy->spritesheet);
+        }
+        else
+        {
+            this->dialogueManager.startDialogue(enemy->getName(), enemy->spritesheet, this->name,
+                                                this->spritesheetIdle, enemy->dialogueDefeated,
+                                                enemy->diaDefeatedSwitches);
+        }
+    }
+    else if (enemy->getDiaSwitches().size() == 0)
     {
         this->dialogueManager.startDialogue(enemy->getName(), enemy->getDialogue(),
                                             enemy->spritesheet);
