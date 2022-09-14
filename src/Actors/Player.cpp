@@ -407,7 +407,7 @@ void Player::interact(std::vector<std::shared_ptr<Item>> items) {
 
 void Player::interactionForced(std::shared_ptr<Enemy> enemy)
 {
-    TraceLog(LOG_INFO, "Interaction successful!");
+    TraceLog(LOG_INFO, "Forcing interaction with enemy");
 
     Vector2 workingPosPlayer;
     workingPosPlayer.x = this->position.x + this->frameRec.width / 2;

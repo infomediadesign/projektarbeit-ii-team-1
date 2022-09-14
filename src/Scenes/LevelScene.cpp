@@ -183,6 +183,10 @@ void LevelScene::CustomUpdate()
         this->switchTo = SHOP_DEALER;
         this->switchScene = true;
     }
+
+
+    player->checkActorCollision(this->allActors);
+
     // Check if a fight has to be started
     if (player->startCombat == true && player->dialogueManager.dialoguePlaying == false) {
         TraceLog(LOG_INFO, "Starting combat...");
@@ -190,23 +194,19 @@ void LevelScene::CustomUpdate()
         // Start combat with player and player->enemyToFight
         // Has to remember the player's position in the level before battle!
 
-
-
-
         this->switchTo = BATTLE;
         this->switchScene = true;
     }
 
-    player->checkActorCollision(this->allActors);
-
-    // Check enemy aggro radius collision (maybe move this into a method of the level-class
+    // Check enemy aggro radius collision
     bool stopSearch = false;
     for (int i = 0; i < enemies.size() && stopSearch == false &&
                     player->dialogueManager.dialoguePlaying == false; i++) {
         if (CheckCollisionCircleRec({enemies[i]->position.x + enemies[i]->frameRec.width / 2,
                                      enemies[i]->position.y + enemies[i]->frameRec.height / 2},
                                     enemies[i]->aggroRadius, player->collisionBox) &&
-            enemies[i]->defeated == false) {
+            enemies[i]->defeated == false &&
+            this->switchScene == false) {
             player->interactionForced(enemies[i]);
             stopSearch = true;
         }
@@ -217,6 +217,7 @@ void LevelScene::CustomUpdate()
     player->interact(barkeepers);
     player->interact(dealers);
     player->interact(items);
+
 
     for (int i = 0; i < actors.size(); i++) {
         actors[i]->Update();

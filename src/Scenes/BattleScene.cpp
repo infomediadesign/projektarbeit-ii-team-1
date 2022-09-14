@@ -202,6 +202,7 @@ void BattleScene::CustomUpdate() {
     if (this->enemy->currentHP <= 0 && this->animationPlaying == false)
     {
         this->enemy->defeated = true;
+        this->battleWon = true;
         this->stopBattle();
     }
 
@@ -277,8 +278,9 @@ void BattleScene::CustomDraw()
     playerHpPos.y = GetScreenHeight() * 0.2;
     DrawTexture(this->playerHpBar, playerHpPos.x, playerHpPos.y, WHITE);
     DrawTextEx(this->font, this->player->getName().c_str(),
-               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.048 - MeasureTextEx(this->font, this->player->getName().c_str(), 20, 1).x/2),
+               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.05 - MeasureTextEx(this->font, this->player->getName().c_str(), 20, 1).x/2),
                 static_cast<float>(playerHpPos.y + GetScreenHeight() * 0.077)}, 20, 1, BLACK);
+
 
     // Enemy HP
     Vector2 enemyHpPos;
