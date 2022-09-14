@@ -1,4 +1,4 @@
-﻿#include <cstdlib>
+#include <cstdlib>
 
 #include "raylib.h"
 #include "config.h"
@@ -16,6 +16,7 @@
 
 #include "Systems/DialogueManager.h"
 
+#include "Scenes/TutorialLevelScene.h"
 #include "Scenes/TitleScreen.h"
 #include "Scenes/MainOptions.h"
 #include "Scenes/BattleScene.h"
@@ -72,9 +73,8 @@ int main() {
     PauseOptions testPauseOps;
 
     // Enums
-    LevelRooms levelRooms;
-
-    //LevelScene testL( );
+    LevelRooms currentLevelRooms = Wardrobe;
+    Level currentLevel = Level01;
 
 
     // ===== PLAYER INIT =====
@@ -83,7 +83,8 @@ int main() {
     // ========== LEVEL INITIALISATION ==========
 
     //  ----- Tutorial initialisation -----
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(Wardrobe);
+    // Levelscene
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(currentLevelRooms, currentLevel ,player);
     levelTutorial->player = player;
     std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
@@ -110,8 +111,6 @@ int main() {
     levelTutorial->allActors.push_back(pActor);
     std::shared_ptr<Enemy> pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
     levelTutorial->enemies.push_back(pEnemy);
-    pEnemy->dialogueDefeated = {"I bims, ded", "Zweite Zeile"};
-
     levelTutorial->allActors.push_back(pEnemy);
     std::shared_ptr<Barkeeper> pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
     levelTutorial->barkeepers.push_back(pBarkeeper);
@@ -128,18 +127,6 @@ int main() {
     // Scene management
     std::shared_ptr<Scenes> activeScene = std::make_shared<TitleScreen>();
     std::shared_ptr<LevelScene> activeLevel = levelTutorial;
-
-    // Victory animation init
-    bool playVictoryAnim = false;
-    int victoryFramesCounter = 0;
-    int victoryCurrentFrame = 0;
-    Texture2D victoryTex = LoadTexture("assets/graphics/ui/combat/victory.png");
-    Rectangle victoryRec;
-    victoryRec.x = 0;
-    victoryRec.y = 0;
-    victoryRec.width = victoryTex.width / 8;
-    victoryRec.height = victoryTex.height;
-
 
     // ALL OF THIS IS FOR TEST PURPOSES
 
@@ -197,11 +184,6 @@ int main() {
 
                 case GAME:
                 {
-                    if (activeScene->battleWon == true)
-                    {
-                        playVictoryAnim = true;
-                        player->interactionForced(player->enemyToFight);
-                    }
                     activeScene = activeLevel;
                     break;
                 }
@@ -256,27 +238,6 @@ int main() {
         }
         }
 
-        // Victory animation update (I hate this...)
-        if (playVictoryAnim == true)
-        {
-            if (playVictoryAnim)
-            {
-                if (victoryCurrentFrame >= 7 && victoryFramesCounter >= 6)
-                {
-                    playVictoryAnim = false;
-                }
-                victoryFramesCounter++;
-                if (victoryFramesCounter >= 7)
-                {
-                    victoryCurrentFrame++;
-                    victoryFramesCounter = 0;
-                    victoryRec.x = victoryTex.width / 8 * victoryCurrentFrame;
-                }
-            }
-        }
-
-
-
         // Scene update
         activeScene->Update();
 
@@ -291,12 +252,6 @@ int main() {
             activeLevel->Draw();
         }
         activeScene->Draw();
-
-        // Victory anim draw (I hate this...)
-        if (playVictoryAnim)
-        {
-            DrawTextureRec(victoryTex, victoryRec, {0, 0}, WHITE);
-        }
 
         EndDrawing();
     } // Main game loop end
