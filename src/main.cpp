@@ -16,6 +16,7 @@
 
 #include "Systems/DialogueManager.h"
 
+#include "Scenes/TutorialLevelScene.h"
 #include "Scenes/TitleScreen.h"
 #include "Scenes/MainOptions.h"
 #include "Scenes/BattleScene.h"
@@ -74,8 +75,6 @@ int main() {
     // Enums
     LevelRooms levelRooms;
 
-    //LevelScene testL( );
-
 
     // ===== PLAYER INIT =====
     std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
@@ -83,9 +82,10 @@ int main() {
     // ========== LEVEL INITIALISATION ==========
 
     //  ----- Tutorial initialisation -----
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = TutorialLevel);
+    // Levelscene
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(Wardrobe);
     levelTutorial->player = player;
-    std::shared_ptr<Actor> pActor;
+    /*std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
     std::vector<std::string> testDialogue =
             {
@@ -118,7 +118,7 @@ int main() {
     levelTutorial->dealers.push_back(pDealer);
     levelTutorial->allActors.push_back(pDealer);
     Vector2 posi = {400, 400};
-    levelTutorial->items.push_back(std::make_shared<PunchGun>(posi));
+    levelTutorial->items.push_back(std::make_shared<PunchGun>(posi));*/
 
     std::shared_ptr<LevelScene> level01;
     std::shared_ptr<LevelScene> levelRooftop;

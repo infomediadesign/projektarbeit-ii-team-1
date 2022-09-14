@@ -1,0 +1,14 @@
+{ "columns":58,
+ "image":"..\/TileSet_Floor_1.png",
+ "imageheight":1355,
+ "imagewidth":1865,
+ "margin":0,
+ "name":"TileSet_Floor01",
+ "spacing":0,
+ "tilecount":2436,
+ "tiledversion":"1.9.0",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.8"
+}

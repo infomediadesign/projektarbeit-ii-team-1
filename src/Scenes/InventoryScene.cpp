@@ -35,9 +35,9 @@ void InventoryScene::CustomDraw()
 void InventoryScene::DrawInventory()
 {
     // Draw basics, Background, Text,
-    Color lightGray = {210,210,210,255};
+    Color purple = {255,0,255,255};
     Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
-    DrawRectangleRec(recBackground, Fade(lightGray,0.5));
+    DrawRectangleRec(recBackground, Fade(purple,0.8));
 
     ColorAlpha(LIGHTGRAY,  0.7);
     // Header text
@@ -53,6 +53,9 @@ void InventoryScene::DrawInventory()
     //Inventory Image
     Texture2D inventoryImg = LoadTexture("../../assets/graphics/UI/Shop&Inventory/InventoryNew.png");
     Vector2 posInventoryImg = {float (Game::ScreenWidth/2 - (inventoryImg.width/2)),float(Game::ScreenHeight/2 - (inventoryImg.height/2))};
+    Rectangle recInventoryBackground ={posInventoryImg.x, posInventoryImg.y, float(inventoryImg.width), float(inventoryImg.height)};
+
+    DrawRectangleRec(recInventoryBackground, Color {220, 22, 220, 255});
     DrawTexture(inventoryImg,posInventoryImg.x,posInventoryImg.y, WHITE);
 
     // Draw all items from the inventory
