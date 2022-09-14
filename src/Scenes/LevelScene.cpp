@@ -13,9 +13,14 @@ LevelScene::LevelScene(LevelRooms levelRooms)
     this->levelRooms = levelRooms;
 
     switch (levelRooms) {
+        case TutorialLevel:
+            // Load Tutorial Level
+            tutorialLevelBackgroundImg = LoadTexture("./assets/maps/TutorialLevel/TutorialLevelBackground.png");
+            break;
+
         case Wardrobe:
             // Load room JSON "Wardrobe"
-            ifStreamFile.open("./assets/maps/Floor01/wardrobeTilemap.json");
+            ifStreamFile.open("./assets/maps/Floor01/Wardrobe.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File Wardrobe.json is not available");
             }
@@ -125,7 +130,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
     ifStreamFile.close();*/
 
     // tileset als json "assets/maps/Floor01/floor_1_in_tiles.json"  / "assets/maps/tilset.json"
-    ifStreamFile.open("assets/maps/Floor01/TilesetFloor01.json");
+    ifStreamFile.open("assets/maps/tilset.json");
     if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File tileset.json is not available");
     }
@@ -134,7 +139,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
     ifStreamFile.close();
 
     // Level Tileset as PNG "./assets/maps/Tileset_Floor_1.PNG" /   "./assets/maps/tilset1.png"
-    tileAtlasTexture = LoadTexture("assets/maps/Floor01/TilesetFloor01.png");
+    tileAtlasTexture = LoadTexture("./assets/maps/tilset1.png");
 
     //Tile IDs in einem Vector<int> speichern
     for (auto const layer : levelTilesetDescription["layers"]) {
@@ -260,32 +265,40 @@ void LevelScene::CustomDraw()
 
 void LevelScene::DrawMap()
 {
+    if (!tutorialLevelActiv)
+    {
+        Vector2 vec = {0, 0};
+        Rectangle rec = {0, 0, levelMap["width"], levelMap["height"]};
 
-    Vector2 vec = {0, 0};
-    Rectangle rec = {0, 0, levelMap["tilewidth"], levelMap["tileheight"]};
+        for (auto const &layer : levelMap["layers"]) {
+            if (layer["visible"]) {
+                for (auto const &tileId : layer["data"]) {
+                    if (tileId != 0) {
+                        rec.x = (float) ((int) tileId - 1 % (int) levelTilesetDescription["columns"]) *
+                                (float) levelMap["width"];
+                        rec.y = (float) floor((float) tileId / (float) levelTilesetDescription["columns"]) *
+                                (float) levelMap["width"];
 
-    for (auto const &layer : levelMap["layers"]) {
-        if (layer["type"] == "tilelayer" && layer["visible"]) {
-            for (auto const &tileId : layer["data"]) {
-                if (tileId != 0) {
-                    rec.x = (float) ((int) tileId - 1 % (int) levelTilesetDescription["columns"]) *
-                            (float) levelMap["tilewidth"];
-                    rec.y = (float) floor((float) tileId / (float) levelTilesetDescription["columns"]) *
-                            (float) levelMap["tilewidth"];
+                        DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
+                    }
 
-                    DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
+                    vec.x += (float) levelMap["width"];
+                    if (vec.x >= (float) layer["width"] * (float) levelMap["width"]) {
+                        vec.x = 0;
+                        vec.y += (float) levelMap["height"];
+                    }
                 }
-
-                vec.x += (float) levelMap["tilewidth"];
-                if (vec.x >= (float) layer["width"] * (float) levelMap["tilewidth"]) {
-                    vec.x = 0;
-                    vec.y += (float) levelMap["tileheight"];
-                }
+                vec = {0, 0};
             }
-            vec = {0, 0};
         }
-    }
+    }else if (tutorialLevelActiv)
+    {
+        DrawTexture(tutorialLevelBackgroundImg,0,0,WHITE);
 
+    }else
+    {
+        TraceLog(LOG_INFO, "LevelScene.DrawMap() error, drawing the map not possible ");
+    }
 
 }
 
