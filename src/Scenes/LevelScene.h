@@ -14,14 +14,14 @@
 
 
 class LevelScene : public Scenes {
-    private:
+private:
     //bool tutoriallevelActiv = true;
     std::string tilesetJsonPath;
     std::string tilesetPngPath;
 
     Camera2D cameraLs;
 
-    public:
+public:
     LevelRooms levelRooms;
     Level currentLevel;
 
@@ -59,7 +59,7 @@ class LevelScene : public Scenes {
     void CustomUpdate() override;
     void CustomDraw() override;
 
-    protected:
+protected:
     ;
 
 };
