@@ -30,15 +30,17 @@ public:
     Sound uiBlip2; //confirm
 
     std::string Message1;
+    std::string Message2;
+    std::string Message3;
     Vector2 fontPosition1;
+    Vector2 fontPosition2;
+    Vector2 fontPosition3;
 
 public:
     game::Button* buttonMusic;
     game::Button* buttonSFX;
     game::Button* buttonBrightness;
     game::Button* buttonFullscreen;
-    game::Button* buttonOn;
-    game::Button* buttonOff;
     game::Button* buttonReturnMainMenu;
 
     int active_button;

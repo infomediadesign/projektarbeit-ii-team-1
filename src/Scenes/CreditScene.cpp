@@ -84,11 +84,8 @@ void CreditScene::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
-        if(this->buttonReturnMainMenu->active == true)
-        {
-            PlaySound(this->uiBlip2);
-            this->switchTo = MAINMENU;
-        }
+        PlaySound(this->uiBlip2);
+        this->switchTo = MAINMENU;
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << "was pushed..." << std::endl;
     }

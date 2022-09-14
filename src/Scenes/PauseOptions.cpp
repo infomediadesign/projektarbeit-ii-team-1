@@ -70,7 +70,7 @@ PauseOptions::PauseOptions()
                                               GetScreenHeight()/2 + 100,
                                               50, 1, YELLOW, WHITE);
 
-    this->buttonReturnPauseMenu = new game::Button("Return to Pause Menu", //integrate escape option?
+    this->buttonReturnPauseMenu = new game::Button("Return to Pause Menu (Esc)",
                                                   GetScreenWidth()/2 - 200,
                                                   GetScreenHeight()/2 + 250,
                                                   50, 1, YELLOW, WHITE);
