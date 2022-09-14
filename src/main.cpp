@@ -73,7 +73,8 @@ int main() {
     PauseOptions testPauseOps;
 
     // Enums
-    LevelRooms levelRooms;
+    LevelRooms currentLevelRooms = Wardrobe;
+    Level currentLevel = Level01;
 
 
     // ===== PLAYER INIT =====
@@ -83,9 +84,9 @@ int main() {
 
     //  ----- Tutorial initialisation -----
     // Levelscene
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(Wardrobe);
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(currentLevelRooms, currentLevel ,player);
     levelTutorial->player = player;
-    /*std::shared_ptr<Actor> pActor;
+    std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
     std::vector<std::string> testDialogue =
             {
@@ -118,7 +119,7 @@ int main() {
     levelTutorial->dealers.push_back(pDealer);
     levelTutorial->allActors.push_back(pDealer);
     Vector2 posi = {400, 400};
-    levelTutorial->items.push_back(std::make_shared<PunchGun>(posi));*/
+    levelTutorial->items.push_back(std::make_shared<PunchGun>(posi));
 
     std::shared_ptr<LevelScene> level01;
     std::shared_ptr<LevelScene> levelRooftop;

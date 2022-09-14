@@ -1,20 +1,32 @@
 #include "LevelScene.h"
 #include <vector>
+#include "config.h"
 
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <iostream>
 #include <filesystem>
+
 LevelScene::LevelScene() {}
 
-LevelScene::LevelScene(LevelRooms levelRooms)
+LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_ptr<Player> player)
 {
-    // ===== MAP GENERATION =====
+    this->player = player;
     this->levelRooms = levelRooms;
+    this->currentLevel = currentLevel;
+
+    cameraLs = {0,0};
+    cameraLs.target = (Vector2){ player->position.x + 1.0f, player->position.y + 1.0f };
+    cameraLs.offset = (Vector2){ player->position.x, player->position.y};
+    cameraLs.rotation = 0.0f;
+    cameraLs.zoom = 1.0f;
+
+    // ===== MAP GENERATION =====
+
     switch (levelRooms) {
         case Wardrobe:
             // Load room JSON "Wardrobe" // ./assets/maps/Floor01/Wardrobe.json // ./assets/maps/msp_als_json.json   ./assets/maps/Floor01/test/wardrobeTilemap.json
-            ifStreamFile.open("./assets/maps/msp_als_json.json");
+            ifStreamFile.open("./assets/maps/Floor01/wardrobe/wardrobeTilemap.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File Wardrobe.json is not available");
             }else if(ifStreamFile.is_open()){
@@ -27,7 +39,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
 
         case Floor:
             // Load room JSON "Hallway"
-            ifStreamFile.open("./assets/maps/Floor01/hallway.json");
+            ifStreamFile.open("./assets/maps/Floor01/hallway/....json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File Floor.json is not available");
             }
@@ -38,7 +50,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
 
         case VIPRoom:
             // Load room JSON "VIPRoom"
-            ifStreamFile.open("./assets/maps/Floor01/viproom.json");
+            ifStreamFile.open("./assets/maps/Floor01/vipRoom/....json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File VIPRoom.json is not available");
             }
@@ -49,7 +61,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
 
         case Storage:
             // Load room JSON "StorageRoom"
-            ifStreamFile.open("./assets/maps/Floor01/storageroom.json");
+            ifStreamFile.open("./assets/maps/Floor01/storageRoom/....json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File StorageRoom.json is not available");
             }
@@ -60,7 +72,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
 
         case Dancefloor:
             // Load room JSON "Mainroom"
-            ifStreamFile.open("./assets/maps/Floor01/mainroom.json");
+            ifStreamFile.open("./assets/maps/Floor01/mainRoom/....json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File DanceFloor.json is not available");
             }
@@ -71,7 +83,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
 
         case WCM:
             // Load room JSON "WC Man"
-            ifStreamFile.open("./assets/maps/Floor01/WCman.json");
+            ifStreamFile.open("./assets/maps/Floor01/wcMan/....json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File WCMan.json is not available");
             }
@@ -82,7 +94,7 @@ LevelScene::LevelScene(LevelRooms levelRooms)
 
         case WCW:
             // Load room JSON "WC Woman"
-            ifStreamFile.open("./assets/maps/Floor01/WCwoman.json");
+            ifStreamFile.open("./assets/maps/Floor01/wcWoman/....json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File WCWoman.json is not available");
             }
@@ -95,41 +107,27 @@ LevelScene::LevelScene(LevelRooms levelRooms)
             TraceLog(LOG_INFO, "Level room value out of range");
             break;
 
-    };
-
-
-    // 1. Erstes die Json vom Ttleset laden
-    /*std::ifstream levelTilesetJson("assets/maps/Floor_1_in_Tiles.json");
-    if (!levelTilesetJson.is_open()){
-        TraceLog(LOG_INFO, "JSON-ERROR: File is not available");
     }
-    levelTilesetDescription = nlohmann::json::parse(levelTilesetJson);
-    levelTilesetJson.close();*/
 
+    // Check current Level index
+    switch (currentLevel) {
+        case Level01:
+            tilesetJsonPath = "./assets/maps/Floor01/TilesetFloor01.json";
+            tilesetPngPath = "./assets/maps/Floor01/TilesetFloor01.png";
+        break;
 
+        case Rooftop:
+            tilesetJsonPath = "./assets/maps/Rooftop/....json";
+            tilesetPngPath = "./assets/maps/Rooftop/....png";
+            break;
 
-    // Fertiges Level als JSON "./assets/maps/Floor_1.jSON"   / "./assets/maps/msp_als_json.json"
-    //std::ifstream levelMapFile("./assets/maps/msp_als_json.json");
-    //levelMap = nlohmann::json::parse(levelMapFile);
-    //levelMapFile.close();
-
-
-
-
-    //2. die Json überprüfen ob die Datei geöffnet ist
-    // Bei Fehler meldung -> Siehe tipp!!
-    /*ifStreamFile.open(levelTilesetDescription);
-    if(!ifStreamFile.is_open()){
-        TraceLog(LOG_INFO, "JSON-ERROR: File is not available");
+        default:
+            TraceLog(LOG_INFO, "Current level index out of range");
+            break;
     }
-    assert(ifStreamFile.is_open());
-    ifStreamFile >> levelTilesetDescription;
-    ifStreamFile.close();*/
 
-
-
-    // tileset als json "assets/maps/Floor01/TileSet_Floor_1.json"  / "assets/maps/tilset.json"  assets/maps/Floor01/test/TilesetFloor01.json
-    ifStreamFile.open("assets/maps/Floor01/test/TilesetFloor01.json");
+    // Load tileset json
+    ifStreamFile.open(tilesetJsonPath);
     if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File Tileeset.json is not available");
     }
@@ -137,8 +135,8 @@ LevelScene::LevelScene(LevelRooms levelRooms)
     ifStreamFile >> levelTilesetDescription;
     ifStreamFile.close();
 
-    // Level Tileset as PNG "./assets/maps/Floor01/pngs/TileSet_Floor_1.PNG" /   "./assets/maps/tilset1.png"   .assets/maps/Floor01/test/TilesetFloor01.png
-    tileAtlasTexture = LoadTexture("./assets/maps/tilset1.png");
+    // Load tileset png
+    tileAtlasTexture = LoadTexture(tilesetPngPath.c_str());
 
 
     //Tile IDs in einem Vector<int> speichern "layers"
@@ -148,15 +146,13 @@ LevelScene::LevelScene(LevelRooms levelRooms)
     };
 
     TraceLog(LOG_INFO, "LOAD TILESET.JSON SUCCESFULL");
-
-
-
-
+    
 }
 
 void LevelScene::CustomUpdate()
 {
     player->Update();
+    cameraLs.target = (Vector2){ player->position.x, player->position.y };
 
     if (IsKeyPressed(KEY_I)) {
         this->switchTo = INVENTORY;
@@ -239,7 +235,10 @@ void LevelScene::CustomUpdate()
 
 void LevelScene::CustomDraw()
 {
+    BeginMode2D(cameraLs);
     this->DrawMap();
+
+
 
     for (int i = 0; i < actors.size(); i++) {
         actors[i]->Draw();
@@ -260,7 +259,6 @@ void LevelScene::CustomDraw()
         }
     }
 
-    // Draw player after NPCs
     player->Draw();
 
 }
@@ -269,61 +267,37 @@ void LevelScene::CustomDraw()
 
 void LevelScene::DrawMap()
 {
-    TraceLog(LOG_INFO,"DRAWMAP START*******************************");
+    // Save the vales from Json file
+    float tileWidth = levelMap["tilewidth"];
+    float tileHeight = levelMap["tileheight"];
+    int tileColumCount = levelTilesetDescription["columns"];
 
     Vector2 vec = {0, 0};
-    Rectangle rec = {0, 0, levelMap["tilewidth"], levelMap["tileheight"]};
+    Rectangle rec = {0, 0, tileWidth, tileHeight};
 
-    int tileWidth = levelMap["tilewidth"];
-    int tileHeight = levelMap["tileheight"];
-    int tileColumCount = levelTilesetDescription["columns"];
 
     for (auto const &layer : levelMap["layers"]) {
         if (layer["type"] == "tilelayer" && layer["visible"]) {
             for (auto const &tileId : layer["data"]) {
                 if (tileId != 0) {
-                    rec.x = (float) ((int) tileId - 1 % (int) levelTilesetDescription["columns"]) *
-                            (float) levelMap["tilewidth"];
-                    rec.y = (float) floor((float) tileId / (float) levelTilesetDescription["columns"]) *
-                            (float) levelMap["tilewidth"];
-                    std::cout<<"DRAWING MAP ......................"<<std::endl;
+                    rec.x = (float) ((int) tileId - 1 % tileColumCount) *
+                            tileWidth;
+                    rec.y = (float) floor((float) tileId / (float) tileColumCount) *
+                            tileWidth;
+
                     DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
                 }
 
-                vec.x += (float) levelMap["tilewidth"];
-                if (vec.x >= (float) layer["width"] * (float) levelMap["tilewidth"]) {
+                vec.x += tileWidth;
+                if (vec.x >= (float) layer["width"] * tileWidth) {
                     vec.x = 0;
-                    vec.y += (float) levelMap["tileheight"];
+                    vec.y += tileHeight;
                 }
             }
             vec = {0, 0};
         }
-        TraceLog(LOG_INFO, "DRAW END ******************************");
+
     }
-
-    /*for (auto const &layer : levelMap["layers"]) {
-        if (layer["type"] == "tilelayer" && layer["visible"]) {
-            for (auto const &tileId : layer["data"]) {
-                if (tileId != 0) {
-                    rec.x = (float) ((int) tileId - 1 % (int) tileColumCount) *
-                            (float) tileWidth;
-                    rec.y = (float) floor((float) tileId / (float) tileColumCount) *
-                            (float) tileWidth;
-
-                    DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
-                }
-
-                vec.x += (float) tileWidth;
-
-                if (vec.x >= (float) layer["width"] * (float) tileWidth) {
-                    vec.x = 0;
-                    vec.y += (float) tileHeight;
-                }
-            }
-        }
-    }*/
-
-
-
+    EndMode2D();
 }
 

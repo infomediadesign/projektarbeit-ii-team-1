@@ -16,9 +16,14 @@
 class LevelScene : public Scenes {
     private:
     //bool tutoriallevelActiv = true;
-    public:
+    std::string tilesetJsonPath;
+    std::string tilesetPngPath;
 
+    Camera2D cameraLs;
+
+    public:
     LevelRooms levelRooms;
+    Level currentLevel;
 
     nlohmann::json levelTilesetDescription;
     nlohmann::json levelMap;
@@ -41,7 +46,7 @@ class LevelScene : public Scenes {
     std::vector<std::shared_ptr<Dealer>> dealers;
     std::vector<std::shared_ptr<Item>> items;
 
-    LevelScene(LevelRooms levelRooms);
+    LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_ptr<Player> player);
 
     LevelScene();
 
