@@ -11,12 +11,12 @@ extern float volSfx;
 MainOptions::MainOptions()
 {
     //background texture
-    Image mainMenuBackground = LoadImage("assets/graphics/ui/menu/mainMenuBackground.png");
-    ImageResize(&mainMenuBackground, GetScreenWidth(), GetScreenHeight());
-    this->background = LoadTextureFromImage(mainMenuBackground);
-    UnloadImage(mainMenuBackground);
+    Image mainOptionsBackground = LoadImage("assets/graphics/ui/menu/mainMenuBackground.png");
+    ImageResize(&mainOptionsBackground, GetScreenWidth(), GetScreenHeight());
+    this->background = LoadTextureFromImage(mainOptionsBackground);
+    UnloadImage(mainOptionsBackground);
 
-    //MainMenuBox
+    //MainOptionsBox
     Image mainMenuBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
     ImageResize(&mainMenuBoxImage, mainMenuBoxImage.width*3, mainMenuBoxImage.height*3);
     this->mainOptionsBox = LoadTextureFromImage(mainMenuBoxImage);
@@ -76,7 +76,7 @@ MainOptions::MainOptions()
                                       GetScreenHeight()/2 + 150,
                                       50, 1, YELLOW, WHITE);
 
-    this->buttonReturnMainMenu = new game::Button("Return to Main Menu (Esc)",
+    this->buttonReturnMainMenu = new game::Button("Return to Main Menu", //integrate escape option?
                                               GetScreenWidth()/2 - 200,
                                               GetScreenHeight()/2 + 250,
                                               50, 1, YELLOW, WHITE);
