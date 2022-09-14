@@ -19,6 +19,8 @@
 
         std::string name;
         Texture2D texture;
+        //Rectangle frameRec = { 0.0f, 0.0f, (float)texture.width / 4, (float)texture.height / 4 };
+
         Vector2 levelPosition; // Position of the Item inside a level
         int price;
 

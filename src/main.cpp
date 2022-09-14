@@ -83,7 +83,7 @@ int main() {
     // ========== LEVEL INITIALISATION ==========
 
     //  ----- Tutorial initialisation -----
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(levelRooms = TutorialLevel);
+    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(Wardrobe);
     levelTutorial->player = player;
     std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");

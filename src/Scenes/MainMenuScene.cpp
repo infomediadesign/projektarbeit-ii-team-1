@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-extern float volSfx;
+extern float volSfx; //set value? is it necessary?
 
 MainMenuScene::MainMenuScene() {
     TraceLog(LOG_INFO, "Constructing main menu");

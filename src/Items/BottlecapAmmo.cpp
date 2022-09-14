@@ -9,7 +9,7 @@ BottlecapAmmo::BottlecapAmmo(Vector2 position)
     this->levelPosition = position;
     this->type = itemBottlecapAmmo;
     this->name = "Bottle Cap";
-    this->texture = LoadTexture("assets/graphics/items/bomb.png"); // No texture yet
+    this->texture = LoadTexture("assets/graphics/items/weapons/BottlecapAmmo.png");
     this->price = 0;
     this->upgraded = false; // Not upgradable
     this->damage = 0;
