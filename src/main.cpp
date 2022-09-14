@@ -81,11 +81,44 @@ int main() {
     std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
 
     // ========== LEVEL INITIALISATION ==========
+    // Laod next level
+    switch (currentLevel) {
+        case Tutorial:
+            std::make_shared<TutorialLevelScene>(player);
+            break;
+
+        case Level01:
+            //lvl01Wardrobe
+            std::make_shared<LevelScene>(Wardrobe, currentLevel, player);
+            // lvl01VipRoom
+            /*std::make_shared<LevelScene>(VIPRoom, currentLevel, player);
+            // lvl01Storage
+            std::make_shared<LevelScene>(Storage, currentLevel, player);
+            // lvl01MainRoom
+            std::make_shared<LevelScene>(Dancefloor, currentLevel, player);
+            // lvl01Hallway
+            std::make_shared<LevelScene>(Floor, currentLevel, player);
+            // lvl01WcWoman
+            std::make_shared<LevelScene>(WCW, currentLevel, player);
+            // lvl01WcMan
+            std::make_shared<LevelScene>(WCM, currentLevel, player);
+            break;*/
+
+        case Rooftop:
+            // lvlvRooftop
+            std::make_shared<LevelScene>(RoofTop, currentLevel, player);
+            break;
+
+        default:
+            TraceLog(LOG_INFO, "Load level eroor: current level index out of range");
+    }
+
 
     //  ----- Tutorial initialisation -----
     // Levelscene
-    std::shared_ptr<LevelScene> levelTutorial = std::make_shared<LevelScene>(currentLevelRooms, currentLevel ,player);
-    levelTutorial->player = player;
+    std::shared_ptr<LevelScene> currentlevelPointer = std::make_shared<LevelScene>(currentLevelRooms, currentLevel , player);
+
+
     std::shared_ptr<Actor> pActor;
     Texture2D actorTest = LoadTexture("assets/graphics/character/npcIdle/npc2/npc2.png");
     std::vector<std::string> testDialogue =
@@ -105,28 +138,28 @@ int main() {
     pActor->setDiaSwitches(switches);
 
 
-
-
-    levelTutorial->actors.push_back(pActor);
-    levelTutorial->allActors.push_back(pActor);
+    currentlevelPointer->actors.push_back(pActor);
+    currentlevelPointer->allActors.push_back(pActor);
     std::shared_ptr<Enemy> pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
-    levelTutorial->enemies.push_back(pEnemy);
-    levelTutorial->allActors.push_back(pEnemy);
+    currentlevelPointer->enemies.push_back(pEnemy);
+    currentlevelPointer->allActors.push_back(pEnemy);
     std::shared_ptr<Barkeeper> pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
-    levelTutorial->barkeepers.push_back(pBarkeeper);
-    levelTutorial->allActors.push_back(pBarkeeper);
+
+
+    currentlevelPointer->barkeepers.push_back(pBarkeeper);
+    currentlevelPointer->allActors.push_back(pBarkeeper);
     std::shared_ptr<Dealer> pDealer = std::make_shared<Dealer>(1200, 800, testDialogue);
-    levelTutorial->dealers.push_back(pDealer);
-    levelTutorial->allActors.push_back(pDealer);
+    currentlevelPointer->dealers.push_back(pDealer);
+    currentlevelPointer->allActors.push_back(pDealer);
     Vector2 posi = {400, 400};
-    levelTutorial->items.push_back(std::make_shared<PunchGun>(posi));
+    currentlevelPointer->items.push_back(std::make_shared<PunchGun>(posi));
 
     std::shared_ptr<LevelScene> level01;
     std::shared_ptr<LevelScene> levelRooftop;
 
     // Scene management
     std::shared_ptr<Scenes> activeScene = std::make_shared<TitleScreen>();
-    std::shared_ptr<LevelScene> activeLevel = levelTutorial;
+    std::shared_ptr<LevelScene> activeLevel = currentlevelPointer;
 
     // ALL OF THIS IS FOR TEST PURPOSES
 
@@ -148,98 +181,86 @@ int main() {
         // ========== UPDATE ==========
 
         // Scene transition
+        if (activeScene->switchScene == true) {
+            if (activeScene->switchScene) {
+                TraceLog(LOG_INFO, "scene switch request");
+                activeScene->switchScene = false;
 
-        if (activeScene->switchScene == true)
-        {
-        if (activeScene->switchScene)
-        {
-            TraceLog(LOG_INFO, "scene switch request");
-            activeScene->switchScene = false;
+                switch (activeScene->switchTo) {
+                    case TITLESCREEN: {
+                        activeScene = std::make_shared<TitleScreen>();
+                        break;
+                    }
 
-            switch (activeScene->switchTo)
-            {
-                case TITLESCREEN:
-                {
-                    activeScene = std::make_shared<TitleScreen>();
-                    break;
-                }
+                    case MAINMENU: {
+                        activeScene = std::make_shared<MainMenuScene>();
+                        break;
+                    }
 
-                case MAINMENU:
-                {
-                    activeScene = std::make_shared<MainMenuScene>();
-                    break;
-                }
+                    case MAINOPTIONS: {
+                        activeScene = std::make_shared<MainOptions>();
+                        break;
+                    }
 
-                case MAINOPTIONS:
-                {
-                    activeScene = std::make_shared<MainOptions>();
-                    break;
-                }
+                    case CREDITS: {
+                        activeScene = std::make_shared<CreditScene>();
+                        break;
+                    }
 
-                case CREDITS:
-                {
-                    activeScene = std::make_shared<CreditScene>();
-                    break;
-                }
+                    case GAME: {
+                        activeScene = activeLevel;
+                        break;
+                    }
 
-                case GAME:
-                {
-                    activeScene = activeLevel;
-                    break;
-                }
+                    case BATTLE:
+                        // Extract player and enemy from active level
+                        // Then make a new shared pointer with the extracted actors
 
-                case BATTLE:
-                    // Extract player and enemy from active level
-                    // Then make a new shared pointer with the extracted actors
+                        // Hardcoded for now
+                        enemyPtr = player->enemyToFight;
+                        activeScene = std::make_shared<BattleScene>(player, enemyPtr);
+                        break;
+                    case SHOP_BARKEEPER:
+                        // Extract player and barkeeper from active level
+                        // Then make a new shared pointer with the extracted actors
 
-                    // Hardcoded for now
-                    enemyPtr = player->enemyToFight;
-                    activeScene = std::make_shared<BattleScene>(player, enemyPtr);
-                    break;
-                case SHOP_BARKEEPER:
-                    // Extract player and barkeeper from active level
-                    // Then make a new shared pointer with the extracted actors
+                        activeScene = std::make_shared<ShopBarkeeper>(player, player->barkeeperPtr);
+                        break;
+                    case SHOP_DEALER:
+                        // Extract player from active level
+                        // Then make a new shared pointer with the extracted actor
 
-                    activeScene = std::make_shared<ShopBarkeeper>(player, player->barkeeperPtr);
-                    break;
-                case SHOP_DEALER:
-                    // Extract player from active level
-                    // Then make a new shared pointer with the extracted actor
+                        activeScene = std::make_shared<ShopDealer>(player);
+                        break;
 
-                    activeScene = std::make_shared<ShopDealer>(player);
-                    break;
+                    case PAUSEMENU: {
+                        activeScene = std::make_shared<PauseScene>();
+                        break;
+                    }
 
-                case PAUSEMENU:
-                {
-                    activeScene = std::make_shared<PauseScene>();
-                    break;
-                }
+                    case PAUSEOPTIONS: {
+                        activeScene = std::make_shared<PauseOptions>();
+                        break;
+                    }
 
-                case PAUSEOPTIONS:
-                {
-                    activeScene = std::make_shared<PauseOptions>();
-                    break;
-                }
+                    case INVENTORY: {
+                        activeScene->switchScene = false;
+                        activeScene = std::make_shared<InventoryScene>(player);
+                        break;
+                    }
 
-                case INVENTORY:
-                {
-                    activeScene->switchScene = false;
-                    activeScene = std::make_shared<InventoryScene>(player);
-                    break;
-                }
-
-                case SKILLTREE:
-                {
-                    activeScene->switchScene = false;
-                    activeScene = std::make_shared<SkillTreeScene>(player);
-                    break;
+                    case SKILLTREE: {
+                        activeScene->switchScene = false;
+                        activeScene = std::make_shared<SkillTreeScene>(player);
+                        break;
+                    }
                 }
             }
-        }
         }
 
         // Scene update
         activeScene->Update();
+
 
 
         // ========== DRAW ==========

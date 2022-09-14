@@ -31,7 +31,9 @@ void SkillTreeScene::CustomDraw()
 void SkillTreeScene::DrawSkillTree()
 {
     // Draw basics, Background, Text
-    //ClearBackground(GRAY);
+    Color purple = {255,0,255,255};
+    Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
+    DrawRectangleRec(recBackground, Fade(purple,0.7));
 
     // Header text
     const std::string skilltreeHeaderTxt = "SkillTree";
@@ -72,6 +74,9 @@ void SkillTreeScene::DrawSkillTree()
         {
             DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillUnlockecImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
             DrawTextureEx(skillImgs[i], {skillPos[i].x+20,skillPos[i].y+20}, 0, 0.5, WHITE);
+
+            DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y), 100,200}, Color {220, 22, 220, 255});
+
             DrawTextureEx(skillUnlockecImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
             DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureText(skillInfoTxts[i].c_str(),25))/2,skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, BLACK);
             if (arrowDrawedCount <=5)
@@ -85,7 +90,8 @@ void SkillTreeScene::DrawSkillTree()
         // ... locked skills
         if (player->augmentationCount == 0 || (player->augmentationCount >0 && skillDrawCount > player->augmentationCount))
         {
-            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillLockedImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
+            DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y-50), float(skillLockedImg.width/2),float (skillLockedImg.height)-50}, Color {220, 22, 220, 255});
+            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x + (skillLockedImg.width/2 - MeasureTextEx(font1, skillTxts[i].c_str(), 27, 0.1).x),skillPos[i].y-50}, 27,  0.2, BLACK);
             DrawTextureEx(skillImgs[i], {skillPos[i].x+10,skillPos[i].y+10}, 0, 0.5, WHITE);
             DrawTextureEx(skillLockedImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
             DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureText(skillInfoTxts[i].c_str(),25))/2,skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, BLACK);

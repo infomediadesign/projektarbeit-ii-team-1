@@ -13,6 +13,7 @@
 
 
 
+
 class TutorialLevelScene : public LevelScene {
 
 private:;
@@ -21,6 +22,12 @@ public:
 
     Rectangle recExitLevel ={0.0,0.0,10,10};
     Vector2 playerStartPos;
+    std::shared_ptr<Bouncer2> bouncer2;
+
+    std::vector<std::string> startDialogue = {"this is a test", "this is a test line","blaaaaa"};
+    std::vector<std::string> startDialogueBouncer = {"tnerv mich nict", "geh nach hause"};
+    std::vector<int> dialogSwitches = {1};
+
 
     TutorialLevelScene(std::shared_ptr<Player> player);
 

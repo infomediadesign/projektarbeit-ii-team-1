@@ -6,10 +6,13 @@ TutorialLevelScene::TutorialLevelScene(std::shared_ptr<Player> player) {
     this->player = player;
     // Background img
     tutorialLevelBackgroundImg = LoadTexture("./assets/maps/TutorialLevel/TutorialLevelBackground.png");
-    // Hitboxen
 
+    // Start dialogue
+    player->dialogueManager.startDialogue(player->getName(),startDialogue, player->spritesheetIdle);
 
     // NPC img
+    bouncer2 = std::make_shared<Bouncer2>(0,0, Tutorial, startDialogueBouncer);
+    bouncer2->setDiaSwitches(dialogSwitches);
     // Dialog
 }
 
