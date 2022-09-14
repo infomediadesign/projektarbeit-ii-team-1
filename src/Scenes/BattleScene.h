@@ -57,7 +57,7 @@ public:
     bool attackSelected;
     int enemyStunnedFor;
     bool endBattle;
-    bool gameOver;
+    bool moneyGranted;
 
     // Core-System Items
     bool hasPunchGun;
@@ -85,6 +85,15 @@ public:
     Texture2D battleStartTex;
     Rectangle battleStartRec;
     bool playBattleStart;
+
+    // For busted animation
+    int counterBusted;
+    int bustedCurrentFrame;
+    Texture2D bustedTex;
+    Rectangle bustedRec;
+    bool playBusted;
+    bool fadeOut;
+    float fadeOutValue;
 
     // SFX & Music
     int soundTimer;

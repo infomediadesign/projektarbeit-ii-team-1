@@ -14,6 +14,7 @@ Player::Player()
 
 Player::Player(int posX, int posY, bool genderMale)
 {
+    this->gameOver = false;
     this->position.x = posX;
     this->position.y = posY;
 

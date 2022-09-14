@@ -68,6 +68,7 @@ public:
     // Combat
     std::shared_ptr<Enemy> enemyToFight;
     bool startCombat;
+    bool gameOver;
 
     // Shop
     std::shared_ptr<Barkeeper> barkeeperPtr;

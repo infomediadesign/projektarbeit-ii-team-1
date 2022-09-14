@@ -18,8 +18,8 @@ extern float volMusic;
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
+    this->moneyGranted = false;
     this->endBattle = false;
-    this->gameOver = false;
 
     this->controlsLocked = false;
     this->animationPlaying = false;
@@ -82,6 +82,17 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->battleStartRec.y = 0;
     this->battleStartRec.width = this->battleStartTex.width / 8;
     this->battleStartRec.height = this->battleStartTex.height;
+
+    this->playBusted = false;
+    this->counterBusted = 0;
+    this->bustedCurrentFrame = 0;
+    this->bustedTex = LoadTexture("assets/graphics/ui/combat/busted.png");
+    this->bustedRec.x = 0;
+    this->bustedRec.y = 0;
+    this->bustedRec.width = this->bustedTex.width / 8;
+    this->bustedRec.height = this->bustedTex.height;
+    this->fadeOut = false;
+    this->fadeOutValue = 0;
 
     // For test purposes uwu
     Vector2 test = {1, 2};
@@ -182,8 +193,31 @@ void BattleScene::CustomUpdate() {
         {
             this->battleStartCurrentFrame++;
             this->counterBattleStart = 0;
-            this->battleStartRec.x = battleStartTex.width / 8 * this->battleStartCurrentFrame;
+            this->battleStartRec.x = battleStartRec.width * this->battleStartCurrentFrame;
         }
+    }
+    // Play busted animation
+    if (this->playBusted)
+    {
+        if (this->bustedCurrentFrame < 7)
+        {
+            this->counterBusted++;
+        }
+        if (this->counterBusted >= 7 && this->bustedCurrentFrame < 7)
+        {
+            this->bustedCurrentFrame++;
+            this->counterBusted = 0;
+            this->bustedRec.x = bustedRec.width * this->bustedCurrentFrame;
+        }
+    }
+    // Fade out "animation"
+    if (this->fadeOut == true)
+    {
+        if (this->fadeOutValue >= 1)
+        {
+            this->player->gameOver = true;
+        }
+        this->fadeOutValue = this->fadeOutValue + 0.01;
     }
 
 
@@ -197,16 +231,26 @@ void BattleScene::CustomUpdate() {
     // Check if battle has to be ended
     if (this->player->currentHP <= 0)
     {
-        this->gameOver = true;
+        this->controlsLocked = true;
+        this->playBusted = true;
+        if (IsKeyPressed(KEY_ESCAPE))
+        {
+            this->fadeOut = true;
+        }
     }
     if (this->enemy->currentHP <= 0 && this->animationPlaying == false)
     {
+        if (this->moneyGranted == false)
+        {
+            this->player->money = this->player->money + this->enemy->money;
+            this->moneyGranted = true;
+        }
         this->enemy->defeated = true;
         this->battleWon = true;
         this->stopBattle();
     }
 
-    if (this->playerTurn == true && this->animationPlaying == false)
+    if (this->playerTurn == true && this->animationPlaying == false && this->controlsLocked == false)
     {
         this->menuNavigation();
 
@@ -304,6 +348,22 @@ void BattleScene::CustomDraw()
     if (this->playBattleStart)
     {
         DrawTextureRec(this->battleStartTex, this->battleStartRec, {0, 0}, WHITE);
+    }
+    if (this->playBusted)
+    {
+        DrawTextureRec(this->bustedTex, this->bustedRec, {0, 0}, WHITE);
+        if (this->fadeOut == false)
+        {
+            DrawTextEx(this->font, "Press ESC to take on a new identity",
+                       {static_cast<float>(GetScreenWidth() * 0.01), static_cast<float>(GetScreenHeight() * 0.01)},
+                       48, 1, WHITE);
+        }
+    }
+
+    // Draw fade out
+    if (this->fadeOut)
+    {
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(BLACK, this->fadeOutValue));
     }
 }
 
