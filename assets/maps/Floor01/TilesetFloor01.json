@@ -6,7 +6,7 @@
  "name":"TilesetFloor01",
  "spacing":0,
  "tilecount":1260,
- "tiledversion":"1.9.0",
+ "tiledversion":"1.9.1",
  "tileheight":40,
  "tilewidth":40,
  "type":"tileset",
