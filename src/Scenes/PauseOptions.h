@@ -17,8 +17,10 @@
 class PauseOptions : public MenuScenes {
     // Attributes
 public:
-    Texture2D background;
     Texture2D pauseOptionsBox;
+    Texture2D optionBar1;
+    Texture2D optionBar100;
+    Texture2D optionButton;
     Font font1;
 
     //SFX
@@ -33,6 +35,8 @@ public:
     game::Button* buttonSFX;
     game::Button* buttonBrightness;
     game::Button* buttonFullscreen;
+    game::Button* buttonOn;
+    game::Button* buttonOff;
     game::Button* buttonReturnPauseMenu;
 
     int active_button;

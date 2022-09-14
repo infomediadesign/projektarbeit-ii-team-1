@@ -15,6 +15,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
     this->levelRooms = levelRooms;
     this->currentLevel = currentLevel;
 
+
     cameraLs = {0,0};
     cameraLs.target = (Vector2){ player->position.x + 1.0f, player->position.y + 1.0f };
     cameraLs.offset = (Vector2){ player->position.x, player->position.y};
@@ -27,6 +28,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
         case Wardrobe:
             // Load room JSON "Wardrobe" // ./assets/maps/Floor01/Wardrobe.json // ./assets/maps/msp_als_json.json   ./assets/maps/Floor01/test/wardrobeTilemap.json
             ifStreamFile.open("./assets/maps/Floor01/wardrobe/wardrobeTilemap.json");
+
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File Wardrobe.json is not available");
             }else if(ifStreamFile.is_open()){
@@ -126,8 +128,10 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
             break;
     }
 
+
     // Load tileset json
     ifStreamFile.open(tilesetJsonPath);
+
     if(!ifStreamFile.is_open()){
         TraceLog(LOG_INFO, "JSON-ERROR: File Tileeset.json is not available");
     }
@@ -135,8 +139,10 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
     ifStreamFile >> levelTilesetDescription;
     ifStreamFile.close();
 
+
     // Load tileset png
     tileAtlasTexture = LoadTexture(tilesetPngPath.c_str());
+
 
 
     //Tile IDs in einem Vector<int> speichern "layers"
@@ -145,8 +151,10 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
         tileAtlas.push_back(layer["id"]);
     };
 
+
     TraceLog(LOG_INFO, "LOAD TILESET.JSON SUCCESFULL");
     
+
 }
 
 void LevelScene::CustomUpdate()
@@ -185,6 +193,10 @@ void LevelScene::CustomUpdate()
         this->switchTo = SHOP_DEALER;
         this->switchScene = true;
     }
+
+
+    player->checkActorCollision(this->allActors);
+
     // Check if a fight has to be started
     if (player->startCombat == true && player->dialogueManager.dialoguePlaying == false) {
         TraceLog(LOG_INFO, "Starting combat...");
@@ -192,22 +204,19 @@ void LevelScene::CustomUpdate()
         // Start combat with player and player->enemyToFight
         // Has to remember the player's position in the level before battle!
 
-
-        // This is hardcoded for now, because the level class isn't ready yet
         this->switchTo = BATTLE;
         this->switchScene = true;
     }
 
-    player->checkActorCollision(this->allActors);
-
-    // Check enemy aggro radius collision (maybe move this into a method of the level-class
+    // Check enemy aggro radius collision
     bool stopSearch = false;
     for (int i = 0; i < enemies.size() && stopSearch == false &&
                     player->dialogueManager.dialoguePlaying == false; i++) {
         if (CheckCollisionCircleRec({enemies[i]->position.x + enemies[i]->frameRec.width / 2,
                                      enemies[i]->position.y + enemies[i]->frameRec.height / 2},
                                     enemies[i]->aggroRadius, player->collisionBox) &&
-            enemies[i]->defeated == false) {
+            enemies[i]->defeated == false &&
+            this->switchScene == false) {
             player->interactionForced(enemies[i]);
             stopSearch = true;
         }
@@ -218,6 +227,7 @@ void LevelScene::CustomUpdate()
     player->interact(barkeepers);
     player->interact(dealers);
     player->interact(items);
+
 
     for (int i = 0; i < actors.size(); i++) {
         actors[i]->Update();
@@ -267,6 +277,7 @@ void LevelScene::CustomDraw()
 
 void LevelScene::DrawMap()
 {
+
     // Save the vales from Json file
     float tileWidth = levelMap["tilewidth"];
     float tileHeight = levelMap["tileheight"];
@@ -276,28 +287,35 @@ void LevelScene::DrawMap()
     Rectangle rec = {0, 0, tileWidth, tileHeight};
 
 
+
     for (auto const &layer : levelMap["layers"]) {
         if (layer["type"] == "tilelayer" && layer["visible"]) {
             for (auto const &tileId : layer["data"]) {
                 if (tileId != 0) {
+
                     rec.x = (float) ((int) tileId - 1 % tileColumCount) *
                             tileWidth;
                     rec.y = (float) floor((float) tileId / (float) tileColumCount) *
                             tileWidth;
 
+
                     DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
                 }
+
 
                 vec.x += tileWidth;
                 if (vec.x >= (float) layer["width"] * tileWidth) {
                     vec.x = 0;
                     vec.y += tileHeight;
+
                 }
             }
             vec = {0, 0};
         }
 
+
     }
     EndMode2D();
+
 }
 

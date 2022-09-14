@@ -45,7 +45,7 @@ public:
     Rectangle frameRecPlayer;
     Rectangle frameRecEnemy;
 
-    // Timer
+    // Animation timer
     int timerFramesWaited;
 
     CombatSheet playerAnimation;
@@ -57,7 +57,7 @@ public:
     bool attackSelected;
     int enemyStunnedFor;
     bool endBattle;
-    bool gameOver;
+    bool moneyGranted;
 
     // Core-System Items
     bool hasPunchGun;
@@ -78,6 +78,22 @@ public:
     BattleState state;
     int activeButton;
     std::vector<std::shared_ptr<game::Button>> buttons;
+
+    // For battle start animation
+    int counterBattleStart;
+    int battleStartCurrentFrame;
+    Texture2D battleStartTex;
+    Rectangle battleStartRec;
+    bool playBattleStart;
+
+    // For busted animation
+    int counterBusted;
+    int bustedCurrentFrame;
+    Texture2D bustedTex;
+    Rectangle bustedRec;
+    bool playBusted;
+    bool fadeOut;
+    float fadeOutValue;
 
     // SFX & Music
     int soundTimer;
@@ -116,4 +132,6 @@ void menuNavigation();
 void initMainMenu();
 
 void playSfx();
+
+void stopBattle();
 };

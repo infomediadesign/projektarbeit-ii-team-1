@@ -14,6 +14,7 @@ Player::Player()
 
 Player::Player(int posX, int posY, bool genderMale)
 {
+    this->gameOver = false;
     this->position.x = posX;
     this->position.y = posY;
 
@@ -23,7 +24,7 @@ Player::Player(int posX, int posY, bool genderMale)
 
     this->augmentationCount = 0;
 
-    this->name = "Dt. Carver";
+    this->name = "Reese Carver";
 
     this->genderMale = genderMale;
     if (this->genderMale == true)
@@ -407,7 +408,7 @@ void Player::interact(std::vector<std::shared_ptr<Item>> items) {
 
 void Player::interactionForced(std::shared_ptr<Enemy> enemy)
 {
-    TraceLog(LOG_INFO, "Interaction successful!");
+    TraceLog(LOG_INFO, "Forcing interaction with enemy");
 
     Vector2 workingPosPlayer;
     workingPosPlayer.x = this->position.x + this->frameRec.width / 2;
@@ -462,7 +463,21 @@ void Player::interactionForced(std::shared_ptr<Enemy> enemy)
     this->moveLockAbsolute = true;
     this->interactionDisabled = true;
     // For upgraded dialogue system
-    if (enemy->getDiaSwitches().size() == 0)
+    if (enemy->defeated)
+    {
+        if (enemy->diaDefeatedSwitches.size() == 0)
+        {
+            this->dialogueManager.startDialogue(enemy->getName(), enemy->dialogueDefeated,
+                                                enemy->spritesheet);
+        }
+        else
+        {
+            this->dialogueManager.startDialogue(enemy->getName(), enemy->spritesheet, this->name,
+                                                this->spritesheetIdle, enemy->dialogueDefeated,
+                                                enemy->diaDefeatedSwitches);
+        }
+    }
+    else if (enemy->getDiaSwitches().size() == 0)
     {
         this->dialogueManager.startDialogue(enemy->getName(), enemy->getDialogue(),
                                             enemy->spritesheet);

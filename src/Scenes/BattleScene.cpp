@@ -18,8 +18,8 @@ extern float volMusic;
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
+    this->moneyGranted = false;
     this->endBattle = false;
-    this->gameOver = false;
 
     this->controlsLocked = false;
     this->animationPlaying = false;
@@ -74,6 +74,25 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 
+    this->playBattleStart = true;
+    this->counterBattleStart = 0;
+    this->battleStartCurrentFrame = 0;
+    this->battleStartTex = LoadTexture("assets/graphics/ui/combat/fightStart.png");
+    this->battleStartRec.x = 0;
+    this->battleStartRec.y = 0;
+    this->battleStartRec.width = this->battleStartTex.width / 8;
+    this->battleStartRec.height = this->battleStartTex.height;
+
+    this->playBusted = false;
+    this->counterBusted = 0;
+    this->bustedCurrentFrame = 0;
+    this->bustedTex = LoadTexture("assets/graphics/ui/combat/busted.png");
+    this->bustedRec.x = 0;
+    this->bustedRec.y = 0;
+    this->bustedRec.width = this->bustedTex.width / 8;
+    this->bustedRec.height = this->bustedTex.height;
+    this->fadeOut = false;
+    this->fadeOutValue = 0;
 
     // For test purposes uwu
     Vector2 test = {1, 2};
@@ -162,6 +181,46 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 void BattleScene::CustomUpdate() {
     this->framesCounter++;
 
+    // Play battle start animation
+    if (this->playBattleStart)
+    {
+        if (this->battleStartCurrentFrame >= 7 && this->counterBattleStart >= 6)
+        {
+         this->playBattleStart = false;
+        }
+        this->counterBattleStart++;
+        if (this->counterBattleStart >= 7)
+        {
+            this->battleStartCurrentFrame++;
+            this->counterBattleStart = 0;
+            this->battleStartRec.x = battleStartRec.width * this->battleStartCurrentFrame;
+        }
+    }
+    // Play busted animation
+    if (this->playBusted)
+    {
+        if (this->bustedCurrentFrame < 7)
+        {
+            this->counterBusted++;
+        }
+        if (this->counterBusted >= 7 && this->bustedCurrentFrame < 7)
+        {
+            this->bustedCurrentFrame++;
+            this->counterBusted = 0;
+            this->bustedRec.x = bustedRec.width * this->bustedCurrentFrame;
+        }
+    }
+    // Fade out "animation"
+    if (this->fadeOut == true)
+    {
+        if (this->fadeOutValue >= 1)
+        {
+            this->player->gameOver = true;
+        }
+        this->fadeOutValue = this->fadeOutValue + 0.01;
+    }
+
+
     // Plays music loop
     if (IsMusicStreamPlaying(this->music) == false)
     {
@@ -169,12 +228,29 @@ void BattleScene::CustomUpdate() {
     }
     UpdateMusicStream(this->music);
 
+    // Check if battle has to be ended
     if (this->player->currentHP <= 0)
     {
-        this->gameOver = true;
+        this->controlsLocked = true;
+        this->playBusted = true;
+        if (IsKeyPressed(KEY_ESCAPE))
+        {
+            this->fadeOut = true;
+        }
+    }
+    if (this->enemy->currentHP <= 0 && this->animationPlaying == false)
+    {
+        if (this->moneyGranted == false)
+        {
+            this->player->money = this->player->money + this->enemy->money;
+            this->moneyGranted = true;
+        }
+        this->enemy->defeated = true;
+        this->battleWon = true;
+        this->stopBattle();
     }
 
-    if (this->playerTurn == true && this->animationPlaying == false)
+    if (this->playerTurn == true && this->animationPlaying == false && this->controlsLocked == false)
     {
         this->menuNavigation();
 
@@ -246,8 +322,9 @@ void BattleScene::CustomDraw()
     playerHpPos.y = GetScreenHeight() * 0.2;
     DrawTexture(this->playerHpBar, playerHpPos.x, playerHpPos.y, WHITE);
     DrawTextEx(this->font, this->player->getName().c_str(),
-               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.048 - MeasureTextEx(this->font, this->player->getName().c_str(), 20, 1).x/2),
+               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.05 - MeasureTextEx(this->font, this->player->getName().c_str(), 20, 1).x/2),
                 static_cast<float>(playerHpPos.y + GetScreenHeight() * 0.077)}, 20, 1, BLACK);
+
 
     // Enemy HP
     Vector2 enemyHpPos;
@@ -267,6 +344,27 @@ void BattleScene::CustomDraw()
     }
 
     EndMode2D();
+
+    if (this->playBattleStart)
+    {
+        DrawTextureRec(this->battleStartTex, this->battleStartRec, {0, 0}, WHITE);
+    }
+    if (this->playBusted)
+    {
+        DrawTextureRec(this->bustedTex, this->bustedRec, {0, 0}, WHITE);
+        if (this->fadeOut == false)
+        {
+            DrawTextEx(this->font, "Press ESC to take on a new identity",
+                       {static_cast<float>(GetScreenWidth() * 0.01), static_cast<float>(GetScreenHeight() * 0.01)},
+                       48, 1, WHITE);
+        }
+    }
+
+    // Draw fade out
+    if (this->fadeOut)
+    {
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(BLACK, this->fadeOutValue));
+    }
 }
 
 void BattleScene::animateIdle() {
@@ -802,16 +900,7 @@ void BattleScene::menuNavigation() {
                     }
                     break;
                 case 2:
-                    this->endBattle = true;
-                    StopMusicStream(this->music);
-                    this->player->position = this->playerPrevPos;
-                    this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
-                            (this->player->collisionOffset / 2);
-                    this->player->collisionBox.y = this->player->position.y;
-                    this->player->turn(this->playerFacing);
-                    this->enemy->position = this->enemyPrevPos;
-                    this->switchTo = GAME;
-                    this->switchScene = true;
+                    this->stopBattle();
                     break;
             }
         }
@@ -1117,4 +1206,18 @@ BattleScene::~BattleScene()
     UnloadSound(this->soundWhipCrack);
     UnloadSound(this->soundTazer);
 
+}
+
+void BattleScene::stopBattle()
+{
+    this->endBattle = true;
+    StopMusicStream(this->music);
+    this->player->position = this->playerPrevPos;
+    this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
+                                                              (this->player->collisionOffset / 2);
+    this->player->collisionBox.y = this->player->position.y;
+    this->player->turn(this->playerFacing);
+    this->enemy->position = this->enemyPrevPos;
+    this->switchTo = GAME;
+    this->switchScene = true;
 }
