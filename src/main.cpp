@@ -80,6 +80,20 @@ int main() {
     // ===== PLAYER INIT =====
     std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
 
+
+    // Victory animation init
+    bool playVictoryAnim = false;
+    int victoryFramesCounter = 0;
+    int victoryCurrentFrame = 0;
+    Texture2D victoryTex = LoadTexture("assets/graphics/ui/combat/victory.png");
+    Rectangle victoryRec;
+    victoryRec.x = 0;
+    victoryRec.y = 0;
+    victoryRec.width = victoryTex.width / 8;
+    victoryRec.height = victoryTex.height;
+
+
+
     // ========== LEVEL INITIALISATION ==========
     // Laod next level
     switch (currentLevel) {
@@ -141,6 +155,7 @@ int main() {
     currentlevelPointer->actors.push_back(pActor);
     currentlevelPointer->allActors.push_back(pActor);
     std::shared_ptr<Enemy> pEnemy = std::make_shared<GangsterFemale>(500, 200, Level01, testDialogue);
+    pEnemy->dialogueDefeated = {"I bims, ded", "Fuk dis m8"};
     currentlevelPointer->enemies.push_back(pEnemy);
     currentlevelPointer->allActors.push_back(pEnemy);
     std::shared_ptr<Barkeeper> pBarkeeper = std::make_shared<Barkeeper>(1000, 700, testDialogue);
@@ -208,6 +223,11 @@ int main() {
                     }
 
                     case GAME: {
+                        if (activeScene->battleWon == true)
+                        {
+                            playVictoryAnim = true;
+                            player->interactionForced(player->enemyToFight);
+                        }
                         activeScene = activeLevel;
                         break;
                     }
@@ -259,6 +279,25 @@ int main() {
         }
 
         // Scene update
+
+        // Victory animation update (I hate this...)
+        if (playVictoryAnim == true)
+        {
+            if (playVictoryAnim)
+            {
+                if (victoryCurrentFrame >= 7 && victoryFramesCounter >= 6)
+                {
+                    playVictoryAnim = false;
+                }
+                victoryFramesCounter++;
+                if (victoryFramesCounter >= 7)
+                {
+                    victoryCurrentFrame++;
+                    victoryFramesCounter = 0;
+                    victoryRec.x = victoryTex.width / 8 * victoryCurrentFrame;
+                }
+            }
+        }
         activeScene->Update();
 
 
@@ -273,6 +312,12 @@ int main() {
             activeLevel->Draw();
         }
         activeScene->Draw();
+
+        // Victory anim draw (I hate this...)
+        if (playVictoryAnim)
+        {
+            DrawTextureRec(victoryTex, victoryRec, {0, 0}, WHITE);
+        }
 
         EndDrawing();
     } // Main game loop end
