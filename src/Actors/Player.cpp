@@ -380,7 +380,7 @@ void Player::interact(std::vector<std::shared_ptr<Item>> items) {
     if (IsKeyPressed(KEY_E) && interactionDisabled == false) {
         for (int i = 0; i < items.size(); i++) {
             if (items[i]->showInLevel == true) {
-                if (CheckCollisionPointRec(items[i]->levelPosition,
+                if (CheckCollisionRecs(items[i]->collisionBox,
                                            this->interactionBox)) { // has to be adjusted when items have hitboxes
                     TraceLog(LOG_INFO, "Interaction successful!");
 

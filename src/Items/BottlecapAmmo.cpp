@@ -15,4 +15,15 @@ BottlecapAmmo::BottlecapAmmo(Vector2 position)
     this->damage = 0;
     this->uses = 0;
     this->showInLevel = true;
+
+    //Collision Box
+    this->collisionBox.width = this->texture.width;
+    this->collisionBox.height = this->texture.height;
+    this->collisionBox.x = this->levelPosition.x;
+    this->collisionBox.y = this->levelPosition.y;
+}
+
+void BottlecapAmmo::Draw()
+{
+    DrawTextureRec(this->texture, this->collisionBox, this->levelPosition, WHITE);
 }

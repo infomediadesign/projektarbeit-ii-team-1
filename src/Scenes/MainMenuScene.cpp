@@ -120,7 +120,7 @@ void MainMenuScene::CustomUpdate() {
         if (this->buttonExit->active == true)
         {
             PlaySound(this->uiBlip2);
-            CloseWindow();
+            exit(0);
         }
 
         this->switchScene = true;
