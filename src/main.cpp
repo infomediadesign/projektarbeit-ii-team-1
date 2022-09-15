@@ -39,6 +39,9 @@
 float volSfx = 1;
 float volMusic = 0.75;
 
+//Screen brightness
+float brightness = 0;
+
 int main() {
     // Raylib initialization
     // Project name, screen size, fullscreen mode etc. can be specified in the config.h.in file
@@ -279,25 +282,6 @@ int main() {
         }
 
         // Scene update
-
-        // Victory animation update (I hate this...)
-        if (playVictoryAnim == true)
-        {
-            if (playVictoryAnim)
-            {
-                if (victoryCurrentFrame >= 7 && victoryFramesCounter >= 6)
-                {
-                    playVictoryAnim = false;
-                }
-                victoryFramesCounter++;
-                if (victoryFramesCounter >= 7)
-                {
-                    victoryCurrentFrame++;
-                    victoryFramesCounter = 0;
-                    victoryRec.x = victoryTex.width / 8 * victoryCurrentFrame;
-                }
-            }
-        }
         activeScene->Update();
 
 
@@ -318,6 +302,9 @@ int main() {
         {
             DrawTextureRec(victoryTex, victoryRec, {0, 0}, WHITE);
         }
+
+        //Alternative for screen brightness
+        DrawRectangle(0, 0, Game::ScreenWidth, Game::ScreenHeight, ColorAlpha(BLACK, brightness));
 
         EndDrawing();
     } // Main game loop end

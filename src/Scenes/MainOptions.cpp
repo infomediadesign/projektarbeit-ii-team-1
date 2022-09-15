@@ -7,6 +7,7 @@
 #include <iostream>
 
 extern float volSfx;
+extern float brightness;
 
 MainOptions::MainOptions()
 {
@@ -35,6 +36,7 @@ MainOptions::MainOptions()
     //Sound
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    this->punchsound = LoadSound("assets/audio/sfx/punch.wav");
 
     Message1 = "Options";
     Message2 = "On";
@@ -123,12 +125,45 @@ void MainOptions::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ENTER))
     {
+        if (this->buttonSFX->active == true)
+        {
+            PlaySound(this->punchsound);
+        }
+
         if (this->buttonFullscreen->active == true)
         {
             PlaySound(this->uiBlip2);
             ToggleFullscreen();
         }
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
+
+
+    }
+
+    if (this->buttonSFX->active == true)
+    {
+        if (IsKeyPressed(KEY_LEFT))
+        {
+            SetSoundVolume(punchsound, volSfx - 0.1);
+            PlaySound(this->punchsound);
+        }
+        if (IsKeyPressed(KEY_RIGHT))
+        {
+            SetSoundVolume(punchsound, volSfx + 0.1);
+            PlaySound(this->punchsound);
+        }
+    }
+
+    if (this->buttonBrightness->active == true)
+    {
+        if (IsKeyPressed(KEY_LEFT))
+        {
+            brightness -= 0.1;
+        }
+        if (IsKeyPressed(KEY_RIGHT))
+        {
+            brightness += 0.1;
+        }
     }
 
     if(IsKeyPressed(KEY_ESCAPE))

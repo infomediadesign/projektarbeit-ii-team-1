@@ -28,6 +28,7 @@ public:
     //SFX
     Sound uiBlip; //navigate
     Sound uiBlip2; //confirm
+    Sound punchsound;
 
     std::string Message1;
     std::string Message2;
