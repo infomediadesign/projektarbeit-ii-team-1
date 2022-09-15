@@ -299,8 +299,7 @@ int main() {
         activeScene->Update();
 
         // Victory animation update (I hate this...)
-        if (playVictoryAnim == true)
-        {
+
             if (playVictoryAnim)
             {
                 if (victoryCurrentFrame >= 7 && victoryFramesCounter >= 6)
@@ -315,7 +314,7 @@ int main() {
                     victoryRec.x = victoryTex.width / 8 * victoryCurrentFrame;
                 }
             }
-        }
+
 
 
 

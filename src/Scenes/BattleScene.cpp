@@ -172,6 +172,8 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     SetSoundVolume(this->soundPunch, volSfx);
     this->soundLongdrink = LoadSound("assets/audio/sfx/slurp.wav");
     SetSoundVolume(this->soundLongdrink, volSfx);
+    this->soundBottlecapGun = LoadSound("assets/audio/sfx/gunshot.wav");
+    SetSoundVolume(this->soundBottlecapGun, volSfx);
 
     this->updateHpBars();
     this->endBattle = false;
@@ -1137,6 +1139,16 @@ void BattleScene::playSfx()
                 PlaySound(this->soundWhip);
             }
             if (this->soundTimer == 26)
+            {
+                PlaySound(this->soundPunch);
+            }
+            break;
+        case bottlecap:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundBottlecapGun);
+            }
+            if (this->soundTimer == 60)
             {
                 PlaySound(this->soundPunch);
             }

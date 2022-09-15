@@ -112,6 +112,7 @@ public:
     Sound soundLaser;
     Sound soundPunch;
     Sound soundLongdrink;
+    Sound soundBottlecapGun;
 
     // Methods
 public:
