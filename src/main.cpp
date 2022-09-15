@@ -284,6 +284,26 @@ int main() {
         // Scene update
         activeScene->Update();
 
+        // Victory animation update (I hate this...)
+        if (playVictoryAnim == true)
+        {
+            if (playVictoryAnim)
+            {
+                if (victoryCurrentFrame >= 7 && victoryFramesCounter >= 6)
+                {
+                    playVictoryAnim = false;
+                }
+                victoryFramesCounter++;
+                if (victoryFramesCounter >= 7)
+                {
+                    victoryCurrentFrame++;
+                    victoryFramesCounter = 0;
+                    victoryRec.x = victoryTex.width / 8 * victoryCurrentFrame;
+                }
+            }
+        }
+
+
 
 
         // ========== DRAW ==========
