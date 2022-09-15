@@ -15,6 +15,9 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
     this->levelRooms = levelRooms;
     this->currentLevel = currentLevel;
 
+    screenWidth = Game::ScreenWidth;
+    screenHeight = Game::ScreenHeight;
+
     // ===== Camera =====
     cameraLs = {0,0};
     cameraLs.target = (Vector2){ player->position.x + 1.0f, player->position.y + 1.0f };
@@ -41,7 +44,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
 
         case Floor:
             // ===== Load room JSON "Hallway" =====
-            ifStreamFile.open("./assets/maps/Floor01/hallway/....json");
+            ifStreamFile.open("./assets/maps/Floor01/hallway/hallway.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File Floor.json is not available");
             }
@@ -52,7 +55,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
 
         case VIPRoom:
             // ===== Load room JSON "VIPRoom" =====
-            ifStreamFile.open("./assets/maps/Floor01/vipRoom/....json");
+            ifStreamFile.open("./assets/maps/Floor01/vipRoom/viproom.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File VIPRoom.json is not available");
             }
@@ -63,7 +66,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
 
         case Storage:
             // ===== Load room JSON "StorageRoom" =====
-            ifStreamFile.open("./assets/maps/Floor01/storageRoom/....json");
+            ifStreamFile.open("./assets/maps/Floor01/storageRoom/storageroom.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File StorageRoom.json is not available");
             }
@@ -74,7 +77,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
 
         case Dancefloor:
             // ===== Load room JSON "Mainroom" =====
-            ifStreamFile.open("./assets/maps/Floor01/mainRoom/....json");
+            ifStreamFile.open("./assets/maps/Floor01/mainRoom/mainhall.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File DanceFloor.json is not available");
             }
@@ -85,7 +88,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
 
         case WCM:
             // ===== Load room JSON "WC Man" =====
-            ifStreamFile.open("./assets/maps/Floor01/wcMan/....json");
+            ifStreamFile.open("./assets/maps/Floor01/wcMan/WCman.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File WCMan.json is not available");
             }
@@ -96,7 +99,7 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
 
         case WCW:
             // ===== Load room JSON "WC Woman" =====
-            ifStreamFile.open("./assets/maps/Floor01/wcWoman/....json");
+            ifStreamFile.open("./assets/maps/Floor01/wcWoman/WCwoman.json");
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File WCWoman.json is not available");
             }
@@ -291,9 +294,12 @@ void LevelScene::DrawMap()
     // ===== Save the vales from Json file =====
     float tileWidth = levelMap["tilewidth"];
     float tileHeight = levelMap["tileheight"];
+    float levelWidth = levelMap["width"];
+    float levelHeigth = levelMap["height"];
     int tileColumCount = levelTilesetDescription["columns"];
 
-    Vector2 vec = {0, 0};
+
+    Vector2 vec = {200, 0};
     Rectangle rec = {0, 0, tileWidth, tileHeight};
 
 
@@ -310,12 +316,12 @@ void LevelScene::DrawMap()
                     DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
                 }
                 vec.x += tileWidth;
-                if (vec.x >= (float) layer["width"] * tileWidth) {
-                    vec.x = 0;
+                if (vec.x >= (float) layer["width"] * tileWidth + 200) {
+                    vec.x = 200;
                     vec.y += tileHeight;
                 }
             }
-            vec = {0, 0};
+            vec = {200, 0};
         }
     }
     EndMode2D();

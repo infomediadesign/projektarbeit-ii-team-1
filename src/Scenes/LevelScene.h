@@ -10,6 +10,7 @@
 
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <map>
 #include "vector"
 
 
@@ -19,7 +20,12 @@ private:
     std::string tilesetJsonPath;
     std::string tilesetPngPath;
 
+
     Camera2D cameraLs;
+
+    int screenWidth;
+    int screenHeight;
+
 
 public:
     LevelRooms levelRooms;

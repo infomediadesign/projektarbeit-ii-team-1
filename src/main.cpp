@@ -108,7 +108,7 @@ int main() {
             //lvl01Wardrobe
             std::make_shared<LevelScene>(Wardrobe, currentLevel, player);
             // lvl01VipRoom
-            /*std::make_shared<LevelScene>(VIPRoom, currentLevel, player);
+            std::make_shared<LevelScene>(VIPRoom, currentLevel, player);
             // lvl01Storage
             std::make_shared<LevelScene>(Storage, currentLevel, player);
             // lvl01MainRoom
@@ -119,7 +119,7 @@ int main() {
             std::make_shared<LevelScene>(WCW, currentLevel, player);
             // lvl01WcMan
             std::make_shared<LevelScene>(WCM, currentLevel, player);
-            break;*/
+            break;
 
         case Rooftop:
             // lvlvRooftop
