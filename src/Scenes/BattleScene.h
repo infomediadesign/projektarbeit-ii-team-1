@@ -20,6 +20,7 @@ public:
     std::shared_ptr<Player> player;
     std::shared_ptr<Enemy> enemy;
 
+    // For resetting after combat
     Vector2 playerPrevPos;
     Direction playerFacing;
     Vector2 enemyPrevPos;
@@ -110,6 +111,7 @@ public:
     Sound soundBomb;
     Sound soundLaser;
     Sound soundPunch;
+    Sound soundLongdrink;
 
     // Methods
 public:

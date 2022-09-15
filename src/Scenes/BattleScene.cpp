@@ -31,14 +31,14 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->player = player;
     this->enemy = enemy;
-    
-    this->player->turn(up);
-    this->enemy->turn(down);
-    this->player->moveLockAbsolute = true;
 
     this->playerPrevPos = this->player->prevPosition;
     this->playerFacing = this->player->facing;
     this->enemyPrevPos = this->enemy->position;
+
+    this->player->turn(up);
+    this->enemy->turn(down);
+    this->player->moveLockAbsolute = true;
 
     this->background = LoadTexture("assets/graphics/ui/combat/background.png");
 
@@ -170,6 +170,8 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     SetSoundVolume(this->soundLaser, volSfx);
     this->soundPunch = LoadSound("assets/audio/sfx/punch.wav");
     SetSoundVolume(this->soundPunch, volSfx);
+    this->soundLongdrink = LoadSound("assets/audio/sfx/slurp.wav");
+    SetSoundVolume(this->soundLongdrink, volSfx);
 
     this->updateHpBars();
     this->endBattle = false;
@@ -1069,6 +1071,7 @@ void BattleScene::menuNavigation() {
                             break;
                         case 2:
                             this->attackType = heal;
+                            PlaySound(this->soundLongdrink);
                             break;
                         default:
                             this->attackType = punchPlayer;
@@ -1164,6 +1167,10 @@ void BattleScene::playSfx()
                 PlaySound(this->soundPunch);
             }
             break;
+
+            // Heal cannot go in here because it has no animation
+            // It's in menu navigation...
+
             // Enemy attacks
         case punchEnemy:
             if (this->soundTimer == 16)
