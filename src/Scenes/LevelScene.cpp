@@ -184,7 +184,7 @@ void LevelScene::CustomUpdate()
         this->switchTo = SKILLTREE;
         this->switchScene = true;
     }
-    if (IsKeyPressed(KEY_P)) {
+    if (IsKeyPressed(KEY_ESCAPE)) {
         this->switchTo = PAUSEMENU;
         this->switchScene = true;
     }

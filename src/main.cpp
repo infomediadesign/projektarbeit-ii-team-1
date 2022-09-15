@@ -19,10 +19,12 @@
 #include "Scenes/TutorialLevelScene.h"
 #include "Scenes/TitleScreen.h"
 #include "Scenes/MainOptions.h"
+#include "Scenes/MainControls.h"
 #include "Scenes/BattleScene.h"
 #include "Scenes/MainMenuScene.h"
 #include "Scenes/PauseScene.h"
 #include "Scenes/PauseOptions.h"
+#include "Scenes/PauseControls.h"
 #include "Scenes/CreditScene.h"
 #include "Scenes/LevelScene.h"
 #include "Scenes/InventoryScene.h"
@@ -220,6 +222,12 @@ int main() {
                         break;
                     }
 
+                    case MAINCONTROLS:
+                    {
+                        activeScene = std::make_shared<MainControls>();
+                        break;
+                    }
+
                     case CREDITS: {
                         activeScene = std::make_shared<CreditScene>();
                         break;
@@ -263,6 +271,12 @@ int main() {
 
                     case PAUSEOPTIONS: {
                         activeScene = std::make_shared<PauseOptions>();
+                        break;
+                    }
+
+                    case PAUSECONTROLS:
+                    {
+                        activeScene = std::make_shared<PauseControls>();
                         break;
                     }
 
