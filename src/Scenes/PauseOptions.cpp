@@ -7,6 +7,7 @@
 #include <iostream>
 
 extern float volSfx;
+extern float brightness;
 
 PauseOptions::PauseOptions()
 {
@@ -29,12 +30,36 @@ PauseOptions::PauseOptions()
     //Sound
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+    this->punchsound = LoadSound("assets/audio/sfx/punch.wav");
 
     Message1 = "Options";
+    Message2 = "On";
+    Message3 = "Off";
+    Message4 = "(Use left & right arrow keys to adjust)";
 
     fontPosition1 = {GetScreenWidth()/2 -
                      MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
                      GetScreenHeight() - (float)100/2 - 850};
+
+    fontPosition2 = {GetScreenWidth()/2 - 25 -
+                     MeasureTextEx(font1, Message2.c_str(), (float)50, 1).x/2,
+                     GetScreenHeight() - (float)50/2 - 375};
+
+    fontPosition3 = {GetScreenWidth()/2 + 130 -
+                     MeasureTextEx(font1, Message3.c_str(), (float)50, 1).x/2,
+                     GetScreenHeight() - (float)50/2 - 375};
+
+    fontPosition4 = {GetScreenWidth()/2 + 175 -
+                     MeasureTextEx(font1, Message4.c_str(), (float)25, 1).x/2,
+                     GetScreenHeight() - (float)25/2 - 680};
+
+    fontPosition5 = {GetScreenWidth()/2 + 175 -
+                     MeasureTextEx(font1, Message4.c_str(), (float)25, 1).x/2,
+                     GetScreenHeight() - (float)25/2 - 580};
+
+    fontPosition6 = {GetScreenWidth()/2 + 175 -
+                     MeasureTextEx(font1, Message4.c_str(), (float)25, 1).x/2,
+                     GetScreenHeight() - (float)25/2 - 480};
 
     //Buttons
     this->active_button = 0;
@@ -55,16 +80,6 @@ PauseOptions::PauseOptions()
                                               GetScreenHeight()/2,
                                               50, 1, YELLOW, WHITE);
 
-    this->buttonOn = new game::Button("On",
-                                      GetScreenWidth()/2 - 25,
-                                      GetScreenHeight()/2 + 150,
-                                      50, 1, YELLOW, WHITE);
-
-    this->buttonOff = new game::Button("Off",
-                                       GetScreenWidth()/2 + 130,
-                                       GetScreenHeight()/2 + 150,
-                                       50, 1, YELLOW, WHITE);
-
     this->buttonFullscreen = new game::Button("Fullscreen",
                                               GetScreenWidth()/2 - 300,
                                               GetScreenHeight()/2 + 100,
@@ -79,8 +94,6 @@ PauseOptions::PauseOptions()
     this->buttons.push_back(buttonSFX);
     this->buttons.push_back(buttonBrightness);
     this->buttons.push_back(buttonFullscreen);
-    this->buttons.push_back(buttonOn);
-    this->buttons.push_back(buttonOff);
     this->buttons.push_back(buttonReturnPauseMenu);
 
     this->switchScene = false;
@@ -92,8 +105,6 @@ PauseOptions::~PauseOptions() {
     delete buttonBrightness;
     delete buttonFullscreen;
     delete buttonReturnPauseMenu;
-    delete buttonOn;
-    delete buttonOff;
 }
 
 void PauseOptions::CustomUpdate() {
@@ -121,11 +132,49 @@ void PauseOptions::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ENTER))
     {
-        if (this->buttonReturnPauseMenu->active == true)
+        if (this->buttonSFX->active == true)
+        {
+            PlaySound(this->punchsound);
+        }
+
+        if (this->buttonFullscreen->active == true)
         {
             PlaySound(this->uiBlip2);
-            this->switchTo = PAUSEMENU;
+            ToggleFullscreen();
         }
+        std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
+    }
+
+    if (this->buttonSFX->active == true)
+    {
+        if (IsKeyPressed(KEY_LEFT))
+        {
+            SetSoundVolume(punchsound, volSfx - 0.1);
+            PlaySound(this->punchsound);
+        }
+        if (IsKeyPressed(KEY_RIGHT))
+        {
+            SetSoundVolume(punchsound, volSfx + 0.1);
+            PlaySound(this->punchsound);
+        }
+    }
+
+    if (this->buttonBrightness->active == true)
+    {
+        if (IsKeyPressed(KEY_LEFT))
+        {
+            brightness -= 0.1;
+        }
+        if (IsKeyPressed(KEY_RIGHT))
+        {
+            brightness += 0.1;
+        }
+    }
+
+    if(IsKeyPressed(KEY_ESCAPE))
+    {
+        PlaySound(this->uiBlip2);
+        this->switchTo = PAUSEMENU;
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
@@ -145,9 +194,29 @@ void PauseOptions::CustomDraw() {
     DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 + 125, WHITE);
     DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 250, (GetScreenHeight() - optionBar100.height)/2 + 125, WHITE);
 
+    if (IsWindowFullscreen())
+    {
+        DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 + 125, YELLOW);
+        DrawRectangleLines(fontPosition2.x, fontPosition2.y,
+                           MeasureTextEx(font1, Message2.c_str(), 50, 1).x,
+                           MeasureTextEx(font1, Message2.c_str(), 50, 1).y, YELLOW);
+    }
+    else
+    {
+        DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 250, (GetScreenHeight() - optionBar100.height)/2 + 125, YELLOW);
+        DrawRectangleLines(fontPosition3.x, fontPosition3.y,
+                           MeasureTextEx(font1, Message3.c_str(), 50, 1).x,
+                           MeasureTextEx(font1, Message3.c_str(), 50, 1).y, YELLOW);
+    }
 
     //Messages
     DrawTextEx(font1, Message1.c_str(),fontPosition1, 100, 1,WHITE);
+    DrawTextEx(font1, Message2.c_str(),fontPosition2, 50, 1,WHITE);
+    DrawTextEx(font1, Message3.c_str(),fontPosition3, 50, 1,WHITE);
+    DrawTextEx(font1, Message4.c_str(),fontPosition4, 25, 1,WHITE);
+    DrawTextEx(font1, Message4.c_str(),fontPosition5, 25, 1,WHITE);
+    DrawTextEx(font1, Message4.c_str(),fontPosition6, 25, 1,WHITE);
+
 
     //Buttons
     for (auto& button : buttons)

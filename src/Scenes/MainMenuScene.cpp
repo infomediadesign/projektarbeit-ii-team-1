@@ -48,12 +48,17 @@ MainMenuScene::MainMenuScene() {
 
     this->buttonOptions = new game::Button("Options",
                                            GetScreenWidth()/2,
-                                           GetScreenHeight()/2,
+                                           GetScreenHeight()/2 - 25,
+                                           50, 1, YELLOW, WHITE);
+
+    this->buttonControls = new game::Button("Controls",
+                                           GetScreenWidth()/2,
+                                           GetScreenHeight()/2 + 50,
                                            50, 1, YELLOW, WHITE);
 
     this->buttonCredits = new game::Button("Credits",
                                            GetScreenWidth()/2,
-                                           GetScreenHeight()/2 + 100,
+                                           GetScreenHeight()/2 + 125,
                                            50, 1, YELLOW, WHITE);
 
     this->buttonExit = new game::Button("Exit",
@@ -63,6 +68,7 @@ MainMenuScene::MainMenuScene() {
 
     this->buttons.push_back(buttonNewGame);
     this->buttons.push_back(buttonOptions);
+    this->buttons.push_back(buttonControls);
     this->buttons.push_back(buttonCredits);
     this->buttons.push_back(buttonExit);
 
@@ -72,6 +78,7 @@ MainMenuScene::MainMenuScene() {
 MainMenuScene::~MainMenuScene() {
     delete buttonNewGame;
     delete buttonOptions;
+    delete buttonControls;
     delete buttonCredits;
     delete buttonExit;
 }
@@ -111,6 +118,11 @@ void MainMenuScene::CustomUpdate() {
         {
             PlaySound(this->uiBlip2);
             this->switchTo = MAINOPTIONS;
+        }
+        if(this->buttonControls->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = MAINCONTROLS;
         }
         if (this->buttonCredits->active == true)
         {

@@ -32,6 +32,7 @@
     public:
         game::Button* buttonNewGame;
         game::Button* buttonOptions;
+        game::Button* buttonControls;
         game::Button* buttonCredits;
         game::Button* buttonExit;
 

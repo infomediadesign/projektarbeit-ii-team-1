@@ -33,9 +33,13 @@ public:
     std::string Message1;
     std::string Message2;
     std::string Message3;
+    std::string Message4;
     Vector2 fontPosition1;
     Vector2 fontPosition2;
     Vector2 fontPosition3;
+    Vector2 fontPosition4;
+    Vector2 fontPosition5;
+    Vector2 fontPosition6;
 
 public:
     game::Button* buttonMusic;
