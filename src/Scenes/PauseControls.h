@@ -20,8 +20,7 @@ class PauseControls : public MenuScenes {
     //Attributes
 public:
 
-    Texture2D background;
-    Texture2D creditBox;
+    Texture2D controlBox;
     Font font1;
 
     //SFX
@@ -34,7 +33,7 @@ public:
     Vector2 fontPosition2;
 
 public:
-    game::Button* buttonReturnMainMenu;
+    game::Button* buttonReturnPauseMenu;
 
     int active_button;
 

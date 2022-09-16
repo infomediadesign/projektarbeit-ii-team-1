@@ -20,7 +20,7 @@ MainControls::MainControls()
     //CreditBox
     Image creditBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
     ImageResize(&creditBoxImage, creditBoxImage.width*3, creditBoxImage.height*3);
-    this->creditBox = LoadTextureFromImage(creditBoxImage);
+    this->controlBox = LoadTextureFromImage(creditBoxImage);
     UnloadImage(creditBoxImage);
 
 //Text with font
@@ -49,8 +49,8 @@ MainControls::MainControls()
 //Buttons
     this->active_button = 0;
 
-    this->buttonReturnMainMenu = new game::Button("Return to Main Menu (Esc)",
-                                                  GetScreenWidth()/2 - 250,
+    this->buttonReturnMainMenu = new game::Button("Return (Esc)",
+                                                  GetScreenWidth()/2 - 315,
                                                   GetScreenHeight()/2 + 300,
                                                   50, 1, YELLOW, WHITE);
 
@@ -101,7 +101,7 @@ void MainControls::CustomDraw() {
 
     //Textures
     DrawTexture(background, 0, 0, WHITE);
-    DrawTexture(creditBox, (GetScreenWidth() - creditBox.width)/2, (GetScreenHeight() - creditBox.height)/2, WHITE);
+    DrawTexture(controlBox, (GetScreenWidth() - controlBox.width)/2, (GetScreenHeight() - controlBox.height)/2, WHITE);
 
     //Messages
     DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
@@ -119,5 +119,5 @@ void MainControls::Unload() {
     UnloadSound(uiBlip);
     UnloadSound(uiBlip2);
     UnloadTexture(background);
-    UnloadTexture(creditBox);
+    UnloadTexture(controlBox);
 }

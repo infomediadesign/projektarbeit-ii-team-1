@@ -20,7 +20,7 @@ class MainControls : public MenuScenes {
 public:
 
     Texture2D background;
-    Texture2D creditBox;
+    Texture2D controlBox;
     Font font1;
 
     //SFX

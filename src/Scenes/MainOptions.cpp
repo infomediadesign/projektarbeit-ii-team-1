@@ -91,8 +91,8 @@ MainOptions::MainOptions()
                                         GetScreenHeight()/2 + 100,
                                         50, 1, YELLOW, WHITE);
 
-    this->buttonReturnMainMenu = new game::Button("Return to Main Menu (Esc)",
-                                              GetScreenWidth()/2 - 200,
+    this->buttonReturnMainMenu = new game::Button("Return (Esc)",
+                                              GetScreenWidth()/2 - 300,
                                               GetScreenHeight()/2 + 250,
                                               50, 1, YELLOW, WHITE);
 

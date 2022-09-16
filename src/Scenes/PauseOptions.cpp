@@ -85,8 +85,8 @@ PauseOptions::PauseOptions()
                                               GetScreenHeight()/2 + 100,
                                               50, 1, YELLOW, WHITE);
 
-    this->buttonReturnPauseMenu = new game::Button("Return to Pause Menu (Esc)",
-                                                  GetScreenWidth()/2 - 200,
+    this->buttonReturnPauseMenu = new game::Button("Pause Menu (Esc)",
+                                                  GetScreenWidth()/2 - 250,
                                                   GetScreenHeight()/2 + 250,
                                                   50, 1, YELLOW, WHITE);
 
@@ -229,7 +229,7 @@ void PauseOptions::Unload() {
     UnloadFont(font1);
     UnloadSound(uiBlip);
     UnloadSound(uiBlip2);
-   UnloadTexture(pauseOptionsBox);
+    UnloadTexture(pauseOptionsBox);
     UnloadTexture(optionBar1);
     UnloadTexture(optionBar100);
     UnloadTexture(optionButton);
