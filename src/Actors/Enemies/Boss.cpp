@@ -14,6 +14,8 @@
 
 Boss::Boss(int posX, int posY, std::vector<std::string> dialogue)
 {
+    this->name = "The Boss";
+
     this->position.x = posX;
     this->position.y = posY;
 

@@ -83,7 +83,7 @@ int main() {
 
 
     // ===== PLAYER INIT =====
-    std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, true);
+    std::shared_ptr<Player> player = std::make_shared<Player>(GetScreenWidth() / 2, GetScreenHeight() / 2, false);
 
 
     // Victory animation init
