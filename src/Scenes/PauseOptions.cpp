@@ -163,11 +163,17 @@ void PauseOptions::CustomUpdate() {
     {
         if (IsKeyPressed(KEY_LEFT))
         {
-            brightness -= 0.1;
+            if (brightness <= 0.9)
+            {
+                brightness += 0.1;
+            }
         }
         if (IsKeyPressed(KEY_RIGHT))
         {
-            brightness += 0.1;
+            if (brightness >= 0.1)
+            {
+                brightness -= 0.1;
+            }
         }
     }
 

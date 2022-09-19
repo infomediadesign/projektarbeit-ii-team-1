@@ -36,7 +36,32 @@ MainOptions::MainOptions()
     //Sound
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
-    this->punchsound = LoadSound("assets/audio/sfx/punch.wav");
+    this->punchSound = LoadSound("assets/audio/sfx/punch.wav");
+
+    this->bomb = LoadSound("assets/audio/sfx/bomb.wav");
+    this->chatter = LoadSound("assets/audio/sfx/chatter.wav");
+    this->gunshot = LoadSound("assets/audio/sfx/gunshot.wav");
+    this->kaching = LoadSound("assets/audio/sfx/kaching.wav");
+    this->laser = LoadSound("assets/audio/sfx/laser.wav");
+    this->slurp = LoadSound("assets/audio/sfx/slurp.wav");
+    this->tazer = LoadSound("assets/audio/sfx/tazer.wav");
+    this->uiBlocked = LoadSound("assets/audio/sfx/whip.wav");
+    this->whip = LoadSound("assets/audio/sfx/whip.wav");
+    this->whipCrack = LoadSound("assets/audio/sfx/whipCrack.wav");
+
+    SetSoundVolume(punchSound, volSfx);
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+    SetSoundVolume(bomb, volSfx);
+    SetSoundVolume(chatter, volSfx);
+    SetSoundVolume(gunshot, volSfx);
+    SetSoundVolume(kaching, volSfx);
+    SetSoundVolume(laser, volSfx);
+    SetSoundVolume(slurp, volSfx);
+    SetSoundVolume(tazer, volSfx);
+    SetSoundVolume(uiBlocked, volSfx);
+    SetSoundVolume(whip, volSfx);
+    SetSoundVolume(whipCrack, volSfx);
 
     Message1 = "Options";
     Message2 = "On";
@@ -103,6 +128,10 @@ MainOptions::MainOptions()
     this->buttons.push_back(buttonReturnMainMenu);
 
     this->switchScene = false;
+
+    //Bars
+    //this->currentBrightness = this->maxBrightness;
+   // this->updateBars();
 }
 
 MainOptions::~MainOptions() {
@@ -140,7 +169,7 @@ void MainOptions::CustomUpdate() {
     {
         if (this->buttonSFX->active == true)
         {
-            PlaySound(this->punchsound);
+            PlaySound(this->punchSound);
         }
 
         if (this->buttonFullscreen->active == true)
@@ -155,13 +184,45 @@ void MainOptions::CustomUpdate() {
     {
         if (IsKeyPressed(KEY_LEFT))
         {
-            SetSoundVolume(punchsound, volSfx - 0.1);
-            PlaySound(this->punchsound);
+            if (volSfx >= 0)
+            {
+                volSfx -= 0.1;
+                SetSoundVolume(punchSound, volSfx);
+                SetSoundVolume(uiBlip, volSfx);
+                SetSoundVolume(uiBlip2, volSfx);
+                SetSoundVolume(bomb, volSfx);
+                SetSoundVolume(chatter, volSfx);
+                SetSoundVolume(gunshot, volSfx);
+                SetSoundVolume(kaching, volSfx);
+                SetSoundVolume(laser, volSfx);
+                SetSoundVolume(slurp, volSfx);
+                SetSoundVolume(tazer, volSfx);
+                SetSoundVolume(uiBlocked, volSfx);
+                SetSoundVolume(whip, volSfx);
+                SetSoundVolume(whipCrack, volSfx);
+                PlaySound(this->punchSound);
+            }
         }
         if (IsKeyPressed(KEY_RIGHT))
         {
-            SetSoundVolume(punchsound, volSfx + 0.1);
-            PlaySound(this->punchsound);
+            if (volSfx <= 0.9)
+            {
+                volSfx += 0.1;
+                SetSoundVolume(punchSound, volSfx); //"->" damit man sieht dass es ein Attribut ist
+                SetSoundVolume(uiBlip, volSfx);
+                SetSoundVolume(uiBlip2, volSfx);
+                SetSoundVolume(bomb, volSfx);
+                SetSoundVolume(chatter, volSfx);
+                SetSoundVolume(gunshot, volSfx);
+                SetSoundVolume(kaching, volSfx);
+                SetSoundVolume(laser, volSfx);
+                SetSoundVolume(slurp, volSfx);
+                SetSoundVolume(tazer, volSfx);
+                SetSoundVolume(uiBlocked, volSfx);
+                SetSoundVolume(whip, volSfx);
+                SetSoundVolume(whipCrack, volSfx);
+                PlaySound(this->punchSound);
+            }
         }
     }
 
@@ -169,12 +230,22 @@ void MainOptions::CustomUpdate() {
     {
         if (IsKeyPressed(KEY_LEFT))
         {
-            brightness -= 0.1;
+            if (brightness <= 0.9)
+            {
+                brightness += 0.1;
+            }
+            //this->currentBrightness = this->currentBrightness - brightness;
         }
         if (IsKeyPressed(KEY_RIGHT))
         {
-            brightness += 0.1;
+            if (brightness >= 0.1)
+            {
+                brightness -= 0.1;
+            }
+           // this->currentBrightness = this->currentBrightness - brightness;
         }
+
+       // this->updateBars();
     }
 
     if(IsKeyPressed(KEY_ESCAPE))
@@ -199,19 +270,19 @@ void MainOptions::CustomDraw() {
     DrawTexture(optionBar100, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 + 25, WHITE);
 
     //OptionButton
-    DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 + 125, WHITE);
-    DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 250, (GetScreenHeight() - optionBar100.height)/2 + 125, WHITE);
+    DrawTexture(optionButton, (GetScreenWidth() - optionButton.width)/2 - 20, (GetScreenHeight() - optionButton.height)/2 + 125, WHITE);
+    DrawTexture(optionButton, (GetScreenWidth() - optionButton.width)/2 + 130, (GetScreenHeight() - optionButton.height)/2 + 125, WHITE);
 
     if (IsWindowFullscreen())
     {
-        DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 + 125, YELLOW);
+        DrawTexture(optionButton, (GetScreenWidth() - optionButton.width)/2 - 20, (GetScreenHeight() - optionButton.height)/2 + 125, YELLOW);
         DrawRectangleLines(fontPosition2.x, fontPosition2.y,
                            MeasureTextEx(font1, Message2.c_str(), 50, 1).x,
                            MeasureTextEx(font1, Message2.c_str(), 50, 1).y, YELLOW);
     }
     else
     {
-        DrawTexture(optionButton, (GetScreenWidth() - optionBar100.width)/2 + 250, (GetScreenHeight() - optionBar100.height)/2 + 125, YELLOW);
+        DrawTexture(optionButton, (GetScreenWidth() - optionButton.width)/2 + 130, (GetScreenHeight() - optionButton.height)/2 + 125, YELLOW);
         DrawRectangleLines(fontPosition3.x, fontPosition3.y,
                            MeasureTextEx(font1, Message3.c_str(), 50, 1).x,
                            MeasureTextEx(font1, Message3.c_str(), 50, 1).y, YELLOW);
@@ -233,10 +304,52 @@ void MainOptions::CustomDraw() {
     }
 }
 
-void MainOptions::Unload() {
+/*void MainOptions::updateBars()
+{
+    //BrightnessBar
+    float brightnessPercentage = this->currentBrightness / this->maxBrightness;
+    brightnessPercentage = brightnessPercentage * 100;
+
+    if (this->currentBrightness <= 0)
+    {
+        //how do i implement the bar for 0%
+        //provisorisch option bar 1 für 0 % genommen
+    }
+    else
+    {
+        std::string directoryString = "assets/graphics/ui/menu/Optionbar/Optionsbalken 1";
+        std::string workingString = std::to_string((int) brightnessPercentage);
+
+        for (int i = 0; i < workingString.size(); i++) {
+            directoryString.push_back(workingString[i]);
+        }
+        directoryString.push_back('.');
+        directoryString.push_back('p');
+        directoryString.push_back('n');
+        directoryString.push_back('g');
+
+        this->optionBar1 = LoadTexture(directoryString.c_str());
+    }
+}*/
+
+void MainOptions::Unload() // does all of this go in the deconstructor?
+{
     UnloadFont(font1);
+
     UnloadSound(uiBlip);
     UnloadSound(uiBlip2);
+    UnloadSound(punchSound);
+    UnloadSound(bomb);
+    UnloadSound(chatter);
+    UnloadSound(gunshot);
+    UnloadSound(kaching);
+    UnloadSound(laser);
+    UnloadSound(slurp);
+    UnloadSound(tazer);
+    UnloadSound(uiBlocked);
+    UnloadSound(whip);
+    UnloadSound(whipCrack);
+
     UnloadTexture(background);
     UnloadTexture(mainOptionsBox);
     UnloadTexture(optionBar1);

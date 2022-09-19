@@ -28,7 +28,17 @@ public:
     //SFX
     Sound uiBlip; //navigate
     Sound uiBlip2; //confirm
-    Sound punchsound;
+    Sound punchSound;
+    Sound bomb;
+    Sound chatter;
+    Sound gunshot;
+    Sound kaching;
+    Sound laser;
+    Sound slurp;
+    Sound tazer;
+    Sound uiBlocked;
+    Sound whip;
+    Sound whipCrack;
 
     std::string Message1;
     std::string Message2;
@@ -52,6 +62,11 @@ public:
 
     std::vector<game::Button*> buttons;
 
+public:
+    //Bars
+    float currentBrightness;
+    float maxBrightness;
+
     // Methods
 public:
 
@@ -60,6 +75,9 @@ public:
 
     void CustomUpdate() override;
     void CustomDraw() override;
+
+    //void updateBars();
+
     void Unload();
 };
 
