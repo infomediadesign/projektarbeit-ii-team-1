@@ -67,6 +67,7 @@ MainOptions::MainOptions()
     Message2 = "On";
     Message3 = "Off";
     Message4 = "(Use left & right arrow keys to adjust)";
+    Message5 = "Return (Esc)";
 
     fontPosition1 = {GetScreenWidth()/2 -
                      MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
@@ -92,6 +93,10 @@ MainOptions::MainOptions()
                      MeasureTextEx(font1, Message4.c_str(), (float)25, 1).x/2,
                      GetScreenHeight() - (float)25/2 - 480};
 
+    fontPosition7 = {GetScreenWidth()/2 - 350 -
+                     MeasureTextEx(font1, Message5.c_str(), (float)25, 1).x/2,
+                     GetScreenHeight() - (float)50/2 - 250};
+
     //Buttons
     this->active_button = 0;
 
@@ -116,16 +121,10 @@ MainOptions::MainOptions()
                                         GetScreenHeight()/2 + 100,
                                         50, 1, YELLOW, WHITE);
 
-    this->buttonReturnMainMenu = new game::Button("Return (Esc)",
-                                              GetScreenWidth()/2 - 300,
-                                              GetScreenHeight()/2 + 250,
-                                              50, 1, YELLOW, WHITE);
-
     this->buttons.push_back(buttonMusic);
     this->buttons.push_back(buttonSFX);
     this->buttons.push_back(buttonBrightness);
     this->buttons.push_back(buttonFullscreen);
-    this->buttons.push_back(buttonReturnMainMenu);
 
     this->switchScene = false;
 }
@@ -135,7 +134,27 @@ MainOptions::~MainOptions() {
     delete buttonSFX;
     delete buttonBrightness;
     delete buttonFullscreen;
-    delete buttonReturnMainMenu;
+
+    UnloadFont(font1);
+
+    UnloadSound(uiBlip);
+    UnloadSound(uiBlip2);
+    UnloadSound(punchSound);
+    UnloadSound(bomb);
+    UnloadSound(chatter);
+    UnloadSound(gunshot);
+    UnloadSound(kaching);
+    UnloadSound(laser);
+    UnloadSound(slurp);
+    UnloadSound(tazer);
+    UnloadSound(uiBlocked);
+    UnloadSound(whip);
+    UnloadSound(whipCrack);
+
+    UnloadTexture(background);
+    UnloadTexture(mainOptionsBox);
+    UnloadTexture(optionBar);
+    UnloadTexture(optionButton);
 }
 
 void MainOptions::CustomUpdate() {
@@ -296,6 +315,11 @@ void MainOptions::CustomDraw() {
     DrawTextEx(font1, Message4.c_str(),fontPosition4, 25, 1,WHITE);
     DrawTextEx(font1, Message4.c_str(),fontPosition5, 25, 1,WHITE);
     DrawTextEx(font1, Message4.c_str(),fontPosition6, 25, 1,WHITE);
+    DrawTextEx(font1, Message5.c_str(),fontPosition7, 50, 1,WHITE);
+
+    DrawRectangleLines(fontPosition7.x, fontPosition7.y,
+                       MeasureTextEx(font1, Message5.c_str(), 50, 1).x,
+                       MeasureTextEx(font1, Message5.c_str(), 50, 1).y, YELLOW);
 
     //Buttons
     for (auto& button : buttons)
@@ -325,7 +349,7 @@ void MainOptions::CustomDraw() {
         this->brightnessBar = LoadTexture(directoryString.c_str());
     }
 }*/
-
+/*
 void MainOptions::Unload() // does all of this go in the deconstructor?
 {
     UnloadFont(font1);
@@ -348,4 +372,4 @@ void MainOptions::Unload() // does all of this go in the deconstructor?
     UnloadTexture(mainOptionsBox);
     UnloadTexture(optionBar);
     UnloadTexture(optionButton);
-}
+}*/

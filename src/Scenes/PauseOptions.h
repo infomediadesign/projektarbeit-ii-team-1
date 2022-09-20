@@ -41,19 +41,20 @@ public:
     std::string Message2;
     std::string Message3;
     std::string Message4;
+    std::string Message5;
     Vector2 fontPosition1;
     Vector2 fontPosition2;
     Vector2 fontPosition3;
     Vector2 fontPosition4;
     Vector2 fontPosition5;
     Vector2 fontPosition6;
+    Vector2 fontPosition7;
 
 public:
     game::Button* buttonMusic;
     game::Button* buttonSFX;
     game::Button* buttonBrightness;
     game::Button* buttonFullscreen;
-    game::Button* buttonReturnPauseMenu;
 
     int active_button;
 

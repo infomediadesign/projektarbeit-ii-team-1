@@ -28,7 +28,12 @@ PauseControls::PauseControls()
     SetSoundVolume(uiBlip2, volSfx);
 
     Message1 = "Controls";
-    Message2 = "Game Design: Marko Lapadatovic, Leah Berner\nLead Artist: Leah Berner\nArtist: Marko Lapadatovic\nLead Programmer: Maximilian Roeck\nProgrammer: Lena White, Sefer Tokdilli\nSound Artist: Maximilian Roeck";
+    Message2 = "Walking/Menu Navigation: WASD/Arrow Keys\n" //WASD noch einbauen!!!
+               "Interactions/Dialogue/Confirmations: E\n"
+               "Inventory: I\n"
+               "Skill Tree: C\n"
+               "Menu: ESC\n"
+               "Menu Confirmation: ENTER";
 
     fontPosition1 = {GetScreenWidth()/2 -
                      MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
@@ -41,7 +46,7 @@ PauseControls::PauseControls()
 //Buttons
     this->active_button = 0;
 
-    this->buttonReturnPauseMenu = new game::Button("Pause Menu (Esc)",
+    this->buttonReturnPauseMenu = new game::Button("Return (Esc)",
                                                   GetScreenWidth()/2 - 305,
                                                   GetScreenHeight()/2 + 300,
                                                   50, 1, YELLOW, WHITE);

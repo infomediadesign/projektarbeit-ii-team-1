@@ -61,6 +61,7 @@ PauseOptions::PauseOptions()
     Message2 = "On";
     Message3 = "Off";
     Message4 = "(Use left & right arrow keys to adjust)";
+    Message5 = "Return (Esc)";
 
     fontPosition1 = {GetScreenWidth()/2 -
                      MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
@@ -86,6 +87,10 @@ PauseOptions::PauseOptions()
                      MeasureTextEx(font1, Message4.c_str(), (float)25, 1).x/2,
                      GetScreenHeight() - (float)25/2 - 480};
 
+    fontPosition7 = {GetScreenWidth()/2 - 350 -
+                     MeasureTextEx(font1, Message5.c_str(), (float)25, 1).x/2,
+                     GetScreenHeight() - (float)50/2 - 250};
+
     //Buttons
     this->active_button = 0;
 
@@ -110,16 +115,10 @@ PauseOptions::PauseOptions()
                                               GetScreenHeight()/2 + 100,
                                               50, 1, YELLOW, WHITE);
 
-    this->buttonReturnPauseMenu = new game::Button("Pause Menu (Esc)",
-                                                  GetScreenWidth()/2 - 250,
-                                                  GetScreenHeight()/2 + 250,
-                                                  50, 1, YELLOW, WHITE);
-
     this->buttons.push_back(buttonMusic);
     this->buttons.push_back(buttonSFX);
     this->buttons.push_back(buttonBrightness);
     this->buttons.push_back(buttonFullscreen);
-    this->buttons.push_back(buttonReturnPauseMenu);
 
     this->switchScene = false;
 }
@@ -129,7 +128,6 @@ PauseOptions::~PauseOptions() {
     delete buttonSFX;
     delete buttonBrightness;
     delete buttonFullscreen;
-    delete buttonReturnPauseMenu;
 }
 
 void PauseOptions::CustomUpdate() {
@@ -289,6 +287,11 @@ void PauseOptions::CustomDraw() {
     DrawTextEx(font1, Message4.c_str(),fontPosition4, 25, 1,WHITE);
     DrawTextEx(font1, Message4.c_str(),fontPosition5, 25, 1,WHITE);
     DrawTextEx(font1, Message4.c_str(),fontPosition6, 25, 1,WHITE);
+    DrawTextEx(font1, Message5.c_str(),fontPosition7, 50, 1,WHITE);
+
+    DrawRectangleLines(fontPosition7.x, fontPosition7.y,
+                       MeasureTextEx(font1, Message5.c_str(), 50, 1).x,
+                       MeasureTextEx(font1, Message5.c_str(), 50, 1).y, YELLOW);
 
     //Buttons
     for (auto& button : buttons)

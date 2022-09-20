@@ -380,7 +380,7 @@ int main() {
     UnloadFont(font1);
     testTitle.Unload();
     testMain.Unload();
-    testMainOps.Unload();
+    //testMainOps.Unload();
     testCredit.Unload();
     testPause.Unload();
     testPauseOps.Unload();
