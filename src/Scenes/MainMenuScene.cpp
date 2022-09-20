@@ -31,6 +31,9 @@ MainMenuScene::MainMenuScene() {
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+
     Message1 = "Main Menu";
 
     fontPosition1 = {GetScreenWidth()/2 -

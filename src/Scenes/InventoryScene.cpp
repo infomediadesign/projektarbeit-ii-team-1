@@ -4,12 +4,22 @@
 #include "../Items/PunchGun.h"
 #include "iostream"
 
+extern float volSfx;
+
 InventoryScene::InventoryScene(std::shared_ptr<Player> player)
 {
     PunchGun test({1, 1});
     //this->items.push_back(test);
     this->player = player;
     font1 = LoadFont("../../assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+
     items= {};
     this->drawLevelBackground = true;
 }

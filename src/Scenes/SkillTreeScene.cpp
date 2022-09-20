@@ -4,6 +4,7 @@
 
 #include "SkillTreeScene.h"
 
+extern float volSfx;
 
 SkillTreeScene::SkillTreeScene(std::shared_ptr<Player> player)
 {
@@ -27,6 +28,13 @@ SkillTreeScene::SkillTreeScene(std::shared_ptr<Player> player)
     skillImgs = {skillLeftArmImg, skillRightArmImg, skillLeftLegImg, skillRightLegImg, skillLeftEyeImg,skillRightEyeImg};
     skillTxts = {"Left arm", "Right arm", "Left leg", "Right leg", "Left Eye", "Right Eye"};
     skillInfoTxts ={"Defence: 2", "Defence: 4", "Defence: 8", "Defence: 12", "Defence: 16", "Defence: 22"};
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
 }
 
 void SkillTreeScene::CustomUpdate()

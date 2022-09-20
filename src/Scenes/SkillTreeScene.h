@@ -18,6 +18,9 @@ private:
             skillRightArmImg, skillLeftLegImg, skillRightLegImg, skillLeftEyeImg,
             skillRightEyeImg;
 
+    //SFX
+    Sound uiBlip; //navigate
+    Sound uiBlip2; //confirm
 
     std::vector<Texture2D> skillImgs = {skillLeftArmImg, skillRightArmImg, skillLeftLegImg, skillRightLegImg, skillLeftEyeImg,skillRightEyeImg};
     std::vector<std::string> skillTxts = {"Left arm", "Right arm", "Left leg", "Right leg", "Left Eye", "Right Eye"};

@@ -30,6 +30,9 @@ MainControls::MainControls()
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+
     Message1 = "Controls";
     Message2 = "Walking/Menu Navigation: WASD/Arrow Keys\n" //WASD noch einbauen!!!
                "Interactions/Dialogue/Confirmations: E\n"
