@@ -12,7 +12,6 @@
 #include "../Items/LaserGun.h"
 #include "../Items/BottlecapAmmo.h"
 
-
 extern float volSfx;
 extern float volMusic;
 
@@ -917,6 +916,11 @@ void BattleScene::menuNavigation() {
         }
 
         // Enable / Disable buttons
+
+        if (this->hasPunchGun)
+        {
+            this->buttons[0]->blocked = true;
+        }
         if (this->hasPunchGun == false || this->punchGunUses <= 0) {
             this->buttons[1]->blocked = true;
         }
