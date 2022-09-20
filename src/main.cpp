@@ -173,6 +173,11 @@ int main() {
     currentlevelPointer->allActors.push_back(pDealer);
     Vector2 posi = {400, 400};
     currentlevelPointer->items.push_back(std::make_shared<PunchGun>(posi));
+    posi = {500, 500};
+    currentlevelPointer->items.push_back(std::make_shared<LaserGun>(posi));
+    posi = {600, 600};
+    currentlevelPointer->items.push_back(std::make_shared<BottlecapGun>(posi));
+
 
     std::shared_ptr<LevelScene> level01;
     std::shared_ptr<LevelScene> levelRooftop;

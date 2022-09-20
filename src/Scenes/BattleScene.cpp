@@ -93,20 +93,6 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     this->fadeOut = false;
     this->fadeOutValue = 0;
 
-    // For test purposes uwu
-    Vector2 test = {1, 2};
-    this->player->inventory.push_back(std::make_shared<PunchGun>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapGun>(test));
-    this->player->inventory.push_back(std::make_shared<LaserGun>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
-    this->player->inventory.push_back(std::make_shared<Bomb>());
-    this->player->inventory.push_back(std::make_shared<Bomb>());
-    this->player->inventory.push_back(std::make_shared<Frisbee>());
-    this->player->inventory.push_back(std::make_shared<Frisbee>());
-    this->player->inventory.push_back(std::make_shared<Longdrink>());
-
     // Setup for items
     this->hasBottlecapGun = false;
     this->hasPunchGun = false;

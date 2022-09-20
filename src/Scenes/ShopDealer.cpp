@@ -11,6 +11,7 @@ extern float volSfx;
 ShopDealer::ShopDealer(std::shared_ptr<Player> player)
 {
     TraceLog(LOG_INFO, "Shop constructor called");
+
     this->drawLevelBackground = true;
     this->switchScene = false;
 
@@ -77,6 +78,14 @@ void ShopDealer::CustomUpdate()
         buttons[activeButton]->active = true;
         PlaySound(this->uiBlip);
     }
+
+    // For tests only, updates Buttons
+    if (IsKeyPressed(KEY_O))
+    {
+        this->updateButtons();
+    }
+
+
 
     if (IsKeyPressed(KEY_E))
     {
@@ -201,16 +210,19 @@ void ShopDealer::CustomUpdate()
 
                     break;
                 case 1:
+                    TraceLog(LOG_INFO, "Upgrading Punch-Gun");
                     this->punchGunPtr->damage = 16;
                     this->player->money = this->player->money - 50;
                     this->punchGunPtr->upgraded = true;
                     break;
                 case 2:
+                    TraceLog(LOG_INFO, "Upgrading Bottle cap-Gun");
                     this->bottlecapGunPtr->damage = 20;
                     this->player->money = this->player->money - 50;
                     this->bottlecapGunPtr->upgraded = true;
                     break;
                 case 3:
+                    TraceLog(LOG_INFO, "Upgrading Laser-Gun");
                     this->laserGunPtr->damage = 24;
                     this->player->money = this->player->money - 50;
                     this->laserGunPtr->upgraded = true;
@@ -294,10 +306,12 @@ void ShopDealer::updateButtons()
     {
         if (this->punchGunPtr->upgraded == false)
         {
+            TraceLog(LOG_INFO, "Condition met: PunchGun is not upgraded");
             workingString.append(" (50$)");
         }
         else
         {
+            TraceLog(LOG_INFO, "Condition met: PunchGun is upgraded");
             workingString.append(" (MAXED)");
         }
     }
@@ -329,12 +343,15 @@ void ShopDealer::updateButtons()
     workingString = "Upgrade Laser-Gun";
     if (this->hasLaserGun == true)
     {
+        TraceLog(LOG_INFO, "Condition met: Has Laser-Gun");
         if (this->laserGunPtr->upgraded == false)
         {
+            TraceLog(LOG_INFO, "Condition met: Laser-Gun is not upgraded");
             workingString.append(" (50$)");
         }
         else
         {
+            TraceLog(LOG_INFO, "Condition met: Laser-Gun is already upgraded");
             workingString.append(" (MAXED)");
         }
     }
@@ -362,7 +379,7 @@ void ShopDealer::updateButtons()
     }
     if (this->hasBottlecapGun == true)
     {
-        if (this->bottlecapGunPtr->upgraded = true || this->player->money < 50)
+        if (this->bottlecapGunPtr->upgraded == true || this->player->money < 50)
         {
             this->buttons[2]->blocked = true;
         }
@@ -373,7 +390,7 @@ void ShopDealer::updateButtons()
     }
     if (this->hasLaserGun == true)
     {
-        if (this->laserGunPtr->upgraded = true || this->player->money < 50)
+        if (this->laserGunPtr->upgraded == true || this->player->money < 50)
         {
             this->buttons[3]->blocked = true;
         }
