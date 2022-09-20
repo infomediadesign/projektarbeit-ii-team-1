@@ -18,15 +18,24 @@ class PauseOptions : public MenuScenes {
     // Attributes
 public:
     Texture2D pauseOptionsBox;
-    Texture2D optionBar1;
-    Texture2D optionBar100;
+    Texture2D optionBar;
     Texture2D optionButton;
     Font font1;
 
     //SFX
     Sound uiBlip; //navigate
     Sound uiBlip2; //confirm
-    Sound punchsound;
+    Sound punchSound;
+    Sound bomb;
+    Sound chatter;
+    Sound gunshot;
+    Sound kaching;
+    Sound laser;
+    Sound slurp;
+    Sound tazer;
+    Sound uiBlocked;
+    Sound whip;
+    Sound whipCrack;
 
     std::string Message1;
     std::string Message2;
@@ -49,7 +58,6 @@ public:
     int active_button;
 
     std::vector<game::Button*> buttons;
-
 
     // Methods
 public:

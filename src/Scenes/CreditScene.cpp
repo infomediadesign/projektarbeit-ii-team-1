@@ -29,6 +29,9 @@ this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+
 Message1 = "Credits";
 Message2 = "Game Design: Marko Lapadatovic, Leah Berner\n"
            "Lead Artist: Leah Berner\n"

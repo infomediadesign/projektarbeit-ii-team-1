@@ -20,8 +20,7 @@ class MainOptions : public MenuScenes {
 public:
     Texture2D background;
     Texture2D mainOptionsBox;
-    Texture2D optionBar1;
-    Texture2D optionBar100;
+    Texture2D optionBar;
     Texture2D optionButton;
     Font font1;
 
@@ -62,11 +61,6 @@ public:
 
     std::vector<game::Button*> buttons;
 
-public:
-    //Bars
-    float currentBrightness;
-    float maxBrightness;
-
     // Methods
 public:
 
@@ -75,9 +69,6 @@ public:
 
     void CustomUpdate() override;
     void CustomDraw() override;
-
-    //void updateBars();
-
     void Unload();
 };
 

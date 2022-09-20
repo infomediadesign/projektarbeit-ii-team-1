@@ -6,6 +6,7 @@
 
 #include <iostream>
 
+extern float volMusic;
 extern float volSfx;
 extern float brightness;
 
@@ -23,12 +24,11 @@ MainOptions::MainOptions()
     this->mainOptionsBox = LoadTextureFromImage(mainMenuBoxImage);
     UnloadImage(mainMenuBoxImage);
 
-    //OptionBars
-    this->optionBar1 = LoadTexture("assets/graphics/ui/menu/Optionbar/Optionsbalken 1.png");
-    this->optionBar100 = LoadTexture("assets/graphics/ui/menu/Optionbar/Optionsbalken100.png");
+    //OptionBar
+    this->optionBar = LoadTexture("assets/graphics/ui/menu/Optionbar/Option10.png");
 
     //OptionsButton
-    this->optionButton = LoadTexture("assets/graphics/ui/menu/Optionbar/Options-Button.png");
+    this->optionButton = LoadTexture("assets/graphics/ui/menu/Optionbar/OptionsButton.png");
 
     //Text with font
     this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
@@ -128,10 +128,6 @@ MainOptions::MainOptions()
     this->buttons.push_back(buttonReturnMainMenu);
 
     this->switchScene = false;
-
-    //Bars
-    //this->currentBrightness = this->maxBrightness;
-   // this->updateBars();
 }
 
 MainOptions::~MainOptions() {
@@ -234,7 +230,6 @@ void MainOptions::CustomUpdate() {
             {
                 brightness += 0.1;
             }
-            //this->currentBrightness = this->currentBrightness - brightness;
         }
         if (IsKeyPressed(KEY_RIGHT))
         {
@@ -242,10 +237,7 @@ void MainOptions::CustomUpdate() {
             {
                 brightness -= 0.1;
             }
-           // this->currentBrightness = this->currentBrightness - brightness;
         }
-
-       // this->updateBars();
     }
 
     if(IsKeyPressed(KEY_ESCAPE))
@@ -258,16 +250,25 @@ void MainOptions::CustomUpdate() {
 }
 
 void MainOptions::CustomDraw() {
+    //we don't need percentage variables since we already use float
+    //however, the variable "brightnessPercentage" is needed, because the bar for brightness is inverted
+    float brightnessPercentage = 1 - brightness;
+
+    float RecWidthMusic = optionBar.width - optionBar.width * volMusic;
+    float RecWidthSfx = optionBar.width - optionBar.width * volSfx;
+    float RecWidthBrightness = optionBar.width - optionBar.width * brightnessPercentage;
 
     //Textures
     DrawTexture(background, 0, 0, WHITE);
     DrawTexture(mainOptionsBox, (GetScreenWidth() - mainOptionsBox.width)/2, (GetScreenHeight() - mainOptionsBox.height)/2, WHITE);
 
     //OptionBarTextures
-    //DrawTexture(optionBar1, (GetScreenWidth() - optionBar1.width)/2, (GetScreenHeight() - optionBar1.height)/2, WHITE);
-    DrawTexture(optionBar100, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 - 175, WHITE);
-    DrawTexture(optionBar100, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 - 75, WHITE);
-    DrawTexture(optionBar100, (GetScreenWidth() - optionBar100.width)/2 + 100, (GetScreenHeight() - optionBar100.height)/2 + 25, WHITE);
+    DrawTexture(optionBar, (GetScreenWidth() - optionBar.width)/2 + 100, (GetScreenHeight() - optionBar.height)/2 - 175, WHITE);
+    DrawTexture(optionBar, (GetScreenWidth() - optionBar.width)/2 + 100, (GetScreenHeight() - optionBar.height)/2 - 75, WHITE);
+    DrawTexture(optionBar, (GetScreenWidth() - optionBar.width)/2 + 100, (GetScreenHeight() - optionBar.height)/2 + 25, WHITE);
+    DrawRectangle((GetScreenWidth() - optionBar.width)/2 + 100 + optionBar.width - RecWidthMusic, (GetScreenHeight() - optionBar.height)/2 - 175, RecWidthMusic, 30, BLACK);
+    DrawRectangle((GetScreenWidth() - optionBar.width)/2 + 100 + optionBar.width - RecWidthSfx, (GetScreenHeight() - optionBar.height)/2 - 75, RecWidthSfx, 30, BLACK);
+    DrawRectangle((GetScreenWidth() - optionBar.width)/2 + 100 + optionBar.width - RecWidthBrightness, (GetScreenHeight() - optionBar.height)/2 + 25, RecWidthBrightness, 30, BLACK);
 
     //OptionButton
     DrawTexture(optionButton, (GetScreenWidth() - optionButton.width)/2 - 20, (GetScreenHeight() - optionButton.height)/2 + 125, WHITE);
@@ -296,7 +297,6 @@ void MainOptions::CustomDraw() {
     DrawTextEx(font1, Message4.c_str(),fontPosition5, 25, 1,WHITE);
     DrawTextEx(font1, Message4.c_str(),fontPosition6, 25, 1,WHITE);
 
-
     //Buttons
     for (auto& button : buttons)
     {
@@ -304,31 +304,25 @@ void MainOptions::CustomDraw() {
     }
 }
 
-/*void MainOptions::updateBars()
-{
+/*void MainOptions::updateBars() {
     //BrightnessBar
     float brightnessPercentage = this->currentBrightness / this->maxBrightness;
-    brightnessPercentage = brightnessPercentage * 100;
+    brightnessPercentage = brightnessPercentage * 10;
 
     if (this->currentBrightness <= 0)
     {
+
         //how do i implement the bar for 0%
         //provisorisch option bar 1 für 0 % genommen
     }
     else
     {
-        std::string directoryString = "assets/graphics/ui/menu/Optionbar/Optionsbalken 1";
-        std::string workingString = std::to_string((int) brightnessPercentage);
+        std::string directoryString = "assets/graphics/ui/menu/Optionbar/Option0";
 
-        for (int i = 0; i < workingString.size(); i++) {
-            directoryString.push_back(workingString[i]);
-        }
-        directoryString.push_back('.');
-        directoryString.push_back('p');
-        directoryString.push_back('n');
-        directoryString.push_back('g');
+        directoryString.append(std::to_string((int) brightnessPercentage).c_str());
+        directoryString.append(".png");
 
-        this->optionBar1 = LoadTexture(directoryString.c_str());
+        this->brightnessBar = LoadTexture(directoryString.c_str());
     }
 }*/
 
@@ -352,7 +346,6 @@ void MainOptions::Unload() // does all of this go in the deconstructor?
 
     UnloadTexture(background);
     UnloadTexture(mainOptionsBox);
-    UnloadTexture(optionBar1);
-    UnloadTexture(optionBar100);
+    UnloadTexture(optionBar);
     UnloadTexture(optionButton);
 }
