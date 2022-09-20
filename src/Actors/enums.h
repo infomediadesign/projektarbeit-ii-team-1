@@ -6,6 +6,8 @@
 // However, I've failed to find a way to include this file if it isn't
 
 #pragma once
+#include "string"
+#include "raylib.h"
 
 enum GameScreen
 {
@@ -79,4 +81,12 @@ enum ItemType
     itemFrisbee,
     itemHeal,
     itemBottlecapAmmo
+};
+
+struct BoxCollioder {
+    Rectangle rec;
+    bool nextLevel = false;
+    bool nextRoom = false;
+    std::string nextLevelName;
+    std::string nextRoomName;
 };

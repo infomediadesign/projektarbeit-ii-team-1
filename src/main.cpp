@@ -78,7 +78,7 @@ int main() {
     PauseOptions testPauseOps;
 
     // Enums
-    LevelRooms currentLevelRooms = Wardrobe;
+    LevelRooms currentLevelRooms = VIPRoom;
     Level currentLevel = Level01;
 
 
@@ -97,7 +97,7 @@ int main() {
     victoryRec.width = victoryTex.width / 8;
     victoryRec.height = victoryTex.height;
 
-
+    std::shared_ptr<LevelScene> levelPointer;
 
     // ========== LEVEL INITIALISATION ==========
     // Laod next level
@@ -108,34 +108,34 @@ int main() {
 
         case Level01:
             //lvl01Wardrobe
-            std::make_shared<LevelScene>(Wardrobe, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "wardrobe",player);
             // lvl01VipRoom
-            std::make_shared<LevelScene>(VIPRoom, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "vipRoom",player);
             // lvl01Storage
-            std::make_shared<LevelScene>(Storage, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "storageRoom",player);
             // lvl01MainRoom
-            std::make_shared<LevelScene>(Dancefloor, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "danceFloor",player);
             // lvl01Hallway
-            std::make_shared<LevelScene>(Floor, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "hallway",player);
             // lvl01WcWoman
-            std::make_shared<LevelScene>(WCW, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "wcWoman",player);
             // lvl01WcMan
-            std::make_shared<LevelScene>(WCM, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "wcMan",player);
             break;
 
         case Rooftop:
             // lvlvRooftop
-            std::make_shared<LevelScene>(RoofTop, currentLevel, player);
+            std::make_shared<LevelScene>(currentLevel, "roofTop",player);
             break;
 
         default:
-            TraceLog(LOG_INFO, "Load level eroor: current level index out of range");
+            TraceLog(LOG_INFO, "Main: Load level rooms, current level index out of range");
     }
-
 
     //  ----- Tutorial initialisation -----
     // Levelscene
-    std::shared_ptr<LevelScene> currentlevelPointer = std::make_shared<LevelScene>(currentLevelRooms, currentLevel , player);
+    //std::shared_ptr<LevelScene> currentlevelPointer = std::make_shared<LevelScene>(currentLevelRooms, currentLevel , player);
+    std::shared_ptr<LevelScene> currentlevelPointer = std::make_shared<LevelScene>(currentLevel , "danceFloor",player);
 
 
     std::shared_ptr<Actor> pActor;
@@ -172,11 +172,12 @@ int main() {
     currentlevelPointer->dealers.push_back(pDealer);
     currentlevelPointer->allActors.push_back(pDealer);
     Vector2 posi = {400, 400};
-    currentlevelPointer->items.push_back(std::make_shared<PunchGun>(posi));
+    //currentlevelPointer->items.push_back(std::make_shared<PunchGun>(posi));
+    player->inventory.push_back(std::make_shared<PunchGun>(posi));
     posi = {500, 500};
     currentlevelPointer->items.push_back(std::make_shared<LaserGun>(posi));
     posi = {600, 600};
-    currentlevelPointer->items.push_back(std::make_shared<BottlecapGun>(posi));
+    currentlevelPointer->player->inventory.push_back(std::make_shared<BottlecapGun>(posi));
 
 
     std::shared_ptr<LevelScene> level01;
@@ -300,7 +301,35 @@ int main() {
             }
         }
 
-        // Scene update
+        if (currentlevelPointer->switchNextLevel)
+        {
+            std::string room = currentlevelPointer->nextLevel;
+
+            /*switch (room) {
+                case level01:
+                    currentLevel = Level01;
+                    currentlevelPointer->switchNextLevel = false;
+                    break;
+                case "level02":
+                    currentLevel =Level02;
+                    currentlevelPointer->switchNextLevel = false;
+                    break;
+                case "rooftip":
+                    currentLevel = Rooftop;
+                    currentlevelPointer->switchNextLevel = false;
+                    break;
+                default:
+                    TraceLog(LOG_INFO, "Main: switch next level error, index out of range");
+                    break;
+            }*/
+        }
+
+
+
+
+
+
+        // ===== Scene update =====
         activeScene->Update();
 
         // Victory animation update (I hate this...)

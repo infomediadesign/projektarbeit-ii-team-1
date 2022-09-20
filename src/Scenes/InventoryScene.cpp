@@ -60,8 +60,8 @@ void InventoryScene::DrawInventory()
 
     // Draw all items from the inventory
     int size = items.size();
-    for (int i = 0; i <itemCount.size(); i++) {
-        DrawTextureEx(items[i].texture, {posInventoryImg.x + slotPos[i].x,posInventoryImg.y + slotPos[i].y}, 0, 1, WHITE);
+    for (int i = 0; i < itemCount.size(); i++) {
+        DrawTextureEx(player->inventory[i]->texture, {posInventoryImg.x + slotPos[i].x,posInventoryImg.y + slotPos[i].y}, 0, 1, WHITE);
         DrawTextEx( font1, std::to_string(itemCount[i]).c_str(), {posInventoryImg.x + slotPos[i].x + 40,posInventoryImg.y + slotPos[i].y + 40}, 26, 1, VIOLET);
         TraceLog(LOG_INFO,"Inventory-Items gezeichnet: ");
         std::cout <<"was soll das "<< items[i].name << std::endl;

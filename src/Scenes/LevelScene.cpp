@@ -7,12 +7,92 @@
 #include <iostream>
 #include <filesystem>
 
-LevelScene::LevelScene() {}
+LevelScene::LevelScene() {};
+
+LevelScene::LevelScene(Level currentLevel, std::string currentLevelRoom, std::shared_ptr<Player> player)
+{
+    this->player = player;
+    this->currentLevelRooms = currentLevelRoom;
+    this->currentLevel = currentLevel;
+
+    screenWidth = Game::ScreenWidth;
+    screenHeight = Game::ScreenHeight;
+
+    // ===== CAMERA =====
+    cameraLs = {0,0};
+    cameraLs.target = (Vector2){ player->position.x + 1.0f, player->position.y + 1.0f };
+    cameraLs.offset = (Vector2){ player->position.x, player->position.y};
+    cameraLs.rotation = 0.0f;
+    cameraLs.zoom = 1.0f;
+    // ===== CAMERA =====
+
+
+    std::map<std::string , std::string> currentDataMap;
+    switch (currentLevel) {
+        case Level01:
+            currentDataMap = level01;
+            currentExitBoxes = lvl01ExitBoxe;
+            currentExitCount = lvl01ExitCount;
+            break;
+        case Level02:
+            currentDataMap = level02;
+            currentExitBoxes = lvl02ExitBoxes;
+            currentExitCount = lvl02ExitCount;
+            break;
+        case Rooftop:
+            currentDataMap = roofTop;
+            currentExitBoxes = roofTopExitBoxes;
+            currentExitCount = roofTopExitCount;
+            break;
+        default:
+            TraceLog(LOG_INFO,"LevelScene error: current level index out of rannge");
+            break;
+    }
+    // ===== LOAD CURRENT Tileset Json and PNG =====
+    //tilesetJsonPath = currentDataMap.at("tilesetJson");
+    //tilesetPngPath = currentDataMap.at("tilesetPng");
+
+    std::cout<<"++++++++++++++PFAD :"+ level01.at("wardrobe")<<std::endl;
+
+    // ===== LOAD CURRENT TIELMAP JSON =====
+    ifStreamFile.open(currentDataMap.at(currentLevelRoom.c_str()));
+    if(!ifStreamFile.is_open()){
+        TraceLog(LOG_INFO, "JSON-ERROR: File Tilemap.json is not available");
+    }else if(ifStreamFile.is_open()){
+        TraceLog(LOG_INFO, "LevelScene: Tilemap.Json loaded successfully");
+    }
+    assert(ifStreamFile.is_open());
+    ifStreamFile >> levelMap;
+    ifStreamFile.close();
+
+    // ===== LOAD TILESET JSON =====
+    ifStreamFile.open(currentDataMap.at("tilesetJson"));
+    if(!ifStreamFile.is_open()){
+        TraceLog(LOG_INFO, "JSON-ERROR: File Tileeset.json is not available");
+    }else if(ifStreamFile.is_open()){
+        TraceLog(LOG_INFO, "LevelScene: Tileset.Json loaded successfully");
+    }
+    assert(ifStreamFile.is_open());
+    ifStreamFile >> levelTilesetDescription;
+    ifStreamFile.close();
+    // ===== LOAD TILESET JSON =====
+
+    // ===== LOAD TILESET PNG =====
+    tileAtlasTexture = LoadTexture(currentDataMap.at("tilesetPng").c_str());
+    // ===== LOAD TILESET PNG =====
+
+    // ===== PUSH TILE IDs IN VECTOR =====
+    for (auto const layer : levelMap["tiles"]){
+        tileAtlas.push_back(layer["id"]);
+    };
+    // ===== PUSH TILE IDs IN VECTOR =====
+
+}
 
 LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_ptr<Player> player)
 {
     this->player = player;
-    this->levelRooms = levelRooms;
+    this->currentLevelRooms = levelRooms;
     this->currentLevel = currentLevel;
 
     screenWidth = Game::ScreenWidth;
@@ -31,7 +111,6 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
         case Wardrobe:
             // ===== Load room JSON "Wardrobe" // ./assets/maps/Floor01/Wardrobe.json // ./assets/maps/msp_als_json.json   ./assets/maps/Floor01/test/wardrobeTilemap.json =====
             ifStreamFile.open("./assets/maps/Floor01/wardrobe/wardrobeTilemap2.json");
-
             if(!ifStreamFile.is_open()){
                 TraceLog(LOG_INFO, "JSON-ERROR: File Wardrobe.json is not available");
             }else if(ifStreamFile.is_open()){
@@ -264,7 +343,7 @@ void LevelScene::CustomDraw()
 
 
 
-    for (int i = 0; i < actors.size(); i++) {
+    /*for (int i = 0; i < actors.size(); i++) {
         actors[i]->Draw();
     }
     for (int i = 0; i < enemies.size(); i++) {
@@ -283,6 +362,16 @@ void LevelScene::CustomDraw()
             DrawTexture(this->items[i]->texture, this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, WHITE);
             DrawRectangleLines(this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, this->items[i]->collisionBox.width, this->items[i]->collisionBox.height, RED);
         }
+    }*/
+
+    bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2);
+    bool CheckCollisionPointRec(Vector2 point, Rectangle rec);
+    //  ===== CHECK IF PLAYER IS ON LEVEL EXIT =====
+    if (CheckCollisionRecs(player->interactionBox, recLevelExit))
+    {
+        // Steuerung stoppen
+        // switchNextLevel und oder switchNextRoom auf true setzten
+        TraceLog(LOG_INFO, "************** PLAYER IN DER BOX *************");
     }
 
     player->Draw();
@@ -305,7 +394,6 @@ void LevelScene::DrawMap()
     Rectangle rec = {0, 0, tileWidth, tileHeight};
 
 
-    // ===== DRAW TILEMAP =====
     for (auto const &layer : levelMap["layers"]) {
         if (layer["type"] == "tilelayer" && layer["visible"]) {
             for (auto const &tileId : layer["data"]) {
@@ -326,6 +414,39 @@ void LevelScene::DrawMap()
             vec = {200, 0};
         }
     }
+    // Draw exit boxes
+    for (int i = 1; i<= currentExitCount.at(currentLevelRooms); i++) {
+        int index =1;
+        if(currentExitCount.at(currentLevelRooms) == 1)
+        {
+            DrawRectangleLines(currentExitBoxes.at(currentLevelRooms).rec.x + 200,
+                               currentExitBoxes.at(currentLevelRooms).rec.y,
+                               currentExitBoxes.at(currentLevelRooms).rec.width,
+                               currentExitBoxes.at(currentLevelRooms).rec.height, RED);
+        }else if(currentExitCount.at(currentLevelRooms) > 1){
+            if (i == 1)
+            {
+                DrawRectangleLines(currentExitBoxes.at(currentLevelRooms).rec.x+ 200 ,
+                                   currentExitBoxes.at(currentLevelRooms).rec.y,
+                                   currentExitBoxes.at(currentLevelRooms).rec.width,
+                                   currentExitBoxes.at(currentLevelRooms).rec.height, RED);
+                std::cout<< currentLevelRooms <<std::endl;
+
+            }else{
+                std::string raum = currentLevelRooms + std::to_string(i);
+                DrawRectangleLines(currentExitBoxes.at(raum).rec.x+ 200 ,
+                                   currentExitBoxes.at(raum).rec.y,
+                                   currentExitBoxes.at(raum).rec.width,
+                                   currentExitBoxes.at(raum).rec.height, RED);
+                //std::string room = currentLevelRooms + std::to_string(i);
+                std::cout<< raum <<std::endl;
+            }
+
+
+        }
+    }
+
+
     EndMode2D();
 
 }
