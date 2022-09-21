@@ -356,9 +356,8 @@ void BattleScene::CustomDraw()
     }
 }
 
-void BattleScene::animateIdle() {
-
-
+void BattleScene::animateIdle()
+{
     if (this->playPlayerIdle == true)
     {
         this->player->playIdle = true;
@@ -480,9 +479,6 @@ void BattleScene::playAnimation() {
         this->playSfx();
     }
 }
-
-
-
 
 void BattleScene::startAnimation()
 {
@@ -908,11 +904,13 @@ void BattleScene::menuNavigation() {
         // Check bottlecap gun ammo
         bottlecapAmmo = 0;
         for (int i = 0; i < this->player->inventory.size(); i++) {
-            if (this->player->inventory[i]->type == bottlecapAmmo) {
+            if (this->player->inventory[i]->type == itemBottlecapAmmo) {
                 bottlecapAmmo++;
             }
         }
+
         if (this->hasBottlecapGun == false || bottlecapAmmo <= 0) {
+            TraceLog(LOG_INFO, "======================== BLOCKING BUTTON");
             this->buttons[2]->blocked = true;
         }
         if (this->hasLaserGun == false || this->laserGunUses <= 0) {
