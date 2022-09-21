@@ -50,8 +50,11 @@ add_executable(${PROJECT_NAME} main.cpp
         Scenes/TitleScreen.cpp Scenes/TitleScreen.h
         Scenes/MainOptions.cpp Scenes/MainOptions.h
         Scenes/PauseOptions.cpp Scenes/PauseOptions.h
-
-        Scenes/TutorialLevelScene.cpp Scenes/TutorialLevelScene.h Actors/Enemies/Boss.cpp Actors/Enemies/Boss.h Scenes/MainControls.cpp Scenes/MainControls.h Scenes/PauseControls.cpp Scenes/PauseControls.h)
+        Scenes/TutorialLevelScene.cpp Scenes/TutorialLevelScene.h
+        Actors/Enemies/Boss.cpp Actors/Enemies/Boss.h
+        Scenes/MainControls.cpp Scenes/MainControls.h
+        Scenes/PauseControls.cpp Scenes/PauseControls.h
+        Items/Note.cpp Items/Note.h)
 
 
 # Add config.h.in file

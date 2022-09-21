@@ -15,13 +15,14 @@ LevelScene::LevelScene(Level currentLevel, std::string currentLevelRoom, std::sh
     this->currentLevelRooms = currentLevelRoom;
     this->currentLevel = currentLevel;
 
+
+
     screenWidth = Game::ScreenWidth;
     screenHeight = Game::ScreenHeight;
 
     // ===== CAMERA =====
-    cameraLs = {0,0};
-    cameraLs.target = (Vector2){ player->position.x + 1.0f, player->position.y + 1.0f };
-    cameraLs.offset = (Vector2){ player->position.x, player->position.y};
+    cameraLs.offset = (Vector2){ static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2)};
+    cameraLs.target = (Vector2){ player->position.x + player->frameRec.width / 2, player->position.y + player->frameRec.height / 2};
     cameraLs.rotation = 0.0f;
     cameraLs.zoom = 1.0f;
     // ===== CAMERA =====
@@ -31,13 +32,15 @@ LevelScene::LevelScene(Level currentLevel, std::string currentLevelRoom, std::sh
     switch (currentLevel) {
         case Level01:
             currentDataMap = level01;
-            currentExitBoxes = lvl01ExitBoxe;
+            currentExitBoxes = lvl01ExitBoxes;
             currentExitCount = lvl01ExitCount;
+            TraceLog(LOG_INFO,"Level01 Boxen");
             break;
         case Level02:
-            currentDataMap = level02;
-            currentExitBoxes = lvl02ExitBoxes;
-            currentExitCount = lvl02ExitCount;
+            // Empty
+            currentDataMap = roofTop;
+            currentExitBoxes = roofTopExitBoxes;
+            currentExitCount = roofTopExitCount;
             break;
         case Rooftop:
             currentDataMap = roofTop;
@@ -87,8 +90,14 @@ LevelScene::LevelScene(Level currentLevel, std::string currentLevelRoom, std::sh
     };
     // ===== PUSH TILE IDs IN VECTOR =====
 
+    // ===== =====
+
+    // ===== =====
+
 }
 
+// ALT !!!!
+/*
 LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_ptr<Player> player)
 {
     this->player = player;
@@ -106,7 +115,6 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
     cameraLs.zoom = 1.0f;
 
     // ===== MAP GENERATION =====
-
     switch (levelRooms) {
         case Wardrobe:
             // ===== Load room JSON "Wardrobe" // ./assets/maps/Floor01/Wardrobe.json // ./assets/maps/msp_als_json.json   ./assets/maps/Floor01/test/wardrobeTilemap.json =====
@@ -249,11 +257,13 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
 
 
 }
-
+*/
 void LevelScene::CustomUpdate()
 {
-    player->Update();
-    cameraLs.target = (Vector2){ player->position.x, player->position.y };
+    this->player->Update();
+    this->CheckCollision();
+    cameraLs.target = (Vector2){ player->position.x + player->frameRec.width / 2, player->position.y + player->frameRec.height / 2};
+
 
     if (IsKeyPressed(KEY_I)) {
         this->switchTo = INVENTORY;
@@ -334,6 +344,7 @@ void LevelScene::CustomUpdate()
     for (int i = 0; i < dealers.size(); i++) {
         dealers[i]->Update();
     }
+    mousePos = GetMousePosition();
 }
 
 void LevelScene::CustomDraw()
@@ -343,7 +354,7 @@ void LevelScene::CustomDraw()
 
 
 
-    /*for (int i = 0; i < actors.size(); i++) {
+    for (int i = 0; i < actors.size(); i++) {
         actors[i]->Draw();
     }
     for (int i = 0; i < enemies.size(); i++) {
@@ -362,7 +373,7 @@ void LevelScene::CustomDraw()
             DrawTexture(this->items[i]->texture, this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, WHITE);
             DrawRectangleLines(this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, this->items[i]->collisionBox.width, this->items[i]->collisionBox.height, RED);
         }
-    }*/
+    }
 
     bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2);
     bool CheckCollisionPointRec(Vector2 point, Rectangle rec);
@@ -374,8 +385,9 @@ void LevelScene::CustomDraw()
         TraceLog(LOG_INFO, "************** PLAYER IN DER BOX *************");
     }
 
-    player->Draw();
-
+    this->player->Draw();
+    EndMode2D();
+    this->player->dialogueManager.drawDialogue();
 }
 
 
@@ -390,7 +402,7 @@ void LevelScene::DrawMap()
     int tileColumCount = levelTilesetDescription["columns"];
 
 
-    Vector2 vec = {200, 0};
+    Vector2 vec = {0, 0};
     Rectangle rec = {0, 0, tileWidth, tileHeight};
 
 
@@ -406,47 +418,100 @@ void LevelScene::DrawMap()
                     DrawTextureRec(tileAtlasTexture, rec, vec, WHITE);
                 }
                 vec.x += tileWidth;
-                if (vec.x >= (float) layer["width"] * tileWidth + 200) {
-                    vec.x = 200;
+                if (vec.x >= (float) layer["width"] * tileWidth + 0) {
+                    vec.x = 0;
                     vec.y += tileHeight;
                 }
             }
-            vec = {200, 0};
+            vec = {0, 0};
         }
     }
     // Draw exit boxes
-    for (int i = 1; i<= currentExitCount.at(currentLevelRooms); i++) {
+
+    int exitCount = currentExitCount.at(currentLevelRooms);
+    std::string room = currentLevelRooms;
+
+    /*for (int i = 1; i<= exitCount; i++) {
         int index =1;
-        if(currentExitCount.at(currentLevelRooms) == 1)
-        {
-            DrawRectangleLines(currentExitBoxes.at(currentLevelRooms).rec.x + 200,
-                               currentExitBoxes.at(currentLevelRooms).rec.y,
-                               currentExitBoxes.at(currentLevelRooms).rec.width,
-                               currentExitBoxes.at(currentLevelRooms).rec.height, RED);
-        }else if(currentExitCount.at(currentLevelRooms) > 1){
-            if (i == 1)
-            {
-                DrawRectangleLines(currentExitBoxes.at(currentLevelRooms).rec.x+ 200 ,
-                                   currentExitBoxes.at(currentLevelRooms).rec.y,
-                                   currentExitBoxes.at(currentLevelRooms).rec.width,
-                                   currentExitBoxes.at(currentLevelRooms).rec.height, RED);
-                std::cout<< currentLevelRooms <<std::endl;
+        //if(exitCount == 1)
+        //{
+            DrawRectangleLines(currentExitBoxes.at(room).rec.x + 200,
+                               currentExitBoxes.at(room).rec.y,
+                               currentExitBoxes.at(room).rec.width,
+                               currentExitBoxes.at(room).rec.height, RED);
 
-            }else{
-                std::string raum = currentLevelRooms + std::to_string(i);
-                DrawRectangleLines(currentExitBoxes.at(raum).rec.x+ 200 ,
-                                   currentExitBoxes.at(raum).rec.y,
-                                   currentExitBoxes.at(raum).rec.width,
-                                   currentExitBoxes.at(raum).rec.height, RED);
-                //std::string room = currentLevelRooms + std::to_string(i);
-                std::cout<< raum <<std::endl;
+        //}
+    }*/
+
+    DrawRectangleLines(tutorialExitBoxes.at("tutorial").rec.x, tutorialExitBoxes.at("tutorial").rec.y, tutorialExitBoxes.at("tutorial").rec.width, tutorialExitBoxes.at("tutorial").rec.height, RED);
+
+    DrawText(("x:" + std::to_string(mousePos.x) +" y:" + std::to_string(mousePos.y)).c_str(), GetMousePosition().x,GetMousePosition().y,10, RED);
+
+
+}
+
+void LevelScene::CheckCollision()
+{
+    TraceLog(LOG_INFO,"Level Collision ");
+    /*std::cout<< currentExitBoxes.at(currentLevelRooms).rec.x<<std::endl;
+    std::cout<< currentExitBoxes.at(currentLevelRooms).rec.y<<std::endl;
+    std::cout<< currentExitBoxes.at(currentLevelRooms).rec.width<<std::endl;
+    std::cout<< currentExitBoxes.at(currentLevelRooms).rec.height<<std::endl;
+    std::cout<< "\n PLayer:"<<std::endl;
+    std::cout<< player->collisionBox.x<<std::endl;
+    std::cout<< player->collisionBox.y<<std::endl;
+    std::cout<< player->collisionBox.width<<std::endl;
+    std::cout<< player->collisionBox.height<<std::endl;/*
+
+    /*int counts = currentExitCount.at(currentLevelRooms);
+    for (int i = 1; i<= counts; i++) {
+        int index =1;
+        if(counts == 1){
+            if(CheckCollisionRecs(player->collisionBox, currentExitBoxes.at(currentLevelRooms).rec)){
+                switchNextRoom = true;
+                nextRoom = currentExitBoxes.at(currentLevelRooms).nextRoomName;
+                newPlayerPos = currentExitBoxes.at(currentLevelRooms).newStartPos;
+                TraceLog(LOG_INFO,"Player kollidiert mit Box");
             }
-
-
+        }else if(counts > 1){
+            if (i == 1){
+                if(CheckCollisionRecs(player->collisionBox, currentExitBoxes.at(currentLevelRooms).rec)){
+                    switchNextRoom = true;
+                    nextRoom = currentExitBoxes.at(currentLevelRooms).nextRoomName;
+                    newPlayerPos = currentExitBoxes.at(currentLevelRooms).newStartPos;
+                    TraceLog(LOG_INFO,"Player kollidiert mit Box");
+                }
+            }else{
+                std::string room = currentLevelRooms + std::to_string(i);
+                if(CheckCollisionRecs(player->collisionBox, currentExitBoxes.at(room).rec)){
+                    switchNextRoom = true;
+                    nextRoom = currentExitBoxes.at(currentLevelRooms).nextRoomName;
+                    newPlayerPos = currentExitBoxes.at(currentLevelRooms).newStartPos;
+                    TraceLog(LOG_INFO,"Player kollidiert mit Box");
+                }
+            }
         }
+    }*/
+    std::cout<< currentLevelRooms <<std::endl;
+
+
+    /*if(CheckCollisionRecs(player->collisionBox, currentExitBoxes.at(currentLevelRooms).rec)) {
+        TraceLog(LOG_INFO, "LEVEL Player kollidiert mit Box");
+
+        switchLevelScene = true;
+        switchNextLevel = true;
+        switchNextRoom = true;
+        nextLevel = Level01;
+        nextRoom = Dancefloor;
+        newPlayerPos = currentExitBoxes.at(currentLevelRooms).newStartPos;
+    }else{
+        TraceLog(LOG_INFO, "LEVEL Keine Kollision");
+    }*/
+
+    if (CheckCollisionRecs(this->player->collisionBox, tutorialExitBoxes.at("tutorial").rec)){
+        TraceLog(LOG_INFO, "LEVEL Check collision Player with exit box");
+    }else{
+        TraceLog(LOG_INFO, "LEVEL Check collision Player no Collisio");
     }
-
-
-    EndMode2D();
 
 }

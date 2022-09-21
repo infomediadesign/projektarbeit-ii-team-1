@@ -39,7 +39,7 @@ enum Direction
 enum GameState{Started, Paused, Stopped};
 enum Level{Tutorial, Level01, Level02, Rooftop, VIP};
 
-enum LevelRooms{TutorialLevel, RoofTop, Wardrobe, Floor, VIPRoom, Storage, Dancefloor, WCM, WCW};
+enum LevelRooms{TutorialLevel, RoofTop, Wardrobe, Floor, VIPRoom, Storage, Dancefloor, WCM, WCW, Finished};
 
 enum BattleState
 {
@@ -80,13 +80,17 @@ enum ItemType
     itemBomb,
     itemFrisbee,
     itemHeal,
-    itemBottlecapAmmo
+    itemBottlecapAmmo,
+    itemNote
 };
 
 struct BoxCollioder {
     Rectangle rec;
     bool nextLevel = false;
     bool nextRoom = false;
-    std::string nextLevelName;
-    std::string nextRoomName;
+    Level nextLevelName;
+    LevelRooms nextRoomName;
+    Vector2 newStartPos;
+
+
 };

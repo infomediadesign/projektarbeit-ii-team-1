@@ -121,7 +121,7 @@ void Player::Draw()
     DrawRectangleLines(this->interactionBox.x, this->interactionBox.y, this->interactionBox.width, this->interactionBox.height,
                        BLUE);
 
-    this->dialogueManager.drawDialogue();
+
 }
 
 void Player::move()

@@ -26,41 +26,64 @@ private:
     int screenWidth;
     int screenHeight;
 
-
+    Vector2 mousePos;
 public:
     std::string currentLevelRooms;
     Level currentLevel;
 
     Rectangle recLevelExit = {850, 850, 150, 100};
+
     bool switchNextLevel = false;
     bool switchNextRoom = false;
-    std::string nextLevel;
-    std::string nextRoom;
+    bool switchLevelScene = false;
+    Level nextLevel;
+    LevelRooms nextRoom;
+    Vector2 newPlayerPos;
+
+
+    Rectangle testrec ={200,320,60,160};
 
     std::map<std::string,BoxCollioder> currentExitBoxes {};
-    std::map<std::string, BoxCollioder> lvl01ExitBoxe { {"wardrobe", BoxCollioder {Rectangle{1460, 1120, 60, 200}, false, false, "level01", "danceFloor"}},
-                                                        {"vipRoom", BoxCollioder{Rectangle {440,140,160, 60}, false, false, "level01", "hallway"}},
-                                                        {"storageRoom", BoxCollioder{Rectangle {1220,360,60,200}, false, false, "level01", "danceFloor"}},
-                                                        {"hallway", BoxCollioder{Rectangle {1700,160,60,320}, false, false, "level01", "hallway"}},
-                                                        {"hallway2", BoxCollioder{Rectangle {0,160,60,320}, false, false, "level01", "hallway"}},
-                                                        {"hallway3", BoxCollioder{Rectangle {820,160,120,60}, false, false, "level01", "hallway"}},
-                                                        {"hallway4", BoxCollioder{Rectangle {1140,160,120,60}, false, false, "level01", "hallway"}},
-                                                        {"hallway5", BoxCollioder{Rectangle {320,420,160,60}, false, false, "level01", "hallway"}},
-                                                        {"danceFloor", BoxCollioder{Rectangle {0,320,60,160}, false, false, "level01", "hallway"}},
-                                                        {"danceFloor2", BoxCollioder{Rectangle {0,1680,60,160}, false, false, "level01", "hallway"}},
-                                                        {"danceFloor3", BoxCollioder{Rectangle {1960,800,60,160}, false, false, "level01", "hallway"}},
-                                                        {"wcWoman", BoxCollioder{Rectangle {640,860,200,60}, false, false, "level01", "hallway"}},
-                                                        {"wcMan", BoxCollioder{Rectangle {240,940,160,60}, false, false, "level01", "hallway"}}};
+    std::map<std::string, BoxCollioder> tutorialExitBoxes {{"tutorial",    BoxCollioder {Rectangle{1870, 680, 60, 400}, false, false,
+                                                                                        Level01, Dancefloor, {650,1050}}}};
+
+    std::map<std::string, BoxCollioder> lvl01ExitBoxes {{"wardrobe",    BoxCollioder {Rectangle{1460, 1120, 60, 200}, false, false,
+                                                                                      Level01, Dancefloor, {0,0}, }},
+                                                        {"vipRoom",     BoxCollioder{Rectangle {440,140,160, 60}, false, false,
+                                                                                 Level01, Floor, {0,0}}},
+                                                        {"storageRoom", BoxCollioder{Rectangle {1220,360,60,200}, false, false,
+                                                                                     Level01, Dancefloor, {0,0}}},
+                                                        {"hallway",     BoxCollioder{Rectangle {1700,160,60,320}, false, false,
+                                                                                 Rooftop, RoofTop, {0,0}}},
+                                                        {"hallway2",    BoxCollioder{Rectangle {0,160,60,320}, false, false,
+                                                                                  Level01, Dancefloor, {0,0}}},
+                                                        {"hallway3",    BoxCollioder{Rectangle {820,160,120,60}, false, false,
+                                                                                  Level01, WCW, {0,0}}},
+                                                        {"hallway4", BoxCollioder{Rectangle {1140,160,120,60}, false, false,
+                                                                                  Level01, WCM, {0,0}}},
+                                                        {"hallway5", BoxCollioder{Rectangle {320,420,160,60}, false, false,
+                                                                                  Level01, VIPRoom, {0,0}}},
+                                                        {"danceFloor", BoxCollioder{Rectangle {0,320,60,160}, false, false,
+                                                                                    Level01, Storage, {350,350}}},
+                                                        {"danceFloor2", BoxCollioder{Rectangle {0,1680,60,160}, false, false,
+                                                                                     Level01, Wardrobe, {620,620}}},
+                                                        {"danceFloor3", BoxCollioder{Rectangle {1960,800,60,160}, false, false,
+                                                                                     Level01, Floor, {0,0}}},
+                                                        {"wcWoman", BoxCollioder{Rectangle {640,860,200,60}, false, false,
+                                                                                 Level01, Floor, {0,0}}},
+                                                        {"wcMan", BoxCollioder{Rectangle {240,940,160,60}, false, false,
+                                                                               Level01, Floor, {0,0}}}};
     
     std::map<std::string,BoxCollioder> lvl02ExitBoxes {};
-    std::map<std::string,BoxCollioder> roofTopExitBoxes {{"roofTop", BoxCollioder{Rectangle {0, 00, 10,10}, false, false, "level01", "hallway"}}};
+    std::map<std::string,BoxCollioder> roofTopExitBoxes {{"roofTop", BoxCollioder{Rectangle {0, 00, 10,10}, false, false,
+                                                                                  Rooftop, Finished, {0,0}}}};
     // ===== level exit box count =====
     std::map<std::string,int> currentExitCount {};
     std::map<std::string,int> lvl01ExitCount {{"wardrobe", 1},
                                               {"vipRoom", 1},
                                               {"storageRoom", 1},
                                               {"hallway", 5},
-                                              {"danceFloor", 3},
+                                              {"danceFloor", 1},
                                               {"wcWoman", 1},
                                               {"wcMan", 1}};
     std::map<std::string,int> lvl02ExitCount {};
@@ -109,11 +132,9 @@ public:
 
     LevelScene();
 
-
     void DrawMap();
 
-    void Test();
-
+    void CheckCollision();
 
     void CustomUpdate() override;
     void CustomDraw() override;
