@@ -668,15 +668,9 @@ void BattleScene::updateHpBars() {
     else
     {
         std::string directoryString = "assets/graphics/ui/combat/hp";
-        std::string workingString = std::to_string((int) playerPercentage);
 
-        for (int i = 0; i < workingString.size(); i++) {
-            directoryString.push_back(workingString[i]);
-        }
-        directoryString.push_back('.');
-        directoryString.push_back('p');
-        directoryString.push_back('n');
-        directoryString.push_back('g');
+        directoryString.append(std::to_string((int) playerPercentage).c_str());
+        directoryString.append(".png");
 
         this->playerHpBar = LoadTexture(directoryString.c_str());
     }
@@ -687,7 +681,8 @@ void BattleScene::updateHpBars() {
     // Adjusts percentage: We have 50 different HP bar textures, so the percentage can't exceed 50
     enemyPercentage = enemyPercentage * 50;
 
-    if (this->enemy->currentHP <= 0) {
+    if (this->enemy->currentHP <= 0)
+    {
         this->enemyHpBar = LoadTexture("assets/graphics/ui/combat/hp0.png");
     }
     else
