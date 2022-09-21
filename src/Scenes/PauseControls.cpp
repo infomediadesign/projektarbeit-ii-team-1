@@ -63,7 +63,7 @@ PauseControls::~PauseControls() {
 }
 
 void PauseControls::CustomUpdate() {
-    if (IsKeyPressed(KEY_DOWN))
+    if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
     {
         buttons[active_button]->active = false;
         if (active_button < buttons.size() - 1)
@@ -74,7 +74,7 @@ void PauseControls::CustomUpdate() {
         PlaySound(this->uiBlip);
     }
 
-    if (IsKeyPressed(KEY_UP))
+    if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
     {
         buttons[active_button]->active = false;
         if (active_button == 0)

@@ -16,8 +16,8 @@ PauseScene::PauseScene()
     this->pauseMenuBox = LoadTextureFromImage(pauseMenuBoxImage);
     UnloadImage(pauseMenuBoxImage);
 
-   /* //Confirmation Box
-    Image confirmationBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
+    //Confirmation Box
+   /* Image confirmationBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
     ImageResize(&confirmationBoxImage, confirmationBoxImage.width*2, confirmationBoxImage.height*1);
     this->confirmationBox = LoadTextureFromImage(confirmationBoxImage);
     UnloadImage(confirmationBoxImage);*/
@@ -39,7 +39,7 @@ PauseScene::PauseScene()
                     MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
                     GetScreenHeight() - (float)100/2 - 750};
 
-   /* fontPosition2 = {GetScreenWidth()/2 -
+    /*fontPosition2 = {GetScreenWidth()/2 -
                      MeasureTextEx(font1, Message2.c_str(), (float)50, 1).x/2,
                      GetScreenHeight() - (float)50/2 - 500};*/
 
@@ -68,24 +68,12 @@ PauseScene::PauseScene()
                                                   GetScreenHeight()/2 + 200,
                                         50, 1, YELLOW, WHITE);
 
-
-    /*this->buttonYes = new game::Button("Yes",
-                                       GetScreenWidth()/2 + 100,
-                                       GetScreenHeight()/2 + 300,
-                                       50, 1, YELLOW, WHITE);
-
-    this->buttonNo = new game::Button("No",
-                                      GetScreenWidth()/2 + 150,
-                                      GetScreenHeight()/2 + 300,
-                                      50, 1, YELLOW, WHITE);*/
-
     this->buttons.push_back(buttonReturnGame);
     this->buttons.push_back(buttonPauseOptions);
     this->buttons.push_back(buttonControls);
     this->buttons.push_back(buttonReturnMainMenu);
 
-    //this->buttons.push_back(buttonYes);
-   // this->buttons.push_back(buttonNo);
+    //this->Confirmation();
 
     this->switchScene = false;
 }
@@ -96,11 +84,11 @@ PauseScene::~PauseScene() {
     delete buttonControls;
     delete buttonReturnMainMenu;
     //delete buttonYes;
-   // delete buttonNo;
+    //delete buttonNo;
 }
 
 void PauseScene::CustomUpdate() {
-    if (IsKeyPressed(KEY_DOWN))
+    if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
     {
         buttons[active_button]->active = false;
         if (active_button < buttons.size() - 1)
@@ -111,7 +99,7 @@ void PauseScene::CustomUpdate() {
         PlaySound(this->uiBlip);
     }
 
-    if (IsKeyPressed(KEY_UP))
+    if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
     {
         buttons[active_button]->active = false;
         if (active_button == 0)
@@ -149,10 +137,10 @@ void PauseScene::CustomUpdate() {
             if (this->buttonNo->active == true)
             {
                 PlaySound(this->uiBlip2);
-                this->switchTo = PAUSEMENU; //do i need this, when i already am in Pausemenu? is there a better way to get out of confirmation screen?
+                //this->switchTo = PAUSEMENU; //do i need this, when i already am in Pausemenu? is there a better way to get out of confirmation screen?
             }*/
+            this->switchTo = MAINMENU; //eventuell rausnehmen, wenn confirmation box implementiert wird
             PlaySound(this->uiBlip2);
-            this->switchTo = MAINMENU;
         }
 
         this->switchScene = true;
@@ -165,7 +153,6 @@ void PauseScene::CustomDraw() {
 
     //Textures
     DrawTexture(pauseMenuBox, (GetScreenWidth() - pauseMenuBox.width)/2, (GetScreenHeight() - pauseMenuBox.height)/2, WHITE);
-   // DrawTexture(confirmationBox, (GetScreenWidth() - confirmationBox.width)/2, (GetScreenHeight() - confirmationBox.height)/2, WHITE);
 
     //Messages
     DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
@@ -174,6 +161,7 @@ void PauseScene::CustomDraw() {
     {
         if (IsKeyPressed(KEY_ENTER))
         {
+            DrawTexture(confirmationBox, (GetScreenWidth() - confirmationBox.width)/2, (GetScreenHeight() - confirmationBox.height)/2, WHITE);
             DrawTextEx(font1, Message2.c_str(), fontPosition2, 50, 1, WHITE);
         }
     }*/
@@ -184,6 +172,72 @@ void PauseScene::CustomDraw() {
         button->Draw();
     }
 }
+/*
+void PauseScene::Confirmation()
+{
+
+    //if (IsKeyPressed(KEY_ENTER))
+    //{
+        if (this->buttonReturnMainMenu->active == true)
+        {
+            this->active_button = 0;
+
+            this->buttonYes = new game::Button("Yes",
+                                               GetScreenWidth()/2 + 100,
+                                               GetScreenHeight()/2 + 300,
+                                               50, 1, YELLOW, WHITE);
+
+            this->buttonYes->active = true;
+
+            this->buttonNo = new game::Button("No",
+                                              GetScreenWidth()/2 + 150,
+                                              GetScreenHeight()/2 + 300,
+                                              50, 1, YELLOW, WHITE);
+
+            this->buttons.push_back(buttonYes);
+            this->buttons.push_back(buttonNo);
+
+            this->switchScene = false;
+
+            if (IsKeyPressed(KEY_ENTER))
+            {
+                if (this->buttonYes->active == true)
+                {
+                    //if (IsKeyPressed(KEY_ENTER)) {
+                        PlaySound(this->uiBlip2);
+                        this->switchTo = MAINMENU;
+                    //}
+                }
+                if (this->buttonNo->active == true)
+                {
+                    // (IsKeyPressed(KEY_ENTER)) {
+                        PlaySound(this->uiBlip2);
+                        this->switchTo = PAUSEMENU; //do i need this, when i already am in Pausemenu? is there a better way to get out of confirmation screen?
+                    //}
+                }
+                PlaySound(this->uiBlip2);
+                this->switchScene = true;
+                std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
+            }
+        }
+    //}
+
+   /* if (this->buttonReturnMainMenu->active == true) // == makes the program crash, but = doesnt display it correctly
+    {
+        this->buttonYes = new game::Button("Yes",
+                                           GetScreenWidth()/2 + 100,
+                                           GetScreenHeight()/2 + 300,
+                                           50, 1, YELLOW, WHITE);
+
+        this->buttonNo = new game::Button("No",
+                                          GetScreenWidth()/2 + 150,
+                                          GetScreenHeight()/2 + 300,
+                                          50, 1, YELLOW, WHITE);
+
+        this->buttons.push_back(buttonYes);
+        this->buttons.push_back(buttonNo);
+    }
+}*/
 
 void PauseScene::Unload() {
     UnloadFont(font1);

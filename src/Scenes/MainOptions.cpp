@@ -158,7 +158,7 @@ MainOptions::~MainOptions() {
 }
 
 void MainOptions::CustomUpdate() {
-    if (IsKeyPressed(KEY_DOWN))
+    if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
     {
         buttons[active_button]->active = false;
         if (active_button < buttons.size() - 1)
@@ -169,7 +169,7 @@ void MainOptions::CustomUpdate() {
         PlaySound(this->uiBlip);
     }
 
-    if (IsKeyPressed(KEY_UP))
+    if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
     {
         buttons[active_button]->active = false;
         if (active_button == 0)
@@ -197,7 +197,7 @@ void MainOptions::CustomUpdate() {
 
     if (this->buttonSFX->active == true)
     {
-        if (IsKeyPressed(KEY_LEFT))
+        if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
         {
             if (volSfx >= 0)
             {
@@ -218,7 +218,7 @@ void MainOptions::CustomUpdate() {
                 PlaySound(this->punchSound);
             }
         }
-        if (IsKeyPressed(KEY_RIGHT))
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
         {
             if (volSfx <= 0.9)
             {
@@ -243,14 +243,14 @@ void MainOptions::CustomUpdate() {
 
     if (this->buttonBrightness->active == true)
     {
-        if (IsKeyPressed(KEY_LEFT))
+        if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
         {
             if (brightness <= 0.9)
             {
                 brightness += 0.1;
             }
         }
-        if (IsKeyPressed(KEY_RIGHT))
+        if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
         {
             if (brightness >= 0.1)
             {

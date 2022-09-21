@@ -19,7 +19,7 @@ class PauseScene : public MenuScenes
         public:
 
     Texture2D pauseMenuBox;
-    //Texture2D confirmationBox;
+   // Texture2D confirmationBox;
     Font font1;
 
     //SFX
@@ -29,15 +29,15 @@ class PauseScene : public MenuScenes
     std::string Message1;
     //std::string Message2;
     Vector2 fontPosition1;
-   // Vector2 fontPosition2;
+    //Vector2 fontPosition2;
 
 public:
     game::Button* buttonReturnGame;
     game::Button* buttonPauseOptions;
     game::Button* buttonControls;
     game::Button* buttonReturnMainMenu;
-    /*game::Button* buttonYes;
-    game::Button* buttonNo;*/
+    //game::Button* buttonYes;
+    //game::Button* buttonNo;
 
     int active_button;
 
@@ -51,6 +51,9 @@ public:
 
     void CustomUpdate() override;
     void CustomDraw() override;
+
+    //void Confirmation();
+
     void Unload();
         };
 
