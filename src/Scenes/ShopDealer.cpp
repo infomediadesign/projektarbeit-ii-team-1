@@ -125,7 +125,7 @@ void ShopDealer::CustomUpdate()
                     }
                     this->player->money = this->player->money - 90;
 
-                    // Update out of combat spritesheets
+                    // Update out-of-combat spritesheets
                     directoryString = "assets/graphics/character/";
                     if (this->player->genderMale)
                     {

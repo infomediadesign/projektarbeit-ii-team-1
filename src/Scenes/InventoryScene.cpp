@@ -45,11 +45,12 @@ void InventoryScene::CustomDraw()
 void InventoryScene::DrawInventory()
 {
     // Draw basics, Background, Text,
-    Color purple = {255,0,255,255};
-    Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
-    DrawRectangleRec(recBackground, Fade(purple,0.8));
+    //Color purple = {255,0,255,255};
+    //Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
+    //DrawRectangleRec(recBackground, Fade(purple,0.8));
+    DrawRectangle(0,0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(BLACK, 0.7));
 
-    ColorAlpha(LIGHTGRAY,  0.7);
+    //ColorAlpha(LIGHTGRAY,  0.7);
     // Header text
     const std::string inventoryHeaderTxt = "Inventory";
     const Vector2 inventoryTxtSize =  MeasureTextEx(font1, inventoryHeaderTxt.c_str(), 2, 60);

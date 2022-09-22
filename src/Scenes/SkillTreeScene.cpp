@@ -56,39 +56,42 @@ void SkillTreeScene::CustomDraw()
 void SkillTreeScene::DrawSkillTree()
 {
     // Draw basics, Background, Text
-    Color purple = {255,0,255,255};
-    Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
-    DrawRectangleRec(recBackground, Fade(purple,0.7));
+    //Color purple = {255,0,255,255};
+    //Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
+    //DrawRectangleRec(recBackground, Fade(purple,0.7));
+    DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(BLACK, 0.7));
 
     // Header text
     const std::string skilltreeHeaderTxt = "SkillTree";
     const Vector2 inventoryTxtSize =  MeasureTextEx(font1, skilltreeHeaderTxt.c_str(), 2, 60);
-    DrawTextEx( font1, skilltreeHeaderTxt.c_str(), {Game::ScreenWidth/2 - (inventoryTxtSize.x/4),110}, 60, 2, BLACK);
+    DrawTextEx( font1, skilltreeHeaderTxt.c_str(), {Game::ScreenWidth/2 - (inventoryTxtSize.x/4),110}, 60, 2, YELLOW);
 
     // Close Inventory text
     const std::string escapeInventoryTxt = "Escape to close Skilltree";
     //const Vector2 escapeTxtSize =  MeasureTextEx(font1, escapeInventoryTxt.c_str(), 2, 30);
-    DrawTextEx( font1, escapeInventoryTxt.c_str(), {20,20}, 30, 1, BLACK);
+    DrawTextEx( font1, escapeInventoryTxt.c_str(), {20,20}, 30, 1, YELLOW);
 
 
 
 
-    int skillDrawCount = 1;
+    int skillDrawCount = 0;
     int arrowDrawedCount = 1;
 
     for (int i = 0; i < 6; ++i) {
 
 
         // ... unlocked skills
-        if (player->augmentationCount >0 && skillDrawCount <= player->augmentationCount)
+        if (player->augmentationCount > 0 && skillDrawCount <= player->augmentationCount)
         {
-            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillUnlockecImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, BLACK);
+            DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y-50), float(skillLockedImg.width/2),float (skillLockedImg.height)-50}, BLACK);
+
+            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x+ (skillUnlockecImg.width*float(0.5)-float(MeasureText(skillTxts[i].c_str(), 27))),skillPos[i].y-50}, 27, 0.2, YELLOW);
+
+            //DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y), 100,200}, Color {220, 22, 220, 255});
+
             DrawTextureEx(skillImgs[i], {skillPos[i].x+20,skillPos[i].y+20}, 0, 0.5, WHITE);
-
-            DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y), 100,200}, Color {220, 22, 220, 255});
-
             DrawTextureEx(skillUnlockecImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
-            DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureText(skillInfoTxts[i].c_str(),25))/2,skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, BLACK);
+            DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureTextEx(font1, skillInfoTxts[i].c_str(),25, 0.2).x)/2,skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, YELLOW);
             if (arrowDrawedCount <=5)
             {
                 DrawTextureEx(arrowImg, {skillPos[i].x+200,skillPos[i].y+150}, 0, 0.5, WHITE);
@@ -98,13 +101,17 @@ void SkillTreeScene::DrawSkillTree()
         }
 
         // ... locked skills
-        if (player->augmentationCount == 0 || (player->augmentationCount >0 && skillDrawCount > player->augmentationCount))
+        if (player->augmentationCount == 0 || (player->augmentationCount > 0 && skillDrawCount > player->augmentationCount))
         {
-            DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y-50), float(skillLockedImg.width/2),float (skillLockedImg.height)-50}, Color {220, 22, 220, 255});
-            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x + (skillLockedImg.width/2 - MeasureTextEx(font1, skillTxts[i].c_str(), 27, 0.1).x),skillPos[i].y-50}, 27,  0.2, BLACK);
+            //DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y-50), float(skillLockedImg.width/2),float (skillLockedImg.height)-50}, Color {220, 22, 220, 255});
+            DrawRectangleRec({float(skillPos[i].x), float(skillPos[i].y-50), float(skillLockedImg.width/2),float (skillLockedImg.height)-50}, BLACK);
+            //DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x + (skillLockedImg.width/2 - MeasureTextEx(font1, skillTxts[i].c_str(), 27, 0.1).x),skillPos[i].y-50}, 27,  0.2, YELLOW);
+            DrawTextEx(font1,skillTxts[i].c_str(), {skillPos[i].x + (float(skillLockedImg.width/4) - (MeasureTextEx(font1, skillTxts[i].c_str(), 27, 0.2).x / 2) ),skillPos[i].y-50}, 27,  0.2, YELLOW);
             DrawTextureEx(skillImgs[i], {skillPos[i].x+10,skillPos[i].y+10}, 0, 0.5, WHITE);
             DrawTextureEx(skillLockedImg, {skillPos[i].x,skillPos[i].y}, 0, 0.5, WHITE);
-            DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureText(skillInfoTxts[i].c_str(),25))/2,skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, BLACK);
+            //DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + ((skillLockedImg.width)/2 - MeasureTextEx(font1, skillInfoTxts[i].c_str(),27, 0.2).x/2),skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, YELLOW);
+            DrawTextEx(font1,skillInfoTxts[i].c_str(), {skillPos[i].x + (float(skillLockedImg.width/4) - (MeasureTextEx(font1, skillInfoTxts
+            [i].c_str(), 27, 0.2).x / 2) ),skillPos[i].y + (skillUnlockecImg.height)/2+20}, 27, 0.2, YELLOW);
             if (arrowDrawedCount <=5)
             {
                 DrawTextureEx(arrowImg, {skillPos[i].x+180,(skillPos[i].y+((skillUnlockecImg.height)-arrowImg.height)/2)}, 0, 0.5, WHITE);

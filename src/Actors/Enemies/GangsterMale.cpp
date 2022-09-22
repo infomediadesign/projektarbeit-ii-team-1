@@ -27,8 +27,11 @@ GangsterMale::GangsterMale(int posX, int posY, Level enemyLevel, std::vector<std
     this->spritesheetAttackPunch.spriteCount = 4;
     this->spritesheetAttackNecklace.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterMale/necklace.png");
     this->spritesheetAttackNecklace.spriteCount = 7;
+    this->spritesheetAttackPunch.delay = 0;
     this->spritesheetAttackTazer.sheet = LoadTexture("assets/graphics/combatAnimations/attack/gangsterMale/tazer.png");
     this->spritesheetAttackTazer.spriteCount = 6;
+    this->spritesheetAttackTazer.delay = 1;
+    this->spritesheetAttackNecklace.delay = 0;
     this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterMale/punch.png");
     this->spritesheetReactPunch.spriteCount = 5;
     this->spritesheetReactBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/gangsterMale/bottlecap.png");

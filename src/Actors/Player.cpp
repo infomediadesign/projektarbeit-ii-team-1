@@ -116,12 +116,12 @@ void Player::Draw()
     else
         DrawTextureRec(this->spritesheetIdle, this->frameRec, this->position, WHITE);
     // Debug-Boxes
-    DrawRectangleLines(this->collisionBox.x, this->collisionBox.y, this->collisionBox.width, this->collisionBox.height,
-                       GREEN);
-    DrawRectangleLines(this->interactionBox.x, this->interactionBox.y, this->interactionBox.width, this->interactionBox.height,
-                       BLUE);
+    //DrawRectangleLines(this->collisionBox.x, this->collisionBox.y, this->collisionBox.width, this->collisionBox.height,
+    //                   GREEN);
+    //DrawRectangleLines(this->interactionBox.x, this->interactionBox.y, this->interactionBox.width, this->interactionBox.height,
+    //                   BLUE);
 
-    this->dialogueManager.drawDialogue();
+    //this->dialogueManager.drawDialogue();
 }
 
 void Player::move()
@@ -374,8 +374,8 @@ void Player::interact(std::vector<std::shared_ptr<Item>> items) {
     if (IsKeyPressed(KEY_E) && interactionDisabled == false) {
         for (int i = 0; i < items.size(); i++) {
             if (items[i]->showInLevel == true) {
-                if (CheckCollisionRecs(items[i]->collisionBox,
-                                           this->interactionBox)) { // has to be adjusted when items have hitboxes
+                if (CheckCollisionRecs(items[i]->collisionBox,this->interactionBox) ||
+                        CheckCollisionRecs(items[i]->collisionBox, this->collisionBox)) {
                     TraceLog(LOG_INFO, "Interaction successful!");
 
                     items[i]->showInLevel = false;

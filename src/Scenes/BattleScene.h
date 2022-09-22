@@ -122,15 +122,17 @@ BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy);
 void CustomUpdate() override;
 void CustomDraw() override;
 
+// For animations (duh)
 void animateIdle();
 void playAnimation();
 void startAnimation();
 
+// For core module (damage calculation etc.)
 void playerAttack();
 void enemyAttack();
 
+// For UI and Menus
 void updateHpBars();
-
 void menuNavigation();
 void initMainMenu();
 

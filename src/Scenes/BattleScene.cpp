@@ -122,7 +122,7 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
                 break;
             case itemBottlecapGun:
                 this->hasBottlecapGun = true;
-                this->laserGunDmg = this->player->inventory[i]->damage;
+                this->bottlecapGunDmg = this->player->inventory[i]->damage;
                 break;
             case itemBomb:
                 this->bombUses = this->player->inventory[i]->uses;
@@ -573,6 +573,7 @@ void BattleScene::playerAttack()
             this->startAnimation();
             break;
         case bottlecap:
+            TraceLog(LOG_INFO, "========================= CALLING BCAP DAMAGE");
             this->enemy->currentHP = this->enemy->currentHP - this->bottlecapGunDmg;
             // Remove ammo
             for (int i = 0; (i < this->player->inventory.size()) && stopSearch == false; i++) {

@@ -41,8 +41,8 @@ void Actor::Draw()
     DrawTextureRec(this->spritesheet, this->frameRec, this->position, WHITE);
 
     // Debug boxes
-    DrawRectangleLines(this->collisionBox.x, this->collisionBox.y, this->collisionBox.width, this->collisionBox.height,
-                       RED);
+    //DrawRectangleLines(this->collisionBox.x, this->collisionBox.y, this->collisionBox.width, this->collisionBox.height,
+    //                   RED);
 }
 
 void Actor::move()

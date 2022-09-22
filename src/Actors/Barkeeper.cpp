@@ -27,6 +27,6 @@ Barkeeper::Barkeeper(int posX, int posY, std::vector<std::string> dialogue_)
 
     this->firstInteraction = true;
 
-    this->stockBomb = 3;
-    this->stockFrisbee = 3;
+    this->stockBomb = 99;
+    this->stockFrisbee = 99;
 }

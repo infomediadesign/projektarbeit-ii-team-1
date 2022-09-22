@@ -19,9 +19,8 @@ LevelScene::LevelScene(Level currentLevel, std::string currentLevelRoom, std::sh
     screenHeight = Game::ScreenHeight;
 
     // ===== CAMERA =====
-    cameraLs = {0,0};
-    cameraLs.target = (Vector2){ player->position.x + 1.0f, player->position.y + 1.0f };
-    cameraLs.offset = (Vector2){ player->position.x, player->position.y};
+    cameraLs.offset = (Vector2){ static_cast<float>(GetScreenWidth() / 2), static_cast<float>(GetScreenHeight() / 2)};
+    cameraLs.target = (Vector2){ player->position.x + player->frameRec.width / 2, player->position.y + player->frameRec.height / 2};
     cameraLs.rotation = 0.0f;
     cameraLs.zoom = 1.0f;
     // ===== CAMERA =====
@@ -102,8 +101,8 @@ LevelScene::LevelScene(LevelRooms levelRooms, Level currentLevel, std::shared_pt
     cameraLs = {0,0};
     cameraLs.target = (Vector2){ player->position.x + 1.0f, player->position.y + 1.0f };
     cameraLs.offset = (Vector2){ player->position.x, player->position.y};
-    cameraLs.rotation = 0.0f;
-    cameraLs.zoom = 1.0f;
+    cameraLs.rotation = 0.0;
+    cameraLs.zoom = 1.0;
 
     // ===== MAP GENERATION =====
 
@@ -338,12 +337,12 @@ void LevelScene::CustomUpdate()
 
 void LevelScene::CustomDraw()
 {
-    BeginMode2D(cameraLs);
+   BeginMode2D(cameraLs);
     this->DrawMap();
 
 
 
-    /*for (int i = 0; i < actors.size(); i++) {
+    for (int i = 0; i < actors.size(); i++) {
         actors[i]->Draw();
     }
     for (int i = 0; i < enemies.size(); i++) {
@@ -358,11 +357,11 @@ void LevelScene::CustomDraw()
     for (int i = 0; i < this->items.size(); i++) {
         if (this->items[i]->showInLevel == true)
         {
-            //items[i]->Draw();
+            // items[i]->Draw();
             DrawTexture(this->items[i]->texture, this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, WHITE);
-            DrawRectangleLines(this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, this->items[i]->collisionBox.width, this->items[i]->collisionBox.height, RED);
+            //DrawRectangleLines(this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, this->items[i]->collisionBox.width, this->items[i]->collisionBox.height, RED);
         }
-    }*/
+    }
 
     bool CheckCollisionRecs(Rectangle rec1, Rectangle rec2);
     bool CheckCollisionPointRec(Vector2 point, Rectangle rec);
@@ -375,7 +374,10 @@ void LevelScene::CustomDraw()
     }
 
     player->Draw();
+    EndMode2D();
 
+    // Stupid but doesn't work any other way...
+    player->dialogueManager.drawDialogue();
 }
 
 
@@ -426,18 +428,22 @@ void LevelScene::DrawMap()
         }else if(currentExitCount.at(currentLevelRooms) > 1){
             if (i == 1)
             {
+                /* Temporarily disabled
                 DrawRectangleLines(currentExitBoxes.at(currentLevelRooms).rec.x+ 200 ,
                                    currentExitBoxes.at(currentLevelRooms).rec.y,
                                    currentExitBoxes.at(currentLevelRooms).rec.width,
                                    currentExitBoxes.at(currentLevelRooms).rec.height, RED);
+                                   */
                 std::cout<< currentLevelRooms <<std::endl;
 
             }else{
                 std::string raum = currentLevelRooms + std::to_string(i);
+                /* Temporarily disabled
                 DrawRectangleLines(currentExitBoxes.at(raum).rec.x+ 200 ,
                                    currentExitBoxes.at(raum).rec.y,
                                    currentExitBoxes.at(raum).rec.width,
                                    currentExitBoxes.at(raum).rec.height, RED);
+                                   */
                 //std::string room = currentLevelRooms + std::to_string(i);
                 std::cout<< raum <<std::endl;
             }
@@ -445,8 +451,4 @@ void LevelScene::DrawMap()
 
         }
     }
-
-
-    EndMode2D();
-
 }

@@ -8,6 +8,7 @@ extern float volSfx;
 
 ShopBarkeeper::ShopBarkeeper(std::shared_ptr<Player> player, std::shared_ptr<Barkeeper> barkeeper)
 {
+    TraceLog(LOG_INFO, "Calling ShopBarkeeper constructor");
     this->drawLevelBackground = true;
     this->switchScene = false;
 
@@ -121,6 +122,7 @@ void ShopBarkeeper::CustomDraw()
 
 void ShopBarkeeper::updateButtons()
 {
+    TraceLog(LOG_INFO, "Updating buttons");
     this->buttons.clear();
     std::string workingString;
 
@@ -129,7 +131,7 @@ void ShopBarkeeper::updateButtons()
     {
         workingString.clear(); // Just to be safe
         TraceLog(LOG_INFO, "Buttons: Adding stock...");
-        switch(i)
+        switch(i) // Append stock
         {
             case 0:
                 workingString = std::to_string(this->barkeeper->stockBomb);
@@ -139,8 +141,7 @@ void ShopBarkeeper::updateButtons()
                 workingString = std::to_string(this->barkeeper->stockFrisbee);
                 workingString.append("x ");
         }
-        TraceLog(LOG_INFO, "Buttons: Added stock");
-        switch(i)
+        switch(i) // Append name
         {
             case 0:
                 workingString.append("Discobomb ");
@@ -152,7 +153,7 @@ void ShopBarkeeper::updateButtons()
                 workingString.append("Longdrink ");
         }
         workingString.push_back('(');
-        switch(i)
+        switch(i) // Append price
         {
             case 0:
                 workingString.append(std::to_string(this->bomb.price));
@@ -165,7 +166,7 @@ void ShopBarkeeper::updateButtons()
         }
         workingString.append("$)");
         float height;
-        switch (i)
+        switch (i) // Adjust button height
         {
             case 0:
                 height = GetScreenHeight() * 0.2;
@@ -188,7 +189,7 @@ void ShopBarkeeper::updateButtons()
     {
         buttons[0]->blocked = true;
     }
-    if (this->player->money < this->bomb.price || this->barkeeper->stockFrisbee <= 0)
+    if (this->player->money < this->frisbee.price || this->barkeeper->stockFrisbee <= 0)
     {
         buttons[1]->blocked = true;
     }
