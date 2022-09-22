@@ -11,7 +11,51 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(${PROJECT_NAME} main.cpp Scenes/Scenes.cpp Scenes/Scenes.h Scenes/MenuScenes.cpp Scenes/MenuScenes.h Scenes/LevelScene.cpp Scenes/LevelScene.h Scenes/PauseScene.cpp Scenes/PauseScene.h Scenes/InventoryScene.cpp Scenes/InventoryScene.h Scenes/SkillTreeScene.cpp Scenes/SkillTreeScene.h Scenes/MainMenuScene.cpp Scenes/MainMenuScene.h Scenes/BattleScene.cpp Scenes/BattleScene.h Scenes/GameOverScene.cpp Scenes/GameOverScene.h "Actors/Prop.cpp" "Actors/Actor.h" "Actors/Actor.cpp" "Actors/Player.h" "Actors/Player.cpp" "Actors/Enemies/Enemy.h" "Actors/Enemies/Enemy.cpp" "Actors/enums.h" "Systems/DialogueManager.h" "Systems/DialogueManager.cpp" Actors/Enemies/GangsterFemale.cpp Actors/Enemies/GangsterFemale.h Actors/Enemies/GangsterMale.cpp Actors/Enemies/GangsterMale.h Actors/Enemies/Bouncer1.cpp Actors/Enemies/Bouncer1.h Actors/Enemies/Bouncer2.cpp Actors/Enemies/Bouncer2.h Systems/SceneManager.cpp Systems/SceneManager.h Scenes/Button.h Scenes/Button.cpp Actors/Enemies/CombatStructs.h Items/longdrink.cpp Items/Longdrink.h Items/frisbee.cpp Items/Frisbee.h Items/laserGun.cpp Items/LaserGun.h Items/bottlecapGun.cpp Items/BottlecapGun.h Items/punchGun.cpp Items/PunchGun.h Items/bomb.cpp Items/Bomb.h Items/Item.cpp Items/Item.h Items/BottlecapAmmo.cpp Items/BottlecapAmmo.h Scenes/CreditScene.cpp Scenes/CreditScene.h Actors/Barkeeper.cpp Actors/Barkeeper.h Scenes/ShopBarkeeper.cpp Scenes/ShopBarkeeper.h Actors/Dealer.cpp Actors/Dealer.h Scenes/ShopDealer.cpp Scenes/ShopDealer.h Scenes/TitleScreen.cpp Scenes/TitleScreen.h Scenes/MainOptions.cpp Scenes/MainOptions.h Scenes/PauseOptions.cpp Scenes/PauseOptions.h)
+add_executable(${PROJECT_NAME} main.cpp
+        Scenes/Scenes.cpp Scenes/Scenes.h
+        Scenes/MenuScenes.cpp Scenes/MenuScenes.h
+        Scenes/LevelScene.cpp Scenes/LevelScene.h
+        Scenes/PauseScene.cpp Scenes/PauseScene.h
+        Scenes/InventoryScene.cpp Scenes/InventoryScene.h
+        Scenes/SkillTreeScene.cpp Scenes/SkillTreeScene.h
+        Scenes/MainMenuScene.cpp Scenes/MainMenuScene.h
+        Scenes/BattleScene.cpp Scenes/BattleScene.h
+        Scenes/GameOverScene.cpp Scenes/GameOverScene.h
+        Actors/Prop.cpp
+        Actors/Actor.h Actors/Actor.cpp
+        Actors/Player.h Actors/Player.cpp
+        Actors/Enemies/Enemy.h Actors/Enemies/Enemy.cpp
+        Actors/enums.h
+        Systems/DialogueManager.h Systems/DialogueManager.cpp
+        Actors/Enemies/GangsterFemale.cpp Actors/Enemies/GangsterFemale.h
+        Actors/Enemies/GangsterMale.cpp Actors/Enemies/GangsterMale.h
+        Actors/Enemies/Bouncer1.cpp Actors/Enemies/Bouncer1.h
+        Actors/Enemies/Bouncer2.cpp Actors/Enemies/Bouncer2.h
+        Systems/SceneManager.cpp Systems/SceneManager.h
+        Scenes/Button.h Scenes/Button.cpp
+        Actors/Enemies/CombatStructs.h
+        Items/longdrink.cpp Items/Longdrink.h
+        Items/frisbee.cpp Items/Frisbee.h
+        Items/laserGun.cpp Items/LaserGun.h
+        Items/bottlecapGun.cpp Items/BottlecapGun.h
+        Items/punchGun.cpp Items/PunchGun.h
+        Items/bomb.cpp Items/Bomb.h
+        Items/Item.cpp Items/Item.h
+        Items/BottlecapAmmo.cpp Items/BottlecapAmmo.h
+        Scenes/CreditScene.cpp Scenes/CreditScene.h
+        Actors/Barkeeper.cpp Actors/Barkeeper.h
+        Scenes/ShopBarkeeper.cpp Scenes/ShopBarkeeper.h
+        Actors/Dealer.cpp Actors/Dealer.h
+        Scenes/ShopDealer.cpp Scenes/ShopDealer.h
+        Scenes/TitleScreen.cpp Scenes/TitleScreen.h
+        Scenes/MainOptions.cpp Scenes/MainOptions.h
+        Scenes/PauseOptions.cpp Scenes/PauseOptions.h
+        Scenes/TutorialLevelScene.cpp Scenes/TutorialLevelScene.h
+        Actors/Enemies/Boss.cpp Actors/Enemies/Boss.h
+        Scenes/MainControls.cpp Scenes/MainControls.h
+        Scenes/PauseControls.cpp Scenes/PauseControls.h
+        Items/Note.cpp Items/Note.h)
+
 
 # Add config.h.in file
 configure_file(config.h.in config.h)
@@ -21,7 +65,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 #  Link to Raylib
 #target_link_libraries(${PROJECT_NAME} raylib)
-target_link_libraries(${PROJECT_NAME} raylib nlohmann_json::nlohmann_json)
+target_link_libraries(${PROJECT_NAME} raylib nlohmann_json::nlohmann_json -static)
 
 # Copy assets to assets path
 add_custom_target(copy_assets

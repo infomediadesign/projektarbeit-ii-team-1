@@ -13,6 +13,8 @@ public:
     GameScreen switchTo;
     bool drawLevelBackground = false;
 
+    bool battleWon = false; // This is a crutch for BattleScene. Just ignore it
+
     // Methods
 public:
     virtual void Update();

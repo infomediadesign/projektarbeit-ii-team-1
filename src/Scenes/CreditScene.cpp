@@ -29,8 +29,16 @@ this->font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+
 Message1 = "Credits";
-Message2 = "Game Design: Marko Lapadatovic, Leah Berner\nLead Artist: Leah Berner\nArtist: Marko Lapadatovic\nLead Programmer: Maximilian Roeck\nProgrammer: Lena White, Sefer Tokdilli\nSound Artist: Maximilian Roeck";
+Message2 = "Game Design: Marko Lapadatovic, Leah Berner\n"
+           "Lead Artist: Leah Berner\n"
+           "Artist: Marko Lapadatovic\n"
+           "Lead Programmer: Maximilian Roeck\n"
+           "Programmer: Lena White, Sefer Tokdilli\n"
+           "Sound Artist: Maximilian Roeck";
 
 fontPosition1 = {GetScreenWidth()/2 -
                  MeasureTextEx(font1, Message1.c_str(), (float)100, 1).x/2,
@@ -43,8 +51,8 @@ fontPosition2 = {(GetScreenWidth()/2 + 450) -
 //Buttons
     this->active_button = 0;
 
-    this->buttonReturnMainMenu = new game::Button("Return to Main Menu (Esc)",
-                                              GetScreenWidth()/2 - 250,
+    this->buttonReturnMainMenu = new game::Button("Return (Esc)",
+                                              GetScreenWidth()/2 - 360,
                                               GetScreenHeight()/2 + 300,
                                               50, 1, YELLOW, WHITE);
 
@@ -84,11 +92,8 @@ void CreditScene::CustomUpdate() {
 
     if (IsKeyPressed(KEY_ESCAPE))
     {
-        if(this->buttonReturnMainMenu->active == true)
-        {
-            PlaySound(this->uiBlip2);
-            this->switchTo = MAINMENU;
-        }
+        PlaySound(this->uiBlip2);
+        this->switchTo = MAINMENU;
         this->switchScene = true;
         std::cout << "Button Nr. " << active_button << "was pushed..." << std::endl;
     }

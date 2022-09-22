@@ -1,0 +1,14 @@
+{ "columns":40,
+ "image":"TileSet_rooftop.png",
+ "imageheight":1125,
+ "imagewidth":1287,
+ "margin":1,
+ "name":"TileSet_rooftop",
+ "spacing":1,
+ "tilecount":1400,
+ "tiledversion":"1.9.1",
+ "tileheight":31,
+ "tilewidth":31,
+ "type":"tileset",
+ "version":"1.8"
+}

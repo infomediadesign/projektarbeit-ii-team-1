@@ -12,14 +12,13 @@
 #include "../Items/LaserGun.h"
 #include "../Items/BottlecapAmmo.h"
 
-
 extern float volSfx;
 extern float volMusic;
 
 BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> enemy)
 {
+    this->moneyGranted = false;
     this->endBattle = false;
-    this->gameOver = false;
 
     this->controlsLocked = false;
     this->animationPlaying = false;
@@ -31,14 +30,14 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->player = player;
     this->enemy = enemy;
-    
-    this->player->turn(up);
-    this->enemy->turn(down);
-    this->player->moveLockAbsolute = true;
 
     this->playerPrevPos = this->player->prevPosition;
     this->playerFacing = this->player->facing;
     this->enemyPrevPos = this->enemy->position;
+
+    this->player->turn(up);
+    this->enemy->turn(down);
+    this->player->moveLockAbsolute = true;
 
     this->background = LoadTexture("assets/graphics/ui/combat/background.png");
 
@@ -74,20 +73,25 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 
     this->font = LoadFont("assets/graphics/ui/Habbo.ttf");
 
+    this->playBattleStart = true;
+    this->counterBattleStart = 0;
+    this->battleStartCurrentFrame = 0;
+    this->battleStartTex = LoadTexture("assets/graphics/ui/combat/fightStart.png");
+    this->battleStartRec.x = 0;
+    this->battleStartRec.y = 0;
+    this->battleStartRec.width = this->battleStartTex.width / 8;
+    this->battleStartRec.height = this->battleStartTex.height;
 
-    // For test purposes uwu
-    Vector2 test = {1, 2};
-    this->player->inventory.push_back(std::make_shared<PunchGun>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapGun>(test));
-    this->player->inventory.push_back(std::make_shared<LaserGun>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
-    this->player->inventory.push_back(std::make_shared<BottlecapAmmo>(test));
-    this->player->inventory.push_back(std::make_shared<Bomb>());
-    this->player->inventory.push_back(std::make_shared<Bomb>());
-    this->player->inventory.push_back(std::make_shared<Frisbee>());
-    this->player->inventory.push_back(std::make_shared<Frisbee>());
-    this->player->inventory.push_back(std::make_shared<Longdrink>());
+    this->playBusted = false;
+    this->counterBusted = 0;
+    this->bustedCurrentFrame = 0;
+    this->bustedTex = LoadTexture("assets/graphics/ui/combat/busted.png");
+    this->bustedRec.x = 0;
+    this->bustedRec.y = 0;
+    this->bustedRec.width = this->bustedTex.width / 8;
+    this->bustedRec.height = this->bustedTex.height;
+    this->fadeOut = false;
+    this->fadeOutValue = 0;
 
     // Setup for items
     this->hasBottlecapGun = false;
@@ -151,6 +155,10 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
     SetSoundVolume(this->soundLaser, volSfx);
     this->soundPunch = LoadSound("assets/audio/sfx/punch.wav");
     SetSoundVolume(this->soundPunch, volSfx);
+    this->soundLongdrink = LoadSound("assets/audio/sfx/slurp.wav");
+    SetSoundVolume(this->soundLongdrink, volSfx);
+    this->soundBottlecapGun = LoadSound("assets/audio/sfx/gunshot.wav");
+    SetSoundVolume(this->soundBottlecapGun, volSfx);
 
     this->updateHpBars();
     this->endBattle = false;
@@ -162,6 +170,46 @@ BattleScene::BattleScene(std::shared_ptr<Player> player, std::shared_ptr<Enemy> 
 void BattleScene::CustomUpdate() {
     this->framesCounter++;
 
+    // Play battle start animation
+    if (this->playBattleStart)
+    {
+        if (this->battleStartCurrentFrame >= 7 && this->counterBattleStart >= 6)
+        {
+         this->playBattleStart = false;
+        }
+        this->counterBattleStart++;
+        if (this->counterBattleStart >= 7)
+        {
+            this->battleStartCurrentFrame++;
+            this->counterBattleStart = 0;
+            this->battleStartRec.x = battleStartRec.width * this->battleStartCurrentFrame;
+        }
+    }
+    // Play busted animation
+    if (this->playBusted)
+    {
+        if (this->bustedCurrentFrame < 7)
+        {
+            this->counterBusted++;
+        }
+        if (this->counterBusted >= 7 && this->bustedCurrentFrame < 7)
+        {
+            this->bustedCurrentFrame++;
+            this->counterBusted = 0;
+            this->bustedRec.x = bustedRec.width * this->bustedCurrentFrame;
+        }
+    }
+    // Fade out "animation"
+    if (this->fadeOut == true)
+    {
+        if (this->fadeOutValue >= 1)
+        {
+            this->player->gameOver = true;
+        }
+        this->fadeOutValue = this->fadeOutValue + 0.01;
+    }
+
+
     // Plays music loop
     if (IsMusicStreamPlaying(this->music) == false)
     {
@@ -169,12 +217,29 @@ void BattleScene::CustomUpdate() {
     }
     UpdateMusicStream(this->music);
 
+    // Check if battle has to be ended
     if (this->player->currentHP <= 0)
     {
-        this->gameOver = true;
+        this->controlsLocked = true;
+        this->playBusted = true;
+        if (IsKeyPressed(KEY_ESCAPE))
+        {
+            this->fadeOut = true;
+        }
+    }
+    if (this->enemy->currentHP <= 0 && this->animationPlaying == false)
+    {
+        if (this->moneyGranted == false)
+        {
+            this->player->money = this->player->money + this->enemy->money;
+            this->moneyGranted = true;
+        }
+        this->enemy->defeated = true;
+        this->battleWon = true;
+        this->stopBattle();
     }
 
-    if (this->playerTurn == true && this->animationPlaying == false)
+    if (this->playerTurn == true && this->animationPlaying == false && this->controlsLocked == false)
     {
         this->menuNavigation();
 
@@ -246,8 +311,9 @@ void BattleScene::CustomDraw()
     playerHpPos.y = GetScreenHeight() * 0.2;
     DrawTexture(this->playerHpBar, playerHpPos.x, playerHpPos.y, WHITE);
     DrawTextEx(this->font, this->player->getName().c_str(),
-               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.048 - MeasureTextEx(this->font, this->player->getName().c_str(), 20, 1).x/2),
+               {static_cast<float>(playerHpPos.x + GetScreenWidth() * 0.05 - MeasureTextEx(this->font, this->player->getName().c_str(), 20, 1).x/2),
                 static_cast<float>(playerHpPos.y + GetScreenHeight() * 0.077)}, 20, 1, BLACK);
+
 
     // Enemy HP
     Vector2 enemyHpPos;
@@ -267,6 +333,27 @@ void BattleScene::CustomDraw()
     }
 
     EndMode2D();
+
+    if (this->playBattleStart)
+    {
+        DrawTextureRec(this->battleStartTex, this->battleStartRec, {0, 0}, WHITE);
+    }
+    if (this->playBusted)
+    {
+        DrawTextureRec(this->bustedTex, this->bustedRec, {0, 0}, WHITE);
+        if (this->fadeOut == false)
+        {
+            DrawTextEx(this->font, "Press ESC to take on a new identity",
+                       {static_cast<float>(GetScreenWidth() * 0.01), static_cast<float>(GetScreenHeight() * 0.01)},
+                       48, 1, WHITE);
+        }
+    }
+
+    // Draw fade out
+    if (this->fadeOut)
+    {
+        DrawRectangle(0, 0, GetScreenWidth(), GetScreenHeight(), ColorAlpha(BLACK, this->fadeOutValue));
+    }
 }
 
 void BattleScene::animateIdle() {
@@ -581,15 +668,9 @@ void BattleScene::updateHpBars() {
     else
     {
         std::string directoryString = "assets/graphics/ui/combat/hp";
-        std::string workingString = std::to_string((int) playerPercentage);
 
-        for (int i = 0; i < workingString.size(); i++) {
-            directoryString.push_back(workingString[i]);
-        }
-        directoryString.push_back('.');
-        directoryString.push_back('p');
-        directoryString.push_back('n');
-        directoryString.push_back('g');
+        directoryString.append(std::to_string((int) playerPercentage).c_str());
+        directoryString.append(".png");
 
         this->playerHpBar = LoadTexture(directoryString.c_str());
     }
@@ -600,7 +681,8 @@ void BattleScene::updateHpBars() {
     // Adjusts percentage: We have 50 different HP bar textures, so the percentage can't exceed 50
     enemyPercentage = enemyPercentage * 50;
 
-    if (this->enemy->currentHP <= 0) {
+    if (this->enemy->currentHP <= 0)
+    {
         this->enemyHpBar = LoadTexture("assets/graphics/ui/combat/hp0.png");
     }
     else
@@ -802,16 +884,7 @@ void BattleScene::menuNavigation() {
                     }
                     break;
                 case 2:
-                    this->endBattle = true;
-                    StopMusicStream(this->music);
-                    this->player->position = this->playerPrevPos;
-                    this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
-                            (this->player->collisionOffset / 2);
-                    this->player->collisionBox.y = this->player->position.y;
-                    this->player->turn(this->playerFacing);
-                    this->enemy->position = this->enemyPrevPos;
-                    this->switchTo = GAME;
-                    this->switchScene = true;
+                    this->stopBattle();
                     break;
             }
         }
@@ -824,6 +897,11 @@ void BattleScene::menuNavigation() {
         }
 
         // Enable / Disable buttons
+
+        if (this->hasPunchGun)
+        {
+            this->buttons[0]->blocked = true;
+        }
         if (this->hasPunchGun == false || this->punchGunUses <= 0) {
             this->buttons[1]->blocked = true;
         }
@@ -980,6 +1058,7 @@ void BattleScene::menuNavigation() {
                             break;
                         case 2:
                             this->attackType = heal;
+                            PlaySound(this->soundLongdrink);
                             break;
                         default:
                             this->attackType = punchPlayer;
@@ -1049,6 +1128,16 @@ void BattleScene::playSfx()
                 PlaySound(this->soundPunch);
             }
             break;
+        case bottlecap:
+            if (this->soundTimer == 16)
+            {
+                PlaySound(this->soundBottlecapGun);
+            }
+            if (this->soundTimer == 60)
+            {
+                PlaySound(this->soundPunch);
+            }
+            break;
         case laser:
             if (this->soundTimer == 20)
             {
@@ -1075,6 +1164,10 @@ void BattleScene::playSfx()
                 PlaySound(this->soundPunch);
             }
             break;
+
+            // Heal cannot go in here because it has no animation
+            // It's in menu navigation...
+
             // Enemy attacks
         case punchEnemy:
             if (this->soundTimer == 16)
@@ -1117,4 +1210,18 @@ BattleScene::~BattleScene()
     UnloadSound(this->soundWhipCrack);
     UnloadSound(this->soundTazer);
 
+}
+
+void BattleScene::stopBattle()
+{
+    this->endBattle = true;
+    StopMusicStream(this->music);
+    this->player->position = this->playerPrevPos;
+    this->player->collisionBox.x = this->player->position.x + this->player->frameRec.width *
+                                                              (this->player->collisionOffset / 2);
+    this->player->collisionBox.y = this->player->position.y;
+    this->player->turn(this->playerFacing);
+    this->enemy->position = this->enemyPrevPos;
+    this->switchTo = GAME;
+    this->switchScene = true;
 }

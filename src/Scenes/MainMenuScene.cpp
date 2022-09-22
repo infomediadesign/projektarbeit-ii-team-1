@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-extern float volSfx;
+extern float volSfx; //set value? is it necessary?
 
 MainMenuScene::MainMenuScene() {
     TraceLog(LOG_INFO, "Constructing main menu");
@@ -31,6 +31,9 @@ MainMenuScene::MainMenuScene() {
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
 
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+
     Message1 = "Main Menu";
 
     fontPosition1 = {GetScreenWidth()/2 -
@@ -48,12 +51,17 @@ MainMenuScene::MainMenuScene() {
 
     this->buttonOptions = new game::Button("Options",
                                            GetScreenWidth()/2,
-                                           GetScreenHeight()/2,
+                                           GetScreenHeight()/2 - 25,
+                                           50, 1, YELLOW, WHITE);
+
+    this->buttonControls = new game::Button("Controls",
+                                           GetScreenWidth()/2,
+                                           GetScreenHeight()/2 + 50,
                                            50, 1, YELLOW, WHITE);
 
     this->buttonCredits = new game::Button("Credits",
                                            GetScreenWidth()/2,
-                                           GetScreenHeight()/2 + 100,
+                                           GetScreenHeight()/2 + 125,
                                            50, 1, YELLOW, WHITE);
 
     this->buttonExit = new game::Button("Exit",
@@ -63,6 +71,7 @@ MainMenuScene::MainMenuScene() {
 
     this->buttons.push_back(buttonNewGame);
     this->buttons.push_back(buttonOptions);
+    this->buttons.push_back(buttonControls);
     this->buttons.push_back(buttonCredits);
     this->buttons.push_back(buttonExit);
 
@@ -72,13 +81,14 @@ MainMenuScene::MainMenuScene() {
 MainMenuScene::~MainMenuScene() {
     delete buttonNewGame;
     delete buttonOptions;
+    delete buttonControls;
     delete buttonCredits;
     delete buttonExit;
 }
 
 void MainMenuScene::CustomUpdate() {
 
-    if (IsKeyPressed(KEY_DOWN))
+    if (IsKeyPressed(KEY_DOWN) || IsKeyPressed(KEY_S))
     {
         buttons[active_button]->active = false;
         if (active_button < buttons.size() - 1)
@@ -89,7 +99,7 @@ void MainMenuScene::CustomUpdate() {
         PlaySound(this->uiBlip);
     }
 
-    if (IsKeyPressed(KEY_UP))
+    if (IsKeyPressed(KEY_UP) || IsKeyPressed(KEY_W))
     {
         buttons[active_button]->active = false;
         if (active_button == 0)
@@ -112,6 +122,11 @@ void MainMenuScene::CustomUpdate() {
             PlaySound(this->uiBlip2);
             this->switchTo = MAINOPTIONS;
         }
+        if(this->buttonControls->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            this->switchTo = MAINCONTROLS;
+        }
         if (this->buttonCredits->active == true)
         {
             PlaySound(this->uiBlip2);
@@ -120,7 +135,7 @@ void MainMenuScene::CustomUpdate() {
         if (this->buttonExit->active == true)
         {
             PlaySound(this->uiBlip2);
-            CloseWindow();
+            exit(0);
         }
 
         this->switchScene = true;

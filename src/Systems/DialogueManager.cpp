@@ -9,9 +9,6 @@
 #include "DialogueManager.h"
 #include <memory>
 
-// For tests
-#include <iostream>
-
 extern float volSfx;
 
 DialogueManager::DialogueManager()
@@ -95,14 +92,14 @@ void DialogueManager::playDialogue()
         std::string lineToLoad = this->rawDialogue[this->lineCounter];
 
         // Closes dialogue when E is pressed while the final line is being displayed
-        if (IsKeyPressed(KEY_E) && lineCounter == this->rawDialogue.size() - 1)        // Possible source for game crashing bugs
-        {                                                                            // (subscript out of range)
+        if (IsKeyPressed(KEY_E) && lineCounter == this->rawDialogue.size() - 1)
+        {
             StopSound(this->soundChatter);
             this->stopDialogue();
         }
             // Scrolls through dialogue when E is pressed and it's not the final line (failsafe for preventing crashes)
-        else if (IsKeyPressed(KEY_E) && lineCounter < this->rawDialogue.size() - 1)    // Possible source for game crashing bugs
-        {                                                                            // (subscript out of range)
+        else if (IsKeyPressed(KEY_E) && lineCounter < this->rawDialogue.size() - 1)
+        {
             StopSound(this->soundChatter);
             this->lineCounter++;
             this->charCounter = 0;
@@ -121,14 +118,13 @@ void DialogueManager::playDialogue()
             }
         }
             // Loads the next character of the currently active line if the line is not already fully loaded
-        else if (charCounter < rawDialogue[lineCounter].size())                        // Possible source for game crashing bugs
-        {                                                                            // (subscript out of range)
+        else if (charCounter < rawDialogue[lineCounter].size())
+        {
             // Play sound if no sound is playing
             if (IsSoundPlaying(this->soundChatter) == false)
             {
                 PlaySound(this->soundChatter);
             }
-
 
             this->lineToDraw.push_back(lineToLoad[this->charCounter]);
             charCounter++;

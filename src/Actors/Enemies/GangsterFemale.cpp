@@ -9,6 +9,7 @@
 
 GangsterFemale::GangsterFemale(int posX, int posY, Level enemyLevel, std::vector<std::string> dialogue)
 {
+    this->name = "Thug";
     this->enemyLevel = enemyLevel;
 
     this->position.x = posX;

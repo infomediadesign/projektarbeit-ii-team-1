@@ -12,6 +12,8 @@
 #include "Enemies/CombatStructs.h"
 #include "Enemies/Enemy.h"
 #include "../Items/Item.h"
+#include "../Items/PunchGun.h"
+#include "../Items/Note.h"
 #include <vector>
 #include <memory>
 
@@ -50,7 +52,7 @@ public:
 	int defense;
 
     // Placeholder?
-    std::vector<std::shared_ptr<Item>> inventory ;
+    std::vector<std::shared_ptr<Item>> inventory;
 
 
 	bool moveLockAbsolute = false;
@@ -68,6 +70,7 @@ public:
     // Combat
     std::shared_ptr<Enemy> enemyToFight;
     bool startCombat;
+    bool gameOver;
 
     // Shop
     std::shared_ptr<Barkeeper> barkeeperPtr;

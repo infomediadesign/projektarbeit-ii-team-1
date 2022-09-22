@@ -14,6 +14,7 @@ Player::Player()
 
 Player::Player(int posX, int posY, bool genderMale)
 {
+    this->gameOver = false;
     this->position.x = posX;
     this->position.y = posY;
 
@@ -23,59 +24,53 @@ Player::Player(int posX, int posY, bool genderMale)
 
     this->augmentationCount = 0;
 
-    this->name = "Dt. Carver";
+    this->name = "Reese Carver";
 
     this->genderMale = genderMale;
     if (this->genderMale == true)
     {
         this->spritesheetIdle = LoadTexture("assets/graphics/character/dudeInOrange/idle/withoutAugmentation.png");
         this->spritesheet = LoadTexture("assets/graphics/character/dudeInOrange/walkcycle/withoutAugmentation.png");
-
         this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punch.png");
-        this->spritesheetAttackPunch.spriteCount = 7;
-        this->spritesheetAttackPunch.delay = 2;
         this->spritesheetAttackPunchGun.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/punchGun.png");
-        this->spritesheetAttackPunchGun.spriteCount = 8;
-        this->spritesheetAttackPunchGun.delay = 2;
         this->spritesheetAttackBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bottlecap.png");
-        this->spritesheetAttackBottlecap.spriteCount = 9;
-        this->spritesheetAttackBottlecap.delay = 5;
         this->spritesheetAttackLaser.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/laser.png");
-        this->spritesheetAttackLaser.spriteCount = 9;
-        this->spritesheetAttackLaser.delay = 4;
         this->spritesheetAttackBomb.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/bomb.png");
-        this->spritesheetAttackBomb.spriteCount = 8;
-        this->spritesheetAttackBomb.delay = 5;
         this->spritesheetAttackFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/attack/dudeInOrange/withoutAugmentation/frisbee.png");
-        this->spritesheetAttackFrisbee.spriteCount = 6;
-        this->spritesheetAttackFrisbee.delay = 3;
         this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/punch.png");
-        this->spritesheetReactPunch.spriteCount = 4;
         this->spritesheetReactTazer.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/dudeInOrange/withoutAugmentation/tazer.png");
-        this->spritesheetReactTazer.spriteCount = 2;
+
     }
     else
     {
         this->spritesheetIdle = LoadTexture("assets/graphics/character/ladyInYellow/idle/withoutAugmentation.png");
         this->spritesheet = LoadTexture("assets/graphics/character/ladyInYellow/walkcycle/withoutAugmentation.png");
-
         this->spritesheetAttackPunch.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punch.png");
-        this->spritesheetAttackPunch.spriteCount = 7; // Placeholder!!
         this->spritesheetAttackPunchGun.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/punchGun.png");
-        this->spritesheetAttackPunchGun.spriteCount = 8;
         this->spritesheetAttackBottlecap.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bottlecap.png");
-        this->spritesheetAttackBottlecap.spriteCount = 9;
         this->spritesheetAttackLaser.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/laser.png");
-        this->spritesheetAttackLaser.spriteCount = 9;
         this->spritesheetAttackBomb.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/bomb.png");
-        this->spritesheetAttackBomb.spriteCount = 8;
         this->spritesheetAttackFrisbee.sheet = LoadTexture("assets/graphics/combatAnimations/attack/ladyInYellow/withoutAugmentation/frisbee.png");
-        this->spritesheetAttackFrisbee.spriteCount = 6;
         this->spritesheetReactPunch.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/punch.png");
-        this->spritesheetReactPunch.spriteCount = 4;
         this->spritesheetReactTazer.sheet = LoadTexture("assets/graphics/combatAnimations/reaction/ladyInYellow/withoutAugmentation/tazer.png");
-        this->spritesheetReactTazer.spriteCount = 2;
     }
+    this->spritesheetAttackPunch.spriteCount = 7;
+    this->spritesheetAttackPunch.delay = 2;
+    this->spritesheetAttackPunchGun.spriteCount = 8;
+    this->spritesheetAttackPunchGun.delay = 2;
+    this->spritesheetAttackBottlecap.spriteCount = 9;
+    this->spritesheetAttackBottlecap.delay = 5;
+    this->spritesheetAttackLaser.spriteCount = 9;
+    this->spritesheetAttackLaser.delay = 4;
+    this->spritesheetAttackBomb.spriteCount = 8;
+    this->spritesheetAttackBomb.delay = 5;
+    this->spritesheetAttackFrisbee.spriteCount = 6;
+    this->spritesheetAttackFrisbee.delay = 3;
+    this->spritesheetReactPunch.spriteCount = 4;
+    this->spritesheetReactPunch.delay = 0;
+    this->spritesheetReactTazer.spriteCount = 2;
+    this->spritesheetReactTazer.delay = 0;
+
 
     this->frameRec.width = this->spritesheet.width / 4;
     this->frameRec.height = this->spritesheet.height / 4;
@@ -126,7 +121,7 @@ void Player::Draw()
     DrawRectangleLines(this->interactionBox.x, this->interactionBox.y, this->interactionBox.width, this->interactionBox.height,
                        BLUE);
 
-    this->dialogueManager.drawDialogue();
+
 }
 
 void Player::move()
@@ -379,7 +374,7 @@ void Player::interact(std::vector<std::shared_ptr<Item>> items) {
     if (IsKeyPressed(KEY_E) && interactionDisabled == false) {
         for (int i = 0; i < items.size(); i++) {
             if (items[i]->showInLevel == true) {
-                if (CheckCollisionPointRec(items[i]->levelPosition,
+                if (CheckCollisionRecs(items[i]->collisionBox,
                                            this->interactionBox)) { // has to be adjusted when items have hitboxes
                     TraceLog(LOG_INFO, "Interaction successful!");
 
@@ -407,7 +402,7 @@ void Player::interact(std::vector<std::shared_ptr<Item>> items) {
 
 void Player::interactionForced(std::shared_ptr<Enemy> enemy)
 {
-    TraceLog(LOG_INFO, "Interaction successful!");
+    TraceLog(LOG_INFO, "Forcing interaction with enemy");
 
     Vector2 workingPosPlayer;
     workingPosPlayer.x = this->position.x + this->frameRec.width / 2;
@@ -462,7 +457,21 @@ void Player::interactionForced(std::shared_ptr<Enemy> enemy)
     this->moveLockAbsolute = true;
     this->interactionDisabled = true;
     // For upgraded dialogue system
-    if (enemy->getDiaSwitches().size() == 0)
+    if (enemy->defeated)
+    {
+        if (enemy->diaDefeatedSwitches.size() == 0)
+        {
+            this->dialogueManager.startDialogue(enemy->getName(), enemy->dialogueDefeated,
+                                                enemy->spritesheet);
+        }
+        else
+        {
+            this->dialogueManager.startDialogue(enemy->getName(), enemy->spritesheet, this->name,
+                                                this->spritesheetIdle, enemy->dialogueDefeated,
+                                                enemy->diaDefeatedSwitches);
+        }
+    }
+    else if (enemy->getDiaSwitches().size() == 0)
     {
         this->dialogueManager.startDialogue(enemy->getName(), enemy->getDialogue(),
                                             enemy->spritesheet);

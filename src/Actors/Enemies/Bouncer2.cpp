@@ -10,6 +10,8 @@
 
 Bouncer2::Bouncer2(int posX, int posY, Level enemyLevel, std::vector<std::string> dialogue)
 {
+    this->name  = "Bouncer";
+
     this->enemyLevel = enemyLevel;
 
     this->position.x = posX;

@@ -6,13 +6,18 @@
 #define RAYLIBSTARTER_PUNCHGUN_H
 
 #include "Item.h"
+#include <vector>
+#include <memory>
 
 class PunchGun : public Item {
 
 public:
     PunchGun(Vector2 position);
-    PunchGun();
 
+public:
+    void Draw();
+
+    void interact(std::vector<std::shared_ptr<Item>> items);
 };
 
 

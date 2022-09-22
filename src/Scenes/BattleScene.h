@@ -20,6 +20,7 @@ public:
     std::shared_ptr<Player> player;
     std::shared_ptr<Enemy> enemy;
 
+    // For resetting after combat
     Vector2 playerPrevPos;
     Direction playerFacing;
     Vector2 enemyPrevPos;
@@ -45,7 +46,7 @@ public:
     Rectangle frameRecPlayer;
     Rectangle frameRecEnemy;
 
-    // Timer
+    // Animation timer
     int timerFramesWaited;
 
     CombatSheet playerAnimation;
@@ -57,7 +58,7 @@ public:
     bool attackSelected;
     int enemyStunnedFor;
     bool endBattle;
-    bool gameOver;
+    bool moneyGranted;
 
     // Core-System Items
     bool hasPunchGun;
@@ -79,6 +80,22 @@ public:
     int activeButton;
     std::vector<std::shared_ptr<game::Button>> buttons;
 
+    // For battle start animation
+    int counterBattleStart;
+    int battleStartCurrentFrame;
+    Texture2D battleStartTex;
+    Rectangle battleStartRec;
+    bool playBattleStart;
+
+    // For busted animation
+    int counterBusted;
+    int bustedCurrentFrame;
+    Texture2D bustedTex;
+    Rectangle bustedRec;
+    bool playBusted;
+    bool fadeOut;
+    float fadeOutValue;
+
     // SFX & Music
     int soundTimer;
     int soundTimerTarget;
@@ -94,6 +111,8 @@ public:
     Sound soundBomb;
     Sound soundLaser;
     Sound soundPunch;
+    Sound soundLongdrink;
+    Sound soundBottlecapGun;
 
     // Methods
 public:
@@ -116,4 +135,6 @@ void menuNavigation();
 void initMainMenu();
 
 void playSfx();
+
+void stopBattle();
 };

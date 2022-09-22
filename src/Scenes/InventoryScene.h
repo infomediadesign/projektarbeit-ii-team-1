@@ -23,10 +23,15 @@ private:
     ;
 public:
     Font font1;
+
+    //SFX
+    Sound uiBlip; //navigate
+    Sound uiBlip2; //confirm
+
     // Items in the inventory
-    std::vector<Item> items = {PunchGun({0.0})};
+    std::vector<Item> items = {PunchGun({0.0}), PunchGun({0.0})};
     // item count
-    std::vector< unsigned int> itemCount = {1};
+    std::vector< unsigned int> itemCount = {1, 2};
     std::shared_ptr<Player> player;
 
 

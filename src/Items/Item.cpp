@@ -3,5 +3,11 @@
 //
 
 #include "Item.h"
+/*
+void Item::Draw()
+{
+    DrawTexture(this->texture, this->levelPosition.x, this->levelPosition.y, WHITE);
 
-
+    DrawRectangleLines(this->levelPosition.x, this->levelPosition.y, this->collisionBox.width, this->collisionBox.height, RED);
+}
+*/

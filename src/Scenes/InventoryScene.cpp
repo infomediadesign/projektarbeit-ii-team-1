@@ -4,12 +4,22 @@
 #include "../Items/PunchGun.h"
 #include "iostream"
 
+extern float volSfx;
+
 InventoryScene::InventoryScene(std::shared_ptr<Player> player)
 {
     PunchGun test({1, 1});
     //this->items.push_back(test);
     this->player = player;
     font1 = LoadFont("../../assets/graphics/ui/Habbo.ttf");
+
+    //Sound
+    this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
+    this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
+
+    SetSoundVolume(uiBlip, volSfx);
+    SetSoundVolume(uiBlip2, volSfx);
+
     items= {};
     this->drawLevelBackground = true;
 }
@@ -35,9 +45,9 @@ void InventoryScene::CustomDraw()
 void InventoryScene::DrawInventory()
 {
     // Draw basics, Background, Text,
-    Color lightGray = {210,210,210,255};
+    Color purple = {255,0,255,255};
     Rectangle recBackground = {0,0 ,Game::ScreenWidth, Game::ScreenHeight};
-    DrawRectangleRec(recBackground, Fade(lightGray,0.5));
+    DrawRectangleRec(recBackground, Fade(purple,0.8));
 
     ColorAlpha(LIGHTGRAY,  0.7);
     // Header text
@@ -53,12 +63,15 @@ void InventoryScene::DrawInventory()
     //Inventory Image
     Texture2D inventoryImg = LoadTexture("../../assets/graphics/UI/Shop&Inventory/InventoryNew.png");
     Vector2 posInventoryImg = {float (Game::ScreenWidth/2 - (inventoryImg.width/2)),float(Game::ScreenHeight/2 - (inventoryImg.height/2))};
+    Rectangle recInventoryBackground ={posInventoryImg.x, posInventoryImg.y, float(inventoryImg.width), float(inventoryImg.height)};
+
+    DrawRectangleRec(recInventoryBackground, Color {220, 22, 220, 255});
     DrawTexture(inventoryImg,posInventoryImg.x,posInventoryImg.y, WHITE);
 
     // Draw all items from the inventory
     int size = items.size();
-    for (int i = 0; i <itemCount.size(); i++) {
-        DrawTextureEx(items[i].texture, {posInventoryImg.x + slotPos[i].x,posInventoryImg.y + slotPos[i].y}, 0, 1, WHITE);
+    for (int i = 0; i < itemCount.size(); i++) {
+        DrawTextureEx(player->inventory[i]->texture, {posInventoryImg.x + slotPos[i].x,posInventoryImg.y + slotPos[i].y}, 0, 1, WHITE);
         DrawTextEx( font1, std::to_string(itemCount[i]).c_str(), {posInventoryImg.x + slotPos[i].x + 40,posInventoryImg.y + slotPos[i].y + 40}, 26, 1, VIOLET);
         TraceLog(LOG_INFO,"Inventory-Items gezeichnet: ");
         std::cout <<"was soll das "<< items[i].name << std::endl;

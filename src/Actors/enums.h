@@ -6,17 +6,21 @@
 // However, I've failed to find a way to include this file if it isn't
 
 #pragma once
+#include "string"
+#include "raylib.h"
 
 enum GameScreen
 {
     TITLESCREEN,
     MAINMENU,
     MAINOPTIONS,
+    MAINCONTROLS,
     CREDITS,
     GAME,
     BATTLE,
     PAUSEMENU,
     PAUSEOPTIONS,
+    PAUSECONTROLS,
     SHOP_BARKEEPER,
     SHOP_DEALER,
     TESTSCENE,
@@ -33,9 +37,9 @@ enum Direction
 };
 
 enum GameState{Started, Paused, Stopped};
-enum Level{Tutorial, Level01, Rooftop, VIP};
+enum Level{Tutorial, Level01, Level02, Rooftop, VIP};
 
-enum LevelRooms{TutorialLevel, Wardrobe, Floor, VIPRoom, Storage, Dancefloor, WCM, WCW};
+enum LevelRooms{TutorialLevel, RoofTop, Wardrobe, Floor, VIPRoom, Storage, Dancefloor, WCM, WCW, Finished};
 
 enum BattleState
 {
@@ -76,5 +80,17 @@ enum ItemType
     itemBomb,
     itemFrisbee,
     itemHeal,
-    itemBottlecapAmmo
+    itemBottlecapAmmo,
+    itemNote
+};
+
+struct BoxCollioder {
+    Rectangle rec;
+    bool nextLevel = false;
+    bool nextRoom = false;
+    Level nextLevelName;
+    LevelRooms nextRoomName;
+    Vector2 newStartPos;
+
+
 };
