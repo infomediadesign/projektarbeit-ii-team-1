@@ -37,7 +37,6 @@ MainOptions::MainOptions()
     this->uiBlip = LoadSound("assets/audio/sfx/uiBlip.wav");
     this->uiBlip2 = LoadSound("assets/audio/sfx/uiBlip2.wav");
     this->punchSound = LoadSound("assets/audio/sfx/punch.wav");
-
     this->bomb = LoadSound("assets/audio/sfx/bomb.wav");
     this->chatter = LoadSound("assets/audio/sfx/chatter.wav");
     this->gunshot = LoadSound("assets/audio/sfx/gunshot.wav");
@@ -180,23 +179,17 @@ void MainOptions::CustomUpdate() {
         PlaySound(this->uiBlip);
     }
 
-    if (IsKeyPressed(KEY_ENTER))
+   /* if (this->buttonMusic->active == true) //implement music
     {
-        if (this->buttonSFX->active == true)
-        {
-            PlaySound(this->punchSound);
-        }
 
-        if (this->buttonFullscreen->active == true)
-        {
-            PlaySound(this->uiBlip2);
-            ToggleFullscreen();
-        }
-        std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
-    }
+    }*/
 
     if (this->buttonSFX->active == true)
     {
+        if (IsKeyPressed(KEY_ENTER))
+        {
+            PlaySound(this->punchSound);
+        }
         if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
         {
             if (volSfx >= 0)
@@ -257,6 +250,16 @@ void MainOptions::CustomUpdate() {
                 brightness -= 0.1;
             }
         }
+    }
+
+    if (IsKeyPressed(KEY_ENTER))
+    {
+        if (this->buttonFullscreen->active == true)
+        {
+            PlaySound(this->uiBlip2);
+            ToggleFullscreen();
+        }
+        std::cout << "Button Nr. " << active_button << " was pushed..." << std::endl;
     }
 
     if(IsKeyPressed(KEY_ESCAPE))

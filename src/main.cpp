@@ -70,19 +70,9 @@ int main() {
     //Font
     Font font1 = LoadFont("assets/graphics/ui/Habbo.ttf");
 
-    //Implementing scenes
-    TitleScreen testTitle;
-    MainMenuScene testMain;
-    MainOptions testMainOps;
-    CreditScene testCredit;
-    PauseScene testPause;
-    PauseOptions testPauseOps;
-
     // Enums
     LevelRooms currentLevelRooms = TutorialLevel;
     Level currentLevel = Tutorial;
-
-
 
 
     // ===== PLAYER INIT =====
@@ -181,23 +171,29 @@ int main() {
     {
         // ========== UPDATE ==========
         // Scene transition
-        if (activeScene->switchScene == true) {
-            if (activeScene->switchScene) {
+        if (activeScene->switchScene == true)
+        {
+            if (activeScene->switchScene)
+            {
                 TraceLog(LOG_INFO, "scene switch request");
                 activeScene->switchScene = false;
 
-                switch (activeScene->switchTo) {
-                    case TITLESCREEN: {
+                switch (activeScene->switchTo)
+                {
+                    case TITLESCREEN:
+                    {
                         activeScene = std::make_shared<TitleScreen>();
                         break;
                     }
 
-                    case MAINMENU: {
+                    case MAINMENU:
+                    {
                         activeScene = std::make_shared<MainMenuScene>();
                         break;
                     }
 
-                    case MAINOPTIONS: {
+                    case MAINOPTIONS:
+                    {
                         activeScene = std::make_shared<MainOptions>();
                         break;
                     }
@@ -208,12 +204,14 @@ int main() {
                         break;
                     }
 
-                    case CREDITS: {
+                    case CREDITS:
+                    {
                         activeScene = std::make_shared<CreditScene>();
                         break;
                     }
 
-                    case GAME: {
+                    case GAME:
+                    {
                         if (activeScene->battleWon == true)
                         {
                             playVictoryAnim = true;
@@ -244,12 +242,14 @@ int main() {
                         activeScene = std::make_shared<ShopDealer>(playerPointer);
                         break;
 
-                    case PAUSEMENU: {
+                    case PAUSEMENU:
+                    {
                         activeScene = std::make_shared<PauseScene>();
                         break;
                     }
 
-                    case PAUSEOPTIONS: {
+                    case PAUSEOPTIONS:
+                    {
                         activeScene = std::make_shared<PauseOptions>();
                         break;
                     }
@@ -260,13 +260,15 @@ int main() {
                         break;
                     }
 
-                    case INVENTORY: {
+                    case INVENTORY:
+                    {
                         activeScene->switchScene = false;
                         activeScene = std::make_shared<InventoryScene>(playerPointer);
                         break;
                     }
 
-                    case SKILLTREE: {
+                    case SKILLTREE:
+                    {
                         activeScene->switchScene = false;
                         activeScene = std::make_shared<SkillTreeScene>(playerPointer);
                         break;
@@ -276,17 +278,19 @@ int main() {
         }
 
 
-
         // ===== Scene update ====  =
-        if(activeLevel->switchLevelScene){
+        if(activeLevel->switchLevelScene)
+        {
             TraceLog(LOG_INFO,"##################################### this is it ################");
             activeLevel->switchLevelScene = false;
 
-            if (activeLevel->switchNextLevel){
+            if (activeLevel->switchNextLevel)
+            {
                 activeLevel->switchNextLevel = false;
                 Level newLevel = activeLevel->nextLevel;
 
-                switch (newLevel) {
+                switch (newLevel)
+                {
                     case Level01:
                         //lvl01Wardrobe
                         lvl01Wardrobe = std::make_shared<LevelScene>(newLevel, "wardrobe", playerPointer);
@@ -330,15 +334,18 @@ int main() {
                         break;
                 }
 
-                if (activeLevel->switchNextRoom){
+                if (activeLevel->switchNextRoom)
+                {
                     activeLevel->switchNextRoom = false;
 
-                    if(newLevel == Level01){
+                    if(newLevel == Level01)
+                    {
                         currentLevel = activeLevel->nextLevel;
                         currentLevelRooms = activeLevel->nextRoom;
                         LevelRooms newLevelRooms = activeLevel->nextRoom;
                         Vector2 newPos = activeLevel->newPlayerPos;
-                        switch (newLevelRooms) {
+                        switch (newLevelRooms)
+                        {
                             case Wardrobe:
                                 //activeLevel->switchNextRoom = false;
                                 activeLevel = lvl01Wardrobe;
@@ -386,14 +393,18 @@ int main() {
 
                         currentLevel = activeLevel->nextLevel;
                         currentLevelRooms = activeLevel->nextRoom;
-                    }else{
+                    }
+                    else
+                    {
                         TraceLog(LOG_INFO,"Main: Switch activeLevel error, next Level index out of range");
                     }
 
                 }
                 activeScene = activeLevel;
             }
-        }else{
+        }
+        else
+        {
             TraceLog(LOG_INFO,"Bool war falsch");
         }
 
@@ -417,9 +428,6 @@ int main() {
         }
 
 
-
-
-
         // ========== DRAW ==========
         BeginDrawing();
         ClearBackground(BLACK);
@@ -436,7 +444,7 @@ int main() {
             DrawTextureRec(victoryTex, victoryRec, {0, 0}, WHITE);
         }
 
-        //Alternative for screen brightness
+        //Alternative for adjusting screen brightness
         DrawRectangle(0, 0, Game::ScreenWidth, Game::ScreenHeight, ColorAlpha(BLACK, brightness));
 
         EndDrawing();
@@ -444,12 +452,6 @@ int main() {
 
     // De-initialization here
     UnloadFont(font1);
-    testTitle.Unload();
-    testMain.Unload();
-    //testMainOps.Unload();
-    testCredit.Unload();
-    testPause.Unload();
-    testPauseOps.Unload();
 
     // Close window and OpenGL context
     CloseWindow();

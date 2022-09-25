@@ -7,8 +7,8 @@
 #pragma once
 #include <string>
 
-namespace game {
-
+namespace game
+{
     class Button {
     public:
 
@@ -31,10 +31,7 @@ namespace game {
         float fontSpacing;
 
         Font font1;
-        bool centerText;
 
         void Draw();
-        void Unload();
     };
-
 }

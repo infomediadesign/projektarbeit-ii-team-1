@@ -40,10 +40,10 @@ void TutorialLevelScene::CustomUpdate() {
         this->switchScene = true;
         TraceLog(LOG_INFO,"TUTORIAL C");
     }
-    if (IsKeyPressed(KEY_P)) {
+    if (IsKeyPressed(KEY_ESCAPE)) {
         this->switchTo = PAUSEMENU;
         this->switchScene = true;
-        TraceLog(LOG_INFO,"TUTORIAL P");
+        TraceLog(LOG_INFO,"TUTORIAL ESCAPE");
     }
 
     // ===== Check if a fight has to be started =====
