@@ -17,7 +17,7 @@ PauseScene::PauseScene()
     UnloadImage(pauseMenuBoxImage);
 
     //Confirmation Box
-   /* Image confirmationBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
+    /*Image confirmationBoxImage = LoadImage("assets/graphics/ui/menu/mainMenuBox.png");
     ImageResize(&confirmationBoxImage, confirmationBoxImage.width*2, confirmationBoxImage.height*1);
     this->confirmationBox = LoadTextureFromImage(confirmationBoxImage);
     UnloadImage(confirmationBoxImage);*/
@@ -110,6 +110,29 @@ void PauseScene::CustomUpdate() {
         PlaySound(this->uiBlip);
     }
 
+    if (IsKeyPressed(KEY_RIGHT) || IsKeyPressed(KEY_D))
+    {
+        buttons[active_button]->active = false;
+        if (active_button < buttons.size() - 1)
+            active_button++;
+        else active_button = 0;
+
+        buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
+    }
+
+    if (IsKeyPressed(KEY_LEFT) || IsKeyPressed(KEY_A))
+    {
+        buttons[active_button]->active = false;
+        if (active_button == 0)
+            active_button = (int)buttons.size() - 1;
+        else active_button--;
+
+        buttons[active_button]->active = true;
+        PlaySound(this->uiBlip);
+    }
+
+
     if (IsKeyPressed(KEY_ENTER))
     {
         if (this->buttonPauseOptions->active == true)
@@ -157,7 +180,7 @@ void PauseScene::CustomDraw() {
     //Messages
     DrawTextEx(font1, Message1.c_str(), fontPosition1, 100, 1, WHITE);
 
-   /* if (this->buttonReturnMainMenu->active == true)
+    /*if (this->buttonReturnMainMenu->active == true)
     {
         if (IsKeyPressed(KEY_ENTER))
         {
@@ -172,8 +195,8 @@ void PauseScene::CustomDraw() {
         button->Draw();
     }
 }
-/*
-void PauseScene::Confirmation()
+
+/*void PauseScene::Confirmation()
 {
 
     //if (IsKeyPressed(KEY_ENTER))
@@ -222,7 +245,7 @@ void PauseScene::Confirmation()
         }
     //}
 
-   /* if (this->buttonReturnMainMenu->active == true) // == makes the program crash, but = doesnt display it correctly
+    if (this->buttonReturnMainMenu->active == true) // == makes the program crash, but = doesnt display it correctly
     {
         this->buttonYes = new game::Button("Yes",
                                            GetScreenWidth()/2 + 100,
@@ -244,5 +267,5 @@ void PauseScene::Unload() {
     UnloadSound(uiBlip);
     UnloadSound(uiBlip2);
     UnloadTexture(pauseMenuBox);
-   // UnloadTexture(confirmationBox);
+    //UnloadTexture(confirmationBox);
 }

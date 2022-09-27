@@ -14,7 +14,6 @@
 #include "Button.h"
 #include <vector>
 
-//STILL NEEDS TO BE WORKED OVER
 class MainOptions : public MenuScenes {
     // Attributes
 public:

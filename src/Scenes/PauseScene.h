@@ -19,7 +19,7 @@ class PauseScene : public MenuScenes
         public:
 
     Texture2D pauseMenuBox;
-   // Texture2D confirmationBox;
+    //Texture2D confirmationBox;
     Font font1;
 
     //SFX

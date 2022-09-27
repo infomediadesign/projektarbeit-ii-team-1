@@ -34,11 +34,11 @@ MainControls::MainControls()
     SetSoundVolume(uiBlip2, volSfx);
 
     Message1 = "Controls";
-    Message2 = "Walking/Menu Navigation: WASD/Arrow Keys\n" //WASD noch einbauen!!!
+    Message2 = "Walking/Menu Navigation: WASD/Arrow Keys\n"
                "Interactions/Dialogue/Confirmations: E\n"
                "Inventory: I\n"
                "Skill Tree: C\n"
-               "Menu: ESC\n"
+               "Menu: Esc\n"
                "Menu Confirmation: ENTER";
 
     fontPosition1 = {GetScreenWidth()/2 -

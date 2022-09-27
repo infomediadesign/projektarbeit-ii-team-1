@@ -371,7 +371,8 @@ void LevelScene::CustomDraw()
         {
             //items[i]->Draw();
             DrawTexture(this->items[i]->texture, this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, WHITE);
-            DrawRectangleLines(this->items[i]->levelPosition.x, this->items[i]->levelPosition.y, this->items[i]->collisionBox.width, this->items[i]->collisionBox.height, RED);
+            DrawRectangleLines(this->items[i]->levelPosition.x, this->items[i]->levelPosition.y,
+                               this->items[i]->collisionBox.width, this->items[i]->collisionBox.height, RED);
         }
     }
 
