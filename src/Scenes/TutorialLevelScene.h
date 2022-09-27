@@ -14,8 +14,6 @@
 #include "../Actors/enums.h"
 
 
-
-
 class TutorialLevelScene : public LevelScene {
 
 private:;

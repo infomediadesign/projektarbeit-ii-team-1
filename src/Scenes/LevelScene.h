@@ -57,7 +57,7 @@ public:
                                                                                  Rooftop, RoofTop, {0,0}}},
                                                         {"hallway2",    BoxCollioder{Rectangle {0,160,60,320}, false, false,
                                                                                   Level01, Dancefloor, {0,0}}},
-                                                        {"hallway3",    BoxCollioder{Rectangle {820,160,120,60}, false, false,
+                                                        {"halsnlway3",    BoxCollioder{Rectangle {820,160,120,60}, false, false,
                                                                                   Level01, WCW, {0,0}}},
                                                         {"hallway4", BoxCollioder{Rectangle {1140,160,120,60}, false, false,
                                                                                   Level01, WCM, {0,0}}},
